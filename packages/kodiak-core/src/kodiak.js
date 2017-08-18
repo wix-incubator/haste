@@ -1,19 +1,9 @@
 const path = require('path');
 const cp = require('child_process');
 const chalk = require('chalk');
+const { format, delta } = require('./utils');
 
 const worker = path.resolve(__dirname, 'worker');
-
-function format(time) {
-  return time.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, '$1');
-}
-
-function delta(start) {
-  const end = new Date();
-  const time = end.getTime() - start.getTime();
-
-  return [end, time];
-}
 
 const run = (task) => {
   const taskname = path.basename(task);
