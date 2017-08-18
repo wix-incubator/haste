@@ -1,21 +1,41 @@
 const path = require('path');
-const { fork } = require('child_process');
+const cp = require('child_process');
+const chalk = require('chalk');
 
-const forkP = (modulePath, args, options) => new Promise((resolve, reject) => {
-  const child = fork(modulePath, args, options);
-  child.on('exit', code => code === 0 ? resolve() : reject());
-});
+const worker = path.resolve(__dirname, 'worker');
 
-const worker = path.resolve(__dirname, 'channel');
+function format(time) {
+  return time.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, '$1');
+}
+
+function delta(start) {
+  const end = new Date();
+  const time = end.getTime() - start.getTime();
+
+  return [end, time];
+}
 
 const run = (task) => {
-  const basename = path.basename(task);
+  const taskname = path.basename(task);
 
-  console.log(`starting ${basename}`);
+  const child = cp.fork(worker, [], {});
 
-  return forkP(worker, [task], {})
-    .then(() => console.log(`finished ${basename}`))
-    .catch(() => console.log(`failed ${basename}`));
+  child.send({
+    task,
+  });
+
+  const start = new Date();
+  console.log(`[${format(start)}] ${chalk.black.bgGreen('Starting')} '${taskname}'...`);
+
+  child.on('message', (data) => {
+    if (data.success) {
+      const [end, time] = delta(start);
+      console.log(`[${format(end)}] ${chalk.black.bgCyan('Finished')} '${taskname}' after ${time} ms`);
+    } else {
+      const [end, time] = delta(start);
+      console.log(`[${format(end)}] ${chalk.white.bgRed('Failed')} '${taskname}' after ${time} ms`);
+    }
+  });
 };
 
 const tasks = [
