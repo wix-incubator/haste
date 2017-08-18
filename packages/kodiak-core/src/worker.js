@@ -1,5 +1,14 @@
-const task = require(process.argv[2]);
-
-task()
-  .then(() => process.exit(0))
-  .catch(() => process.exit(1));
+process.on('message', async (data) => {
+  const task = require(data.task);
+  try {
+    await task();
+    process.send({
+      success: true
+    });
+  } catch (error) {
+    process.send({
+      success: false,
+      error
+    });
+  }
+});

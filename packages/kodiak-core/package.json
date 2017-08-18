@@ -5,6 +5,8 @@
   "author": "Ronen Amiel",
   "license": "MIT",
   "dependencies": {
-    "chalk": "^2.1.0"
+    "async": "^2.5.0",
+    "chalk": "^2.1.0",
+    "ramda": "^0.24.1"
   }
 }
