@@ -1,0 +1,16 @@
+{
+  "name": "kodiak-cli",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Ronen Amiel",
+  "license": "MIT",
+  "bin": {
+    "kodiak": "./bin/kodiak"
+  },
+  "dependencies": {
+    "cosmiconfig": "^2.2.2",
+    "kodiak-core": "^1.0.0",
+    "ramda": "^0.24.1",
+    "yargs": "^8.0.2"
+  }
+}

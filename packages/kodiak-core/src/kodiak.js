@@ -5,32 +5,26 @@ const { format, delta } = require('./utils');
 
 const worker = path.resolve(__dirname, 'worker');
 
-const run = (task) => {
-  const taskname = path.basename(task);
-
-  const child = cp.fork(worker, [], {});
-
-  child.send({
-    task,
-  });
+module.exports.run = (task) => {
+  const child = cp.fork(worker, [task], {});
 
   const start = new Date();
+  const taskname = path.basename(task);
+
   console.log(`[${format(start)}] ${chalk.black.bgGreen('Starting')} '${taskname}'...`);
 
-  child.on('message', (data) => {
-    if (data.success) {
+  const result = new Promise((resolve, reject) =>
+    child.on('close', code => code === 0 ? resolve() : reject())
+  );
+
+  return result
+    .then(() => {
       const [end, time] = delta(start);
       console.log(`[${format(end)}] ${chalk.black.bgCyan('Finished')} '${taskname}' after ${time} ms`);
-    } else {
+    })
+    .catch(() => {
+      console.log('123');
       const [end, time] = delta(start);
       console.log(`[${format(end)}] ${chalk.white.bgRed('Failed')} '${taskname}' after ${time} ms`);
-    }
-  });
+    });
 };
-
-const tasks = [
-  'some-task',
-  'other-task',
-].map(task => path.resolve(__dirname, task));
-
-tasks.forEach(run);

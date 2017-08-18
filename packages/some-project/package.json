@@ -1,0 +1,12 @@
+{
+  "name": "some-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "kodiak": {
+    "preset": "kodiak-preset-test"
+  },
+  "dependencies": {
+    "yargs": "^8.0.2"
+  }
+}

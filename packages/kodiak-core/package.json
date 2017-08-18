@@ -1,4 +1,9 @@
 {
+  "name": "kodiak-core",
+  "version": "1.0.0",
+  "main": "src/kodiak.js",
+  "author": "Ronen Amiel",
+  "license": "MIT",
   "dependencies": {
     "chalk": "^2.1.0"
   }

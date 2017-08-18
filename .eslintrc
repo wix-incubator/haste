@@ -1,6 +1,10 @@
 {
   "extends": "airbnb-base",
   "rules": {
-    "no-confusing-arrow": "off"
+    "no-confusing-arrow": "off",
+    "comma-dangle": "off",
+    "global-require": "off",
+    "no-multi-assign": "off",
+    "import/no-dynamic-require": "off"
   }
 }

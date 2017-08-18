@@ -1,7 +1,5 @@
-process.on('message', (data) => {
-  const task = require(data.task);
+const task = require(process.argv[2]);
 
-  task()
-    .then(() => process.send({ success: true }))
-    .catch(() => process.send({ success: false }));
-});
+task()
+  .then(() => process.exit(0))
+  .catch(() => process.exit(1));
