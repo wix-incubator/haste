@@ -4,7 +4,7 @@ const Kodiak = require('kodiak-core');
 const explorer = cosmiconfig('kodiak');
 
 module.exports = (args) => {
-  const kodiak = Kodiak({ size: 3 });
+  const kodiak = Kodiak({ size: 1 });
 
   function runTasks(promise, tasks) {
     return promise.then(() => Promise.all(tasks.map(task => kodiak.run(task))));

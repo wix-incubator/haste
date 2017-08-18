@@ -2,16 +2,14 @@ const path = require('path');
 const cp = require('child_process');
 const { range } = require('ramda');
 const chalk = require('chalk');
-// const Queue = require('./queue');
-const { queue } = require('async');
+const queue = require('./queue');
 const { format, delta } = require('./utils');
 
-const worker = path.resolve(__dirname, 'worker');
-
-process.on('unhandledRejection', p => console.log(p));
+const WORKER_BIN = path.resolve(__dirname, 'worker');
 
 function createThreads(size) {
-  return range(0, size).map(() => cp.fork(worker));
+  return range(0, size)
+    .map(() => cp.fork(WORKER_BIN));
 }
 
 function roundRobinThreadPool(threads) {
@@ -34,7 +32,9 @@ module.exports = ({ size }) => {
   const threads = createThreads(size);
   const getThread = roundRobinThreadPool(threads);
 
-  const pool = queue((task, callback) => {
+  const pool = queue(size);
+
+  function run(task) {
     const child = getThread();
 
     const start = new Date();
@@ -54,17 +54,14 @@ module.exports = ({ size }) => {
       .then(() => {
         const [end, time] = delta(start);
         console.log(`[${format(end)}] ${chalk.black.bgCyan('Finished')} '${taskname}' after ${time} ms`);
-        callback();
       })
       .catch(() => {
         const [end, time] = delta(start);
         console.log(`[${format(end)}] ${chalk.white.bgRed('Failed')} '${taskname}' after ${time} ms`);
-        callback();
       });
-  }, size);
+  }
 
   return {
-    run: task => Promise.resolve()
-      .then(() => pool.push(task))
+    run: task => pool.push(() => run(task))
   };
 };

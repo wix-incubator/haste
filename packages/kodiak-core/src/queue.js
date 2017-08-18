@@ -1,30 +1,34 @@
-// module.exports = ({ concurrency }) => {
-//   const queue = [];
-//   let size = 0;
+module.exports = (concurrency) => {
+  const queue = [];
+  let size = 0;
 
-//   function processQueue() {
-//     if (queue.length > 0 && size < concurrency) {
-//       const task = queue.shift();
+  function processQueue() {
+    if (queue.length === 0) {
+      return Promise.resolve();
+    }
 
-//       return Promise.resolve()
-//         .then(() => size += 1)
-//         .then(() => task())
-//         .then(() => size -= 1)
-//         .then(() => processQueue());
-//     }
+    if (size >= concurrency) {
+      return Promise.resolve();
+    }
 
-//     return Promise.resolve();
-//   }
+    const task = queue.shift();
 
-//   return {
-//     push: (task) => {
-//       const promise = Promise.resolve()
-//         .then(() => queue.push(task));
+    size += 1;
 
-//       promise
-//         .then(() => processQueue());
+    return task()
+      .then(() => size -= 1)
+      .then(() => processQueue());
+  }
 
-//       return promise;
-//     }
-//   };
-// };
+  return {
+    push: (task) => {
+      const promise = Promise.resolve()
+        .then(() => queue.push(task));
+
+      promise
+        .then(() => processQueue());
+
+      return promise;
+    }
+  };
+};
