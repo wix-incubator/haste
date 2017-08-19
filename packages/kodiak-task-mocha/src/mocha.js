@@ -13,9 +13,15 @@ module.exports = (mochaOpts = {}, files = []) => new Promise((resolve, reject) =
     .reduce((arg, key) => {
       const value = mochaOpts[key];
 
-      return value === true ?
-        [...arg, `--${paramCase(key)}`] :
-        [...arg, `--${paramCase(key)}`, value];
+      if (value === true) {
+        return [...arg, `--${paramCase(key)}`];
+      }
+
+      if (typeof value === 'string') {
+        return [...arg, `--${paramCase(key)}`, value];
+      }
+
+      return arg;
     }, []);
 
   proc = spawn(process.execPath, [require.resolve('mocha/bin/mocha'), ...argv, ...files], {
