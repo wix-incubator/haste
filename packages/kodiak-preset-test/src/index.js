@@ -1,5 +1,13 @@
-module.exports = () => {
-  const test = [['kodiak-task-mocha'], ['kodiak-task-some', 'kodiak-task-other']];
+module.exports = ({ files }) => {
+  const test = [
+    [
+      { task: 'kodiak-task-mocha', args: { files } }
+    ],
+    [
+      { task: 'kodiak-task-some' },
+      { task: 'kodiak-task-other' }
+    ]
+  ];
 
   return {
     test
