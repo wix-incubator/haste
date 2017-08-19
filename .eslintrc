@@ -1,5 +1,8 @@
 {
   "extends": "airbnb-base",
+  "env": {
+    "mocha": true
+  },
   "rules": {
     "no-confusing-arrow": "off",
     "comma-dangle": "off",
