@@ -1,6 +1,6 @@
 const mocha = require('./mocha');
 
-module.exports = async () => {
+module.exports = async (args) => {
   const options = {
     reporter: 'spec',
     ui: 'tdd',
@@ -8,5 +8,5 @@ module.exports = async () => {
     recursive: true,
   };
 
-  return mocha(options);
+  return mocha(options, args.files);
 };

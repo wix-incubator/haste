@@ -2,10 +2,10 @@
 
 const { cond, equals } = require('ramda');
 const yargs = require('yargs');
-const build = require('../src/build');
+const test = require('../src/test');
 
 const args = yargs
-  .command('build', 'Transpile the source directory')
+  .command('test [files..]', 'Run all suites from the test directory or provided files')
   .version()
   .recommendCommands()
   .help()
@@ -14,6 +14,6 @@ const args = yargs
 const [cmd] = args._;
 
 cond([
-  [equals('build'), () => build(args)],
+  [equals('test'), () => test(args)],
   // [T, () => execute(middleware, args)]
 ])(cmd);

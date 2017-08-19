@@ -6,8 +6,8 @@ module.exports = () => {
   const workers = workerFarm(WORKER_BIN);
 
   const api = {
-    run: task => new Promise((resolve, reject) =>
-      workers({ task }, err => err ? reject(err) : resolve())
+    run: (module, args) => new Promise((resolve, reject) =>
+      workers({ module, args }, err => err ? reject(err) : resolve())
     )
   };
 

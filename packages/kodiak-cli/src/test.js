@@ -8,7 +8,7 @@ module.exports = (args) => {
 
   function runTasks(promise, tasks) {
     const promises = tasks
-      .map(task => api.run(task))
+      .map(task => api.run(task, args))
       .map(task => task.catch(e => e));
 
     return promise.then(() => Promise.all(promises));
@@ -21,7 +21,7 @@ module.exports = (args) => {
   return explorer.load(process.cwd())
     .then(({ config }) => require(config.preset))
     .then(preset => preset(args))
-    .then(({ build }) => runCommand(build))
+    .then(({ test }) => runCommand(test))
     .then((errors) => {
       if (errors.length) {
         errors.filter(Boolean).map(console.error);
