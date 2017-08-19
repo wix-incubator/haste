@@ -1,5 +1,5 @@
 module.exports = () => {
-  const test = [['kodiak-task-some', 'kodiak-task-other', 'kodiak-task-mocha']];
+  const test = [['kodiak-task-mocha'], ['kodiak-task-some', 'kodiak-task-other']];
 
   return {
     test

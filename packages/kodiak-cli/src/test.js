@@ -7,11 +7,13 @@ module.exports = (args) => {
   const api = Kodiak();
 
   function runTasks(promise, tasks) {
-    const promises = tasks
-      .map(task => api.run(task, args))
-      .map(task => task.catch(e => e));
+    return promise.then(() => {
+      const promises = tasks
+        .map(task => api.run(task, args))
+        .map(task => task.catch(e => e));
 
-    return promise.then(() => Promise.all(promises));
+      return Promise.all(promises);
+    });
   }
 
   function runCommand(command) {
@@ -27,6 +29,7 @@ module.exports = (args) => {
         errors.filter(Boolean).map(console.error);
         process.exit(1);
       }
+
       process.exit(0);
     });
 };
