@@ -7,7 +7,11 @@ module.exports = (args) => {
   const api = Kodiak();
 
   function runTasks(promise, tasks) {
-    return promise.then(() => Promise.all(tasks.map(task => api.run(task).catch(e => e))));
+    const promises = tasks
+      .map(task => api.run(task))
+      .map(task => task.catch(e => e));
+
+    return promise.then(() => Promise.all(promises));
   }
 
   function runCommand(command) {
