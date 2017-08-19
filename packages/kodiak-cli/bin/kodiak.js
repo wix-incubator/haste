@@ -1,10 +1,18 @@
 #!/usr/bin/env node
 
-const { cond, equals } = require('ramda');
 const yargs = require('yargs');
-const test = require('../src/test');
+const cosmiconfig = require('cosmiconfig');
+const runCommand = require('../src/run-command');
+
+const explorer = cosmiconfig('kodiak');
 
 const args = yargs
+  .option('silent', {
+    description: 'Disable console output of CLI commands',
+    boolean: true,
+    default: false,
+    global: true
+  })
   .command('start', 'Build a project in development mode')
   .command('build', 'Compile the source directory to a bundled build')
   .command('test [files..]', 'Run all suites from the test directory or provided files', {
@@ -22,7 +30,10 @@ const args = yargs
 
 const [cmd] = args._;
 
-cond([
-  [equals('test'), () => test(args)],
-  // [T, () => execute(middleware, args)]
-])(cmd);
+explorer.load(process.cwd())
+  .then(({ config }) => {
+    const preset = require(config.preset);
+    const commands = preset(args);
+
+    return runCommand(config, commands[cmd]);
+  });
