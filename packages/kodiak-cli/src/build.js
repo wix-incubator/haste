@@ -4,10 +4,10 @@ const Kodiak = require('kodiak-core');
 const explorer = cosmiconfig('kodiak');
 
 module.exports = (args) => {
-  const kodiak = Kodiak({ size: 1 });
+  const api = Kodiak();
 
   function runTasks(promise, tasks) {
-    return promise.then(() => Promise.all(tasks.map(task => kodiak.run(task))));
+    return promise.then(() => Promise.all(tasks.map(task => api.run(task))));
   }
 
   function runCommand(command) {
@@ -17,6 +17,6 @@ module.exports = (args) => {
   return explorer.load(process.cwd())
     .then(({ config }) => require(config.preset))
     .then(preset => preset(args))
-    .then(({ build }) => runCommand(build));
-  // .then(() => console.log('done!'));
+    .then(({ build }) => runCommand(build))
+    .then(() => process.exit(0));
 };
