@@ -8,12 +8,12 @@ const runTasks = api => (promise, tasks) => promise.then(() => {
   return Promise.all(promises);
 });
 
+const runCommand = (api, command) => command.reduce(runTasks(api), Promise.resolve());
+
 module.exports = (config, command) => {
   const api = Kodiak();
 
-  const runCommand = () => command.reduce(runTasks(api), Promise.resolve());
-
-  return runCommand(command)
+  return runCommand(api, command)
     .then((errors) => {
       if (errors.length) {
         errors.filter(Boolean).map(console.error);
