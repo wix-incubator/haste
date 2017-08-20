@@ -7,12 +7,6 @@ const runCommand = require('../src/run-command');
 const explorer = cosmiconfig('kodiak');
 
 const args = yargs
-  .option('silent', {
-    description: 'Disable console output of CLI commands',
-    boolean: true,
-    default: false,
-    global: true
-  })
   .command('start', 'Build a project in development mode')
   .command('build', 'Compile the source directory to a bundled build')
   .command('test [files..]', 'Run all suites from the test directory or provided files', {
