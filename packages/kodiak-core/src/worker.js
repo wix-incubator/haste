@@ -1,6 +1,6 @@
 const path = require('path');
 const chalk = require('chalk');
-const { format, delta } = require('./utils');
+const { format, delta, asyncToCallback } = require('./utils');
 
 function handle({ module, args }) {
   const start = new Date();
@@ -23,6 +23,4 @@ function handle({ module, args }) {
     });
 }
 
-module.exports = (data, callback) => handle(data)
-  .then(() => callback())
-  .catch(callback);
+module.exports = asyncToCallback(handle);
