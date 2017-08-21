@@ -11,8 +11,10 @@ const runTasks = api => (promise, tasks) => promise.then((previous) => {
 
 const runCommand = (api, command) => command.reduce(runTasks(api), Promise.resolve([]));
 
-module.exports = (command) => {
+module.exports = (command, plugins) => {
   const api = Kodiak();
+
+  api.apply(...plugins);
 
   return runCommand(api, command)
     .then((errors) => {

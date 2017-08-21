@@ -8,7 +8,7 @@ function bundle(webpackConfig) {
       }
 
       console.info(stats.toString());
-      return resolve(stats);
+      return resolve();
     });
   });
 }

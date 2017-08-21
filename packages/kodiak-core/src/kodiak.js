@@ -1,15 +1,7 @@
-const workerFarm = require('worker-farm');
+const Runner = require('./runner');
 
-const WORKER_BIN = require.resolve('./worker');
+function kodiak() {
+  return new Runner();
+}
 
-module.exports = () => {
-  const workers = workerFarm(WORKER_BIN);
-
-  const api = {
-    run: (module, args) => new Promise((resolve, reject) =>
-      workers({ module, args }, err => err ? reject(err) : resolve())
-    )
-  };
-
-  return api;
-};
+module.exports = kodiak;

@@ -1,9 +1,9 @@
 {
-  "name": "kodiak-preset-test",
+  "name": "kodiak-plugin-logger",
   "version": "1.0.0",
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {
-    "kodiak-plugin-logger": "1.0.0"
+    "chalk": "^2.1.0"
   }
 }

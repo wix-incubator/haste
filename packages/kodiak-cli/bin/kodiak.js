@@ -26,7 +26,7 @@ const [cmd] = argv._;
 explorer.load(process.cwd())
   .then(({ config }) => {
     const preset = require(config.preset);
-    const commands = preset(argv, config);
+    const { commands, plugins } = preset(argv, config);
 
-    return runCommand(commands[cmd]);
+    return runCommand(commands[cmd], plugins);
   });

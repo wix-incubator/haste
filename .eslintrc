@@ -4,6 +4,7 @@
     "mocha": true
   },
   "rules": {
+    "class-methods-use-this": "off",
     "no-console": "off",
     "no-confusing-arrow": "off",
     "comma-dangle": "off",

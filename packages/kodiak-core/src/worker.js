@@ -1,26 +1,7 @@
-const path = require('path');
-const chalk = require('chalk');
-const { format, delta, asyncToCallback } = require('./utils');
+const { asyncToCallback } = require('./utils');
 
 function handle({ module, args }) {
-  const start = new Date();
-  const taskname = path.basename(module);
-
-  console.log(`[${format(start)}] ${chalk.black.bgGreen('Starting')} '${taskname}'...`);
-
-  const task = require(module);
-
-  return task(args)
-    .then(() => {
-      const [end, time] = delta(start);
-      console.log(`[${format(end)}] ${chalk.black.bgCyan('Finished')} '${taskname}' after ${time} ms`);
-    })
-    .catch((error) => {
-      const [end, time] = delta(start);
-      console.log(`[${format(end)}] ${chalk.white.bgRed('Failed')} '${taskname}' after ${time} ms`);
-
-      throw error;
-    });
+  return require(module)(args);
 }
 
 module.exports = asyncToCallback(handle);
