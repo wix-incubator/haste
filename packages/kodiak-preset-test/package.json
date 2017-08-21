@@ -6,6 +6,7 @@
   "dependencies": {
     "kodiak-plugin-logger": "1.0.0",
     "kodiak-task-mocha": "1.0.0",
+    "kodiak-webpack-plugin": "1.0.0",
     "kodiak-task-webpack": "1.0.0",
     "kodiak-task-some": "1.0.0",
     "kodiak-task-other": "1.0.0"

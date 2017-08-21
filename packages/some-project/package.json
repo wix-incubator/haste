@@ -6,5 +6,9 @@
   "kodiak": {
     "preset": "kodiak-preset-test",
     "fast": true
+  },
+  "dependencies": {
+    "kodiak-cli": "1.0.0",
+    "kodiak-preset-test": "1.0.0"
   }
 }
