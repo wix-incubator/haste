@@ -2,6 +2,6 @@
 
 ## Basic types
 
-* task :: () => Promise (undefined)
-* command :: [ [ task ] ]
+* task :: (...options) => Promise (undefined)
+* command :: [ [ tasknames ] ]
 * preset :: { string: command }

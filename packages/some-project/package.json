@@ -6,8 +6,5 @@
   "kodiak": {
     "preset": "kodiak-preset-test",
     "fast": true
-  },
-  "dependencies": {
-    "yargs": "^8.0.2"
   }
 }
