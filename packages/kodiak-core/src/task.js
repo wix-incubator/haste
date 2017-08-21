@@ -1,10 +1,10 @@
 const Tapable = require('tapable');
 
 module.exports = class extends Tapable {
-  constructor({ module, args }) {
+  constructor({ module, options }) {
     super();
 
     this.module = module;
-    this.args = args;
+    this.options = options;
   }
 };

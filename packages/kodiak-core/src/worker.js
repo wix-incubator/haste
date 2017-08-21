@@ -1,7 +1,7 @@
 const { asyncToCallback } = require('./utils');
 
-function handle({ module, args }) {
-  return require(module)(args);
+function handle({ module, options }) {
+  return require(module)(options);
 }
 
 module.exports = asyncToCallback(handle);

@@ -2,7 +2,7 @@ const Kodiak = require('kodiak-core');
 
 const runTasks = api => (promise, tasks) => promise.then((previous) => {
   const promises = tasks
-    .map(({ task, args }) => api.run(task, args))
+    .map(({ task, options }) => api.run(task, options))
     .map(task => task.catch(e => e));
 
   return Promise.all(promises)

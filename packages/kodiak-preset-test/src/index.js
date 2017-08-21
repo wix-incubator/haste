@@ -4,8 +4,8 @@ module.exports = ({ files, watch }, { fast }) => {
   const commands = {
     test: [
       [
-        { task: 'kodiak-task-mocha', args: { files, watch } },
-        { task: 'kodiak-task-webpack', args: { plugins: ['kodiak-webpack-plugin'] } },
+        { task: 'kodiak-task-mocha', options: { files, watch } },
+        { task: 'kodiak-task-webpack', options: { plugins: ['kodiak-webpack-plugin'] } },
       ],
       [
         ...fast ? [] : [
