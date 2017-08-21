@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const yargs = require('yargs');
+const resolveFrom = require('resolve-from');
 const cosmiconfig = require('cosmiconfig');
 const runCommand = require('../src/run-command');
 
@@ -25,7 +26,7 @@ const [cmd] = argv._;
 
 explorer.load(process.cwd())
   .then(({ config }) => {
-    const context = require.resolve(config.preset);
+    const context = resolveFrom(process.cwd(), config.preset);
     const preset = require(context);
     const { commands, plugins } = preset(argv, config);
 

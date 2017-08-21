@@ -5,7 +5,7 @@ module.exports = ({ files, watch }, { fast }) => {
     test: [
       [
         { task: 'kodiak-task-mocha', options: { files, watch } },
-        { task: 'kodiak-task-webpack', options: { plugins: ['kodiak-webpack-plugin'] } },
+        { task: 'kodiak-task-webpack', options: { plugins: [require.resolve('kodiak-webpack-plugin')] } },
       ],
       [
         ...fast ? [] : [
