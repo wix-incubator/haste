@@ -5,6 +5,7 @@
   "author": "Ronen Amiel",
   "license": "MIT",
   "dependencies": {
+    "resolve-from": "^3.0.0",
     "tapable": "^0.2.8",
     "worker-farm": "^1.5.0"
   }

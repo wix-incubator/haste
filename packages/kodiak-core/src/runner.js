@@ -11,8 +11,8 @@ module.exports = class Runner extends Tapable {
     this.workers = workerFarm(WORKER_BIN);
   }
 
-  run(module, options) {
-    const task = new Task({ module, options });
+  run(module, options, context) {
+    const task = new Task({ module, options, context });
 
     const result = new Promise((resolve, reject) =>
       this.workers(task, err => err ? reject(err) : resolve())
