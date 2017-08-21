@@ -1,22 +1,22 @@
 const Kodiak = require('kodiak-core');
 
-const runTasks = api => (promise, tasks) => promise.then((previous) => {
+const runTasks = runner => (promise, tasks) => promise.then((previous) => {
   const promises = tasks
-    .map(({ task, options }) => api.run(task, options))
+    .map(({ task, options }) => runner.run(task, options))
     .map(task => task.catch(e => e));
 
   return Promise.all(promises)
     .then(errors => [...errors, ...previous]);
 });
 
-const runCommand = (api, command) => command.reduce(runTasks(api), Promise.resolve([]));
+const runCommand = (runner, command) => command.reduce(runTasks(runner), Promise.resolve([]));
 
 module.exports = (command, plugins) => {
-  const api = Kodiak();
+  const runner = Kodiak();
 
-  api.apply(...plugins);
+  runner.apply(...plugins);
 
-  return runCommand(api, command)
+  return runCommand(runner, command)
     .then((errors) => {
       if (errors.length) {
         errors.filter(Boolean).map(console.error);
