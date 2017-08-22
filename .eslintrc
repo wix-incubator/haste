@@ -11,6 +11,7 @@
     "global-require": "off",
     "no-multi-assign": "off",
     "import/no-dynamic-require": "off",
-    "no-return-assign": "off"
+    "no-return-assign": "off",
+    "no-unused-expressions": "off"
   }
 }

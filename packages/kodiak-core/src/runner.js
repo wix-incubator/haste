@@ -7,12 +7,14 @@ const WORKER_BIN = require.resolve('./worker');
 module.exports = class Runner extends Tapable {
   constructor(context) {
     super();
+
     this.context = context;
     this.workers = workerFarm(WORKER_BIN);
   }
 
   run(tasks) {
     this.applyPlugins('start', tasks);
+
     const runTasks = (promise, tasksArray) =>
       promise.then((previous) => {
         const promises = tasksArray
@@ -25,8 +27,10 @@ module.exports = class Runner extends Tapable {
 
     return tasks.reduce(runTasks, Promise.resolve([]))
       .then((errors) => {
-        if (errors.length) this.applyPlugins('finish-with-errors', errors);
-        else this.applyPlugins('finish-without-errors');
+        errors.length ?
+          this.applyPlugins('finish-with-errors', errors) :
+          this.applyPlugins('finish-without-errors');
+
         return errors;
       });
   }
