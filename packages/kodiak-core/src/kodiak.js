@@ -1,7 +1,9 @@
 const Runner = require('./runner');
 
-function kodiak(...args) {
-  return new Runner(...args);
+function kodiak(context, plugins) {
+  const runner = new Runner(context);
+  runner.apply(...plugins);
+  return runner;
 }
 
 module.exports = kodiak;

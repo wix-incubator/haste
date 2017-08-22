@@ -11,10 +11,8 @@ module.exports = class Runner extends Tapable {
     this.workers = workerFarm(WORKER_BIN);
   }
 
-  run(tasks, plugins) {
-    this.apply(...plugins);
+  run(tasks) {
     this.applyPlugins('start', tasks);
-
     const runTasks = (promise, tasksArray) =>
       promise.then((previous) => {
         const promises = tasksArray

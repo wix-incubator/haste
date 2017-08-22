@@ -1,9 +1,9 @@
 const Kodiak = require('kodiak-core');
 
 module.exports = (tasks, plugins, context) => {
-  const runner = Kodiak(context);
+  const runner = Kodiak(context, plugins);
 
-  runner.run(tasks, plugins)
+  runner.run(tasks)
     .then((errors) => {
       if (errors.length) {
         errors.filter(Boolean).map(console.error);
