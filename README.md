@@ -11,11 +11,15 @@ Next generation extendable task runner
 ```
 git clone git@github.com:ronami/kodiak.git
 cd kodiak
-npm install
-npm run bootstrap
+yarn
+yarn bootstrap
 ```
 
 We're using [lerna](https://github.com/lerna/lerna) for managing kodiak repo.
 
+## Lint
+```
+yarn lint
+```
 ## Licensing
 The MIT License
