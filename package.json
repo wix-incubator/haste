@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "bootsrap": "lerna bootstrap",
+    "bootstrap": "lerna bootstrap",
     "lint": "eslint ."
   },
   "devDependencies": {
