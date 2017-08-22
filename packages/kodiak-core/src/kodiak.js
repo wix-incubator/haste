@@ -1,7 +1,7 @@
 const Runner = require('./runner');
 
-function kodiak() {
-  return new Runner();
+function kodiak(...args) {
+  return new Runner(...args);
 }
 
 module.exports = kodiak;
