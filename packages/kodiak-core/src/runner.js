@@ -12,11 +12,28 @@ module.exports = class Runner extends Tapable {
   }
 
   run(tasks, plugins) {
+    this.apply(...plugins);
+    this.applyPlugins('start', tasks);
 
+    const runTasks = (promise, tasksArray) =>
+      promise.then((previous) => {
+        const promises = tasksArray
+          .map(({ task, options }) => this.runTask(task, options))
+          .map(task => task.catch(e => e));
+
+        return Promise.all(promises)
+          .then(errors => [...errors, ...previous]);
+      });
+
+    return tasks.reduce(runTasks, Promise.resolve([]))
+      .then((errors) => {
+        if (errors.length) this.applyPlugins('finish-with-errors', errors);
+        else this.applyPlugins('finish-without-errors');
+        return errors;
+      });
   }
 
   runTask(module, options) {
-    this.applyPlugins('start-runner');
     const task = new Task({ module, options, context: this.context });
 
     const result = new Promise((resolve, reject) =>
