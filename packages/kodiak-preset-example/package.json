@@ -1,0 +1,12 @@
+{
+  "name": "kodiak-preset-example",
+  "version": "0.1.0",
+  "main": "./src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "kodiak-plugin-logger": "^0.1.0",
+    "kodiak-task-mocha": "^0.1.0",
+    "kodiak-webpack-plugin-example": "^0.1.0",
+    "kodiak-task-webpack": "^0.1.0"
+  }
+}

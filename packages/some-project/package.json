@@ -1,14 +1,15 @@
 {
   "name": "some-project",
-  "version": "1.0.0",
+  "version": "0.1.0",
+  "private": true,
   "main": "index.js",
   "license": "MIT",
   "kodiak": {
-    "preset": "kodiak-preset-test",
+    "preset": "kodiak-preset-example",
     "fast": true
   },
   "dependencies": {
-    "kodiak-cli": "1.0.0",
-    "kodiak-preset-test": "1.0.0"
+    "kodiak-cli": "^0.1.0",
+    "kodiak-preset-example": "^0.1.0"
   }
 }
