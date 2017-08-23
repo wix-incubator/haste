@@ -1,5 +1,5 @@
 // @flow
-const Runner = require('./runner');
+import Runner from './runner';
 
 function kodiak(context: string, plugins: Array<string>) {
   const runner = new Runner(context);

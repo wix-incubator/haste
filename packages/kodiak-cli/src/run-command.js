@@ -1,5 +1,5 @@
 // @flow
-const Kodiak = require('kodiak');
+import Kodiak from 'kodiak';
 
 type Tasks = { task: string, options: Object }[][];
 

@@ -1,18 +1,21 @@
-const Tapable = require('tapable');
-const workerFarm = require('worker-farm');
-const Task = require('./task');
+// @flow
+import Tapable from 'tapable';
+import workerFarm from 'worker-farm';
+import Task from './task';
+
+type Sequence = { task: string, options: Object }[][];
 
 const WORKER_BIN = require.resolve('./worker');
 
-module.exports = class Runner extends Tapable {
-  constructor(context) {
+export default class Runner extends Tapable {
+  constructor(context: string) {
     super();
 
     this.context = context;
     this.workers = workerFarm(WORKER_BIN);
   }
 
-  run(tasks) {
+  run(tasks: Sequence) {
     this.applyPlugins('start', tasks);
 
     const runTasks = (promise, tasksArray) =>
@@ -35,7 +38,7 @@ module.exports = class Runner extends Tapable {
       });
   }
 
-  runTask(module, options) {
+  runTask(module: string, options: Object) {
     const task = new Task({ module, options, context: this.context });
 
     const result = new Promise((resolve, reject) =>
@@ -52,4 +55,4 @@ module.exports = class Runner extends Tapable {
         throw error;
       });
   }
-};
+}

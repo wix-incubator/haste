@@ -1,3 +1,4 @@
+// @flow
 const resolveFrom = require('resolve-from');
 const { asyncToCallback } = require('./utils');
 
