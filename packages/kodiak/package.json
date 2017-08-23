@@ -1,9 +1,13 @@
 {
   "name": "kodiak",
   "version": "0.0.1",
-  "main": "src/kodiak.js",
+  "main": "dist/kodiak.js",
   "author": "Ronen Amiel",
   "license": "MIT",
+  "scripts":{
+    "build": "../../node_modules/.bin/babel src/ -d dist/",
+    "prepublish": "npm run build"
+  },
   "dependencies": {
     "resolve-from": "^3.0.0",
     "tapable": "^0.2.8",

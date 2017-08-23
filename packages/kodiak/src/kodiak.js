@@ -1,6 +1,7 @@
+// @flow
 const Runner = require('./runner');
 
-function kodiak(context, plugins) {
+function kodiak(context: string, plugins: Array<string>) {
   const runner = new Runner(context);
 
   runner.apply(...plugins);

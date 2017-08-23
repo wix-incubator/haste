@@ -3,7 +3,7 @@
 const yargs = require('yargs');
 const resolveFrom = require('resolve-from');
 const cosmiconfig = require('cosmiconfig');
-const runCommand = require('../src/run-command');
+const runCommand = require('../dist/run-command');
 
 const explorer = cosmiconfig('kodiak');
 

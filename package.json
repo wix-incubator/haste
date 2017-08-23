@@ -1,12 +1,19 @@
 {
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "lint": "eslint ."
+    "flow": "flow",
+    "lint": "eslint .",
+    "build": "lerna run build"
   },
   "devDependencies": {
+    "babel-cli": "~6.26.0",
+    "babel-eslint": "~7.2.3",
+    "babel-preset-flow": "~6.23.0",
     "eslint": "^4.4.1",
     "eslint-config-airbnb-base": "^11.3.1",
+    "eslint-plugin-flowtype": "~2.35.0",
     "eslint-plugin-import": "^2.7.0",
+    "flow-bin": "~0.53.1",
     "lerna": "^2.0.0"
   }
 }

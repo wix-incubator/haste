@@ -4,6 +4,10 @@
   "main": "index.js",
   "author": "Ronen Amiel",
   "license": "MIT",
+  "scripts":{
+    "build": "../../node_modules/.bin/babel src/ -d dist/",
+    "prepublish": "npm run build"
+  },
   "bin": {
     "kodiak": "./bin/kodiak"
   },
