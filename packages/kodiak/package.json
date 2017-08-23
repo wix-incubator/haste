@@ -1,6 +1,6 @@
 {
-  "name": "kodiak-core",
-  "version": "1.0.0",
+  "name": "kodiak",
+  "version": "0.1.0",
   "main": "src/kodiak.js",
   "author": "Ronen Amiel",
   "license": "MIT",

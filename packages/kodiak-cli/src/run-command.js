@@ -1,4 +1,4 @@
-const Kodiak = require('kodiak-core');
+const Kodiak = require('kodiak');
 
 module.exports = (tasks, plugins, context) => {
   const runner = Kodiak(context, plugins);

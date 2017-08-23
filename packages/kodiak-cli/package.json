@@ -1,6 +1,6 @@
 {
   "name": "kodiak-cli",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "index.js",
   "author": "Ronen Amiel",
   "license": "MIT",
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "cosmiconfig": "^2.2.2",
-    "kodiak-core": "^1.0.0",
+    "kodiak": "^0.1.0",
     "resolve-from": "~3.0.0",
     "yargs": "^8.0.2"
   }
