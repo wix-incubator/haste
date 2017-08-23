@@ -1,6 +1,9 @@
-const Kodiak = require('kodiak');
+// @flow
+import Kodiak from 'kodiak';
 
-module.exports = (tasks, plugins, context) => {
+type Tasks = { task: string, options: Object }[][];
+
+module.exports = (tasks: Tasks, plugins: string[], context: string) => {
   const runner = Kodiak(context, plugins);
 
   runner.run(tasks)
