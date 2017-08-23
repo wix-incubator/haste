@@ -1,6 +1,6 @@
 {
   "name": "some-project",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "private": true,
   "main": "index.js",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "fast": true
   },
   "dependencies": {
-    "kodiak-cli": "^0.1.0",
-    "kodiak-preset-example": "^0.1.0"
+    "kodiak-cli": "^0.0.1",
+    "kodiak-preset-example": "^0.0.1"
   }
 }
