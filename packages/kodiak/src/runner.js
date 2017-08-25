@@ -5,10 +5,9 @@ const Task = require('./task');
 const WORKER_BIN = require.resolve('./worker');
 
 module.exports = class Runner extends Tapable {
-  constructor(context) {
+  constructor() {
     super();
 
-    this.context = context;
     this.workers = workerFarm(WORKER_BIN);
   }
 
@@ -36,7 +35,7 @@ module.exports = class Runner extends Tapable {
   }
 
   runTask(module, options) {
-    const task = new Task({ module, options, context: this.context });
+    const task = new Task({ module, options });
 
     const result = new Promise((resolve, reject) =>
       this.workers(task, err => err ? reject(err) : resolve())

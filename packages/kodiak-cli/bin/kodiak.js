@@ -3,7 +3,7 @@
 const yargs = require('yargs');
 const resolveFrom = require('resolve-from');
 const cosmiconfig = require('cosmiconfig');
-const runCommand = require('../src/run-command');
+const kodiak = require('kodiak');
 
 const explorer = cosmiconfig('kodiak');
 
@@ -30,5 +30,15 @@ explorer.load(process.cwd())
     const preset = require(context);
     const { commands, plugins } = preset(argv, config);
 
-    return runCommand(commands[cmd], plugins, context);
+    const runner = kodiak(plugins);
+
+    runner.run(commands[cmd])
+      .then((errors) => {
+        if (errors.length) {
+          errors.filter(Boolean).map(console.error);
+          process.exit(1);
+        }
+
+        process.exit(0);
+      });
   });
