@@ -4,7 +4,10 @@ const yargs = require('yargs');
 const resolveFrom = require('resolve-from');
 const cosmiconfig = require('cosmiconfig');
 const kodiak = require('kodiak');
+const loudRejection = require('loud-rejection');
 
+// Install the unhandledRejection listeners
+loudRejection();
 const explorer = cosmiconfig('kodiak');
 
 const { argv } = yargs
