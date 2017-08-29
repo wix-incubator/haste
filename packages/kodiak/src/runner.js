@@ -1,16 +1,10 @@
+const { fork } = require('child_process');
 const Tapable = require('tapable');
-const workerFarm = require('worker-farm');
 const Task = require('./task');
 
 const WORKER_BIN = require.resolve('./worker');
 
 module.exports = class Runner extends Tapable {
-  constructor() {
-    super();
-
-    this.workers = workerFarm(WORKER_BIN);
-  }
-
   run(tasks) {
     this.applyPlugins('start', tasks);
 
@@ -35,11 +29,15 @@ module.exports = class Runner extends Tapable {
   }
 
   runTask(module, options) {
-    const task = new Task({ module, options });
+    const child = fork(WORKER_BIN, [], { silent: true, env: { FORCE_COLOR: true } });
 
-    const result = new Promise((resolve, reject) =>
-      this.workers(task, err => err ? reject(err) : resolve())
-    );
+    child.send({ module, options });
+
+    const result = new Promise((resolve, reject) => {
+      child.on('message', ({ success }) => success ? resolve() : reject());
+    });
+
+    const task = new Task({ module, options, child });
 
     this.applyPlugins('start-task', task);
 

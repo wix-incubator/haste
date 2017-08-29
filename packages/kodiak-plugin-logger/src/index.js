@@ -5,6 +5,13 @@ const { format, delta } = require('./utils');
 module.exports = class LoggerPlugin {
   apply(runner) {
     runner.plugin('start-task', (task) => {
+      task.child.stdout
+        .pipe(process.stdout);
+
+      task.child.stderr
+        .pipe(process.stderr);
+
+
       const start = new Date();
       console.log(`[${format(start)}] ${chalk.black.bgGreen('Starting')} '${path.basename(task.module)}'...`);
 

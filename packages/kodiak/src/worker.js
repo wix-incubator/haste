@@ -1,7 +1,5 @@
-const { asyncToCallback } = require('./utils');
-
-function handle({ module, options }) {
-  return require(module)(options);
-}
-
-module.exports = asyncToCallback(handle);
+process.on('message', ({ module, options }) => {
+  require(module)(options)
+    .then(() => process.send({ success: true }))
+    .catch(() => process.send({ success: false }));
+});
