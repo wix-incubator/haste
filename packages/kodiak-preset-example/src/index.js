@@ -1,4 +1,4 @@
-// const KodiakPluginLogger = require('kodiak-plugin-logger');
+const KodiakPluginLogger = require('kodiak-plugin-logger');
 const KodiakPluginDashboard = require('kodiak-plugin-dashboard');
 
 module.exports = ({ files, watch }) => {
