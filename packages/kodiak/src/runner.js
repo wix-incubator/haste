@@ -37,6 +37,10 @@ module.exports = class Runner extends Tapable {
       child.on('message', ({ success }) => success ? resolve() : reject());
     });
 
+    process.on('exit', () => {
+      child.kill('SIGINT');
+    });
+
     const task = new Task({ module, options, child });
 
     this.applyPlugins('start-task', task);
