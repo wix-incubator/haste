@@ -1,36 +1,80 @@
 const blessed = require('blessed');
-const contrib = require('blessed-contrib');
+// const contrib = require('blessed-contrib');
 const path = require('path');
 const calcLayout = require('./calc-layout');
+
+const DEFAULT_SCROLL_OPTIONS = {
+  scrollable: true,
+  input: true,
+  alwaysScroll: true,
+  scrollbar: {
+    ch: ' ',
+    inverse: true
+  },
+  keys: true,
+  vi: true,
+  mouse: true
+};
 
 module.exports = class Dashboard {
   constructor() {
     this.panels = {};
+    this.screen;
   }
 
   init({ maxPanels = 4, tasks }) {
     // configure screen
-    const screen = blessed.screen({ smartCSR: true });
-    screen.key(['escape', 'q', 'C-c'], () => process.exit(0));
+    this.screen = blessed.screen({
+      title: 'kodaik-dashboard',
+      smartCSR: true,
+      dockBorders: false,
+      fullUnicode: true,
+      autoPadding: true
+    });
+
+    this.screen.key(['escape', 'q', 'C-c'], () => process.exit(0));
 
     // establish layout
     const panelsAmount = tasks.length < maxPanels ? tasks.length : maxPanels;
     const layout = calcLayout(panelsAmount);
 
-    const grid = new contrib.grid({ // eslint-disable-line
-      rows: layout.grid.rows,
-      cols: layout.grid.rows,
-      screen
-    });
-
-    layout.panels.forEach(([row, col, rowSpan, colSpan], i) => {
+    layout.forEach(([width, height, left, top], i) => {
       const taskName = tasks[i];
       const taskRelativePath = path.relative('./', taskName); // TODO - remove when there is name
-      const panel = grid.set(row, col, rowSpan, colSpan, blessed.log, { label: taskRelativePath });
-      this.panels[taskName] = panel;
+      this.createPanel({ width, height, left, top, label: taskRelativePath, panelKey: taskName });
     });
 
-    screen.render();
+    this.screen.render();
+  }
+
+  createPanel({ panelKey, label, width, height, left, top }) {
+    const box = blessed.box({
+      label,
+      padding: 1,
+      width,
+      height,
+      left,
+      top,
+      border: {
+        type: 'line'
+      },
+      style: {
+        border: {
+          fg: 'white'
+        }
+      }
+    });
+
+    const logger = blessed.log(
+      Object.assign({}, DEFAULT_SCROLL_OPTIONS, {
+        parent: box,
+        tags: true,
+        width: '100%-5'
+      })
+    );
+
+    this.screen.append(box);
+    this.panels[panelKey] = logger;
   }
 
   getLogger(panelKey) {
@@ -42,3 +86,4 @@ module.exports = class Dashboard {
     };
   }
 };
+
