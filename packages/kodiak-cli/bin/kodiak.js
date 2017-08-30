@@ -35,7 +35,7 @@ explorer.load(process.cwd())
 
     const runner = kodiak(plugins);
 
-    runner.run(commands[cmd])
+    runner.run(commands[cmd], cmd)
       .then((errors) => {
         if (errors.length) {
           errors.filter(Boolean).map(console.error);

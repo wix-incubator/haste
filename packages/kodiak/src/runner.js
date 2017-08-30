@@ -5,8 +5,8 @@ const Task = require('./task');
 const WORKER_BIN = require.resolve('./worker');
 
 module.exports = class Runner extends Tapable {
-  run(tasks) {
-    this.applyPlugins('start', tasks);
+  run(tasks, cmd) {
+    this.applyPlugins('start', tasks, cmd);
 
     const runTasks = (promise, tasksArray) =>
       promise.then((previous) => {
