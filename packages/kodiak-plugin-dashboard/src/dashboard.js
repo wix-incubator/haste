@@ -1,5 +1,4 @@
 const blessed = require('blessed');
-// const contrib = require('blessed-contrib');
 const path = require('path');
 const calcLayout = require('./calc-layout');
 
@@ -69,7 +68,7 @@ module.exports = class Dashboard {
       Object.assign({}, DEFAULT_SCROLL_OPTIONS, {
         parent: box,
         tags: true,
-        width: '100%-5'
+        width: '100%-4'
       })
     );
 
