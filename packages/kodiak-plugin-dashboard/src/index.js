@@ -1,11 +1,11 @@
 const path = require('path');
 const chalk = require('chalk');
-const { format, delta } = require('./utils');
 const { flatten, prop } = require('ramda');
+const { format, delta } = require('./utils');
+const Dashboard = require('./dashboard');
 
 module.exports = class DashboardPlugin {
   apply(runner) {
-    const Dashboard = require('./dashboard');
     const dashboard = new Dashboard();
 
     runner.plugin('start', (tasks) => {
@@ -17,9 +17,7 @@ module.exports = class DashboardPlugin {
       const log = dashboard.getLogger(task.module);
       task.child.stdout.setEncoding('utf8');
 
-      ['stdout', 'stderr'].forEach(name => task.child[name].on('data', (data) => {
-        log(data);
-      }));
+      ['stdout', 'stderr'].forEach(name => task.child[name].on('data', log));
 
       const start = new Date();
       log(`[${format(start)}] ${chalk.black.bgGreen('Starting')} '${path.basename(task.module)}'...`);
