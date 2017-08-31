@@ -21,10 +21,10 @@ module.exports = class Dashboard {
     this.screen;
   }
 
-  init({ maxPanels = 4, tasks }) {
+  init({ maxPanels = 4, tasks, cmd }) {
     // configure screen
     this.screen = blessed.screen({
-      title: 'kodaik-dashboard',
+      title: `kodaik-dashboard${cmd ? ` - running ${cmd} command` : ''}`,
       smartCSR: true,
       dockBorders: false,
       fullUnicode: true,
