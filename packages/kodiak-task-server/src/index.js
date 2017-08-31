@@ -1,18 +1,16 @@
 const express = require('express');
 
-module.exports = ({ idle }, params, { listen }) => {
+module.exports = () => {
   const app = express();
 
-  let text = 'Hello World!';
-
-  listen(newText => text = newText);
-
   app.get('/', (req, res) => {
-    res.send(text);
+    res.send('Hello World!');
   });
 
-  app.listen(3000, () => {
-    console.log('app listening on port 3000!');
-    idle();
+  return new Promise((resolve) => {
+    app.listen(3000, () => {
+      resolve({ idle: true });
+      console.log('app listening on port 3000!');
+    });
   });
 };

@@ -13,7 +13,7 @@ function bundle(webpackConfig) {
   });
 }
 
-module.exports = ({ complete, error, idle }, { plugins }, { send, listen }) => {
+module.exports = ({ plugins }) => {
   const baseConfig = {
     entry: './src/app.js',
     output: {
@@ -25,18 +25,5 @@ module.exports = ({ complete, error, idle }, { plugins }, { send, listen }) => {
     .map(require)
     .reduce((webpackConfig, plugin) => plugin(webpackConfig), baseConfig);
 
-  webpack(config).watch({}, (err, stats) => {
-    send({ hello: 'world' });
-
-    if (err) {
-      return console.log(err);
-    }
-
-    console.info(stats.toString());
-    return idle();
-  });
-
-  // return bundle(config)
-  //   .then(complete)
-  //   .catch(error);
+  return bundle(config);
 };
