@@ -5,6 +5,7 @@
   "author": "Ronen Amiel",
   "license": "MIT",
   "dependencies": {
+    "rxjs": "^5.4.3",
     "tapable": "^0.2.8"
   }
 }

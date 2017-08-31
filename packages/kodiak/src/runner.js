@@ -1,56 +1,68 @@
 const { fork } = require('child_process');
 const Tapable = require('tapable');
+const { flatten } = require('./utils');
 const Task = require('./task');
 
 const WORKER_BIN = require.resolve('./worker');
+const WORKER_OPTIONS = { silent: true, env: { FORCE_COLOR: true } };
 
 module.exports = class Runner extends Tapable {
-  run(tasks, cmd) {
-    this.applyPlugins('start', tasks, cmd);
+  async run(sequence, cmd, mapping) {
+    this.applyPlugins('start', sequence, cmd);
 
-    const runTasks = (promise, tasksArray) =>
-      promise.then((previous) => {
-        const promises = tasksArray
-          .map(({ task, options }) => this.runTask(task, options))
-          .map(task => task.catch(e => e));
+    const data = await sequence.reduce((promise, parallel) => {
+      return promise.then((list) => {
+        const tasks = parallel.map(options => this.runTask(options));
+        const results = tasks
+          .map(task => task.result)
+          .map(result => result.catch(e => e));
 
-        return Promise.all(promises)
-          .then(errors => [...errors, ...previous]);
+        return Promise.all(results)
+          .then(() => [...list, tasks]);
       });
+    }, Promise.resolve([]));
 
-    return tasks.reduce(runTasks, Promise.resolve([]))
-      .then((errors) => {
-        errors.length ?
-          this.applyPlugins('finish-with-errors', errors) :
-          this.applyPlugins('finish-without-errors');
+    await mapping(data);
 
-        return errors;
-      });
+    const tasks = flatten(data);
+
+    const results = tasks
+      .map(task => task.result)
+      .map(task => task.catch(e => e));
+
+    const errors = await Promise.all(results);
+
+    errors.length ?
+      this.applyPlugins('finish-with-errors', errors) :
+      this.applyPlugins('finish-without-errors');
+
+    const done = tasks.map(task => task.done);
+
+    return Promise.all(done);
   }
 
-  runTask(module, options) {
-    const child = fork(WORKER_BIN, [], { silent: true, env: { FORCE_COLOR: true } });
+  fork({ module, options }) {
+    const child = fork(WORKER_BIN, [], WORKER_OPTIONS);
+    process.on('exit', () => child.kill('SIGINT'));
+    child.send({ type: 'init', module, options });
 
-    child.send({ module, options });
+    return child;
+  }
 
-    const result = new Promise((resolve, reject) => {
-      child.on('message', ({ success }) => success ? resolve() : reject());
-    });
-
-    process.on('exit', () => {
-      child.kill('SIGINT');
-    });
-
+  runTask({ module, options }) {
+    const child = this.fork({ module, options });
     const task = new Task({ module, options, child });
 
     this.applyPlugins('start-task', task);
 
-    return result
+    task.result
       .then(() => task.applyPlugins('succeed-task'))
       .catch((error) => {
         task.applyPlugins('failed-task');
 
         throw error;
       });
+
+    return task;
   }
 };
