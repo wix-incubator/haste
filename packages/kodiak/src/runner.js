@@ -10,7 +10,7 @@ module.exports = class Runner extends Tapable {
   async run(sequence, cmd, mapping) {
     this.applyPlugins('start', sequence, cmd);
 
-    const data = await sequence.reduce((promise, parallel) => {
+    const result = await sequence.reduce((promise, parallel) => {
       return promise.then((list) => {
         const tasks = parallel.map(options => this.runTask(options));
         const results = tasks
@@ -22,9 +22,9 @@ module.exports = class Runner extends Tapable {
       });
     }, Promise.resolve([]));
 
-    await mapping(data);
+    await mapping(result);
 
-    const tasks = flatten(data);
+    const tasks = flatten(result);
 
     const results = tasks
       .map(task => task.result)

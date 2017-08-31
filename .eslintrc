@@ -13,6 +13,7 @@
     "import/no-dynamic-require": "off",
     "no-return-assign": "off",
     "no-unused-expressions": "off",
-    "arrow-body-style": "off"
+    "arrow-body-style": "off",
+    "no-shadow": "off"
   }
 }
