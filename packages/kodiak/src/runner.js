@@ -16,20 +16,10 @@ function forkTask({ module, options }) {
 }
 
 module.exports = class Runner extends Tapable {
-  async run(sequence, command, mapping) {
+  async run(sequence, command) {
     this.applyPlugins('start', sequence, command);
 
-    const digestedSequence = await sequence.reduce((promise, parallel) => {
-      return promise.then((previousList) => {
-        const taskList = parallel.map(options => this.runTask(options));
-        const completed = taskList.map(task => task.complete.catch(e => e));
-
-        return Promise.all(completed)
-          .then(() => [...previousList, taskList]);
-      });
-    }, Promise.resolve([]));
-
-    await mapping(digestedSequence);
+    const digestedSequence = await this.digestSequence(sequence);
 
     const taskList = flatten(digestedSequence);
     const completed = taskList.map(task => task.complete.catch(e => e));
@@ -39,9 +29,23 @@ module.exports = class Runner extends Tapable {
       this.applyPlugins('finish-with-errors', errors) :
       this.applyPlugins('finish-without-errors');
 
+    this.applyPlugins('finish', digestedSequence);
+
     const allTasksEnded = taskList.map(task => task.end);
 
     return Promise.all(allTasksEnded);
+  }
+
+  digestSequence(sequence) {
+    return sequence.reduce((promise, parallel) => {
+      return promise.then((previousList) => {
+        const taskList = parallel.map(options => this.runTask(options));
+        const completed = taskList.map(task => task.complete.catch(e => e));
+
+        return Promise.all(completed)
+          .then(() => [...previousList, taskList]);
+      });
+    }, Promise.resolve([]));
   }
 
   runTask({ module, options }) {

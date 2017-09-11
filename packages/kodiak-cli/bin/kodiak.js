@@ -31,11 +31,11 @@ explorer.load(process.cwd())
   .then(({ config }) => {
     const context = resolveFrom(process.cwd(), config.preset);
     const preset = require(context);
-    const { commands, plugins, mapping } = preset(argv, config);
+    const { commands, plugins } = preset(argv, config);
 
     const runner = kodiak(plugins);
 
-    runner.run(commands[cmd], cmd, mapping)
+    runner.run(commands[cmd], cmd)
       .then((errors) => {
         if (errors.length) {
           errors.filter(Boolean).map(console.error);

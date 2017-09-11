@@ -1,5 +1,6 @@
 // const KodiakPluginLogger = require('kodiak-plugin-logger');
 const KodiakPluginDashboard = require('kodiak-plugin-dashboard');
+const KodiakPluginMapping = require('kodiak-plugin-mapping');
 
 module.exports = ({ files, watch }) => {
   const commands = {
@@ -20,12 +21,12 @@ module.exports = ({ files, watch }) => {
 
   const plugins = [
     // new KodiakPluginLogger(),
-    new KodiakPluginDashboard()
+    new KodiakPluginDashboard(),
+    new KodiakPluginMapping({ mapping }),
   ];
 
   return {
     commands,
     plugins,
-    mapping,
   };
 };
