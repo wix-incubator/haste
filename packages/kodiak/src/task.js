@@ -12,11 +12,11 @@ module.exports = class extends Tapable {
 
     this.stream = Observable.fromEvent(child, 'message');
 
-    this.result = streamToPromise(
+    this.complete = streamToPromise(
       this.stream.find(({ type }) => ['complete', 'error', 'idle'].includes(type))
     );
 
-    this.done = streamToPromise(
+    this.end = streamToPromise(
       this.stream.find(({ type }) => ['complete', 'error'].includes(type))
     );
   }
