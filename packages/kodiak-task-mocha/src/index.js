@@ -1,6 +1,6 @@
 const mocha = require('./mocha');
 
-module.exports = async ({ files, watch }) => {
+module.exports = ({ files, watch }) => {
   const options = {
     reporter: 'spec',
     recursive: true,

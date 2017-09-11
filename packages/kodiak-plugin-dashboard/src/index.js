@@ -9,7 +9,7 @@ module.exports = class DashboardPlugin {
     const dashboard = new Dashboard();
 
     runner.plugin('start', (tasks, cmd) => {
-      const taskList = flatten(tasks).map(prop('task'));
+      const taskList = flatten(tasks).map(prop('module'));
       dashboard.init({ tasks: taskList, maxPanels: 4, cmd });
     });
 

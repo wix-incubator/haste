@@ -1,5 +1,20 @@
-process.on('message', ({ module, options }) => {
-  require(module)(options)
-    .then(() => process.send({ success: true }))
-    .catch(() => process.send({ success: false }));
+const error = err => process.send({ type: 'error', err });
+const send = message => process.send({ type: 'custom', message });
+const listen = callback => process.on('message', callback);
+
+process.on('message', (message) => {
+  switch (message.type) {
+    case 'init': {
+      require(message.module)(message.options, { send, listen })
+        .then(({ idle } = {}) => idle ?
+          process.send({ type: 'idle' }) :
+          process.send({ type: 'complete' })
+        )
+        .catch(error);
+
+      break;
+    }
+    default:
+      break;
+  }
 });
