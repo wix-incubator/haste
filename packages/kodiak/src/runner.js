@@ -15,32 +15,47 @@ function forkTask({ module, options }) {
   return child;
 }
 
+function extractErrors(events) {
+  return events
+    .filter(event => event.type === 'error')
+    .map(event => event.err);
+}
+
+async function resolve(taskList, name) {
+  const events = await Promise.all(taskList.map(task => task[name]));
+  const errors = extractErrors(events);
+
+  return errors;
+}
+
 module.exports = class Runner extends Tapable {
   async run(sequence, command) {
     this.applyPlugins('start', sequence, command);
 
-    const digestedSequence = await this.digestSequence(sequence);
+    const digested = await this.digestSequence(sequence);
 
-    const taskList = flatten(digestedSequence);
-    const completed = taskList.map(task => task.complete.catch(e => e));
-    const errors = await Promise.all(completed);
+    const taskList = flatten(digested);
 
-    errors.length ?
-      this.applyPlugins('finish-with-errors', errors) :
+    const completedErrors = await resolve(taskList, 'complete');
+
+    completedErrors.length ?
+      this.applyPlugins('finish-with-errors', completedErrors) :
       this.applyPlugins('finish-without-errors');
 
-    this.applyPlugins('finish', digestedSequence);
+    this.applyPlugins('finish', digested);
 
-    const allTasksEnded = taskList.map(task => task.end);
+    const endedErrors = await resolve(taskList, 'end');
 
-    return Promise.all(allTasksEnded);
+    if (endedErrors.length) {
+      throw endedErrors;
+    }
   }
 
   digestSequence(sequence) {
     return sequence.reduce((promise, parallel) => {
       return promise.then((previousList) => {
         const taskList = parallel.map(options => this.runTask(options));
-        const completed = taskList.map(task => task.complete.catch(e => e));
+        const completed = taskList.map(task => task.complete);
 
         return Promise.all(completed)
           .then(() => [...previousList, taskList]);

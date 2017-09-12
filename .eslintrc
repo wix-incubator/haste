@@ -1,8 +1,11 @@
 {
   "extends": "airbnb-base",
   "env": {
-    "mocha": true
+    "jest/globals": true
   },
+  "plugins": [
+    "jest"
+  ],
   "rules": {
     "class-methods-use-this": "off",
     "no-console": "off",
