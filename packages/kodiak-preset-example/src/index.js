@@ -6,11 +6,11 @@ module.exports = ({ files, watch }) => {
   const commands = {
     test: [
       [
-        { module: require.resolve('kodiak-task-mocha'), options: { files, watch } },
-        { module: require.resolve('kodiak-task-webpack'), options: { plugins: [require.resolve('kodiak-webpack-plugin-example')] } },
+        { name: require.resolve('kodiak-task-mocha'), options: { files, watch } },
+        { name: require.resolve('kodiak-task-webpack'), options: { plugins: [require.resolve('kodiak-webpack-plugin-example')] } },
       ],
       [
-        { module: require.resolve('kodiak-task-server') }
+        { name: require.resolve('kodiak-task-server') }
       ]
     ]
   };

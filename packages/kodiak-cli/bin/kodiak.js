@@ -6,6 +6,7 @@ const cosmiconfig = require('cosmiconfig');
 const kodiak = require('kodiak');
 const loudRejection = require('loud-rejection');
 
+const context = process.cwd();
 // Install the unhandledRejection listeners
 loudRejection();
 const explorer = cosmiconfig('kodiak');
@@ -27,15 +28,21 @@ const { argv } = yargs
 
 const [cmd] = argv._;
 
-explorer.load(process.cwd())
+explorer.load(context)
   .then(({ config }) => {
-    const context = resolveFrom(process.cwd(), config.preset);
-    const preset = require(context);
+    const presetPath = resolveFrom(context, config.preset);
+    const preset = require(presetPath);
     const { commands, plugins } = preset(argv, config);
 
-    const runner = kodiak(plugins);
+    const options = {
+      title: cmd,
+      context,
+      plugins,
+    };
 
-    runner.run(commands[cmd], cmd)
+    const runner = kodiak(options);
+
+    runner.run(commands[cmd])
       .then((errors) => {
         if (errors.length) {
           errors.filter(Boolean).map(console.error);

@@ -1,3 +1,4 @@
+const path = require('path');
 const kodiak = require('../src/kodiak');
 
 const successful = require.resolve('./fixtures/successful-task');
@@ -18,8 +19,11 @@ class TestPlugin {
 describe('kodiak', () => {
   const stdout = jest.fn();
 
-  function run(tasks) {
-    const runner = kodiak([new TestPlugin(stdout)]);
+  function run(tasks, options = {}) {
+    const runner = kodiak(Object.assign(options, {
+      plugins: [new TestPlugin(stdout)]
+    }));
+
     return runner.run(tasks);
   }
 
@@ -30,7 +34,7 @@ describe('kodiak', () => {
   it('should run a successful task and resolve', async () => {
     const result = await run([
       [
-        { module: successful },
+        { name: successful },
       ]
     ]);
 
@@ -44,7 +48,7 @@ describe('kodiak', () => {
     try {
       await run([
         [
-          { module: unsuccessful },
+          { name: unsuccessful },
         ]
       ]);
     } catch (errors) {
@@ -56,8 +60,8 @@ describe('kodiak', () => {
   it('should run multiple successful tasks in parallel and resolve', async () => {
     const result = await run([
       [
-        { module: successful },
-        { module: successful },
+        { name: successful },
+        { name: successful },
       ]
     ]);
 
@@ -71,8 +75,8 @@ describe('kodiak', () => {
     try {
       await run([
         [
-          { module: successful },
-          { module: unsuccessful },
+          { name: successful },
+          { name: unsuccessful },
         ]
       ]);
     } catch (errors) {
@@ -86,10 +90,10 @@ describe('kodiak', () => {
   it('should run multiple successful tasks in sequence and resolve', async () => {
     const result = await run([
       [
-        { module: successful }
+        { name: successful }
       ],
       [
-        { module: successful },
+        { name: successful },
       ]
     ]);
 
@@ -103,10 +107,10 @@ describe('kodiak', () => {
     try {
       await run([
         [
-          { module: successful },
+          { name: successful },
         ],
         [
-          { module: unsuccessful },
+          { name: unsuccessful },
         ]
       ]);
     } catch (errors) {
@@ -123,10 +127,10 @@ describe('kodiak', () => {
     try {
       await run([
         [
-          { module: unsuccessful },
+          { name: unsuccessful },
         ],
         [
-          { module: successful },
+          { name: successful },
         ]
       ]);
     } catch (errors) {
@@ -135,5 +139,38 @@ describe('kodiak', () => {
       expect(stdout.mock.calls).toContainEqual(['unsuccessful-task\n']);
       expect(stdout.mock.calls).not.toContainEqual(['successful-task\n']);
     }
+  });
+
+  it('should resolve a task relative to the run context', async () => {
+    const result = await run([
+      [
+        { name: './successful-task' },
+      ]
+    ], { context: path.join(__dirname, './fixtures') });
+
+    expect(result).toEqual(undefined);
+    expect(stdout.mock.calls).toEqual([['successful-task\n']]);
+  });
+
+  it('should resolve a task relative to the run context when a full module name supplied', async () => {
+    const result = await run([
+      [
+        { name: 'kodiak-task-successful' },
+      ]
+    ], { context: path.join(__dirname, './fixtures') });
+
+    expect(result).toEqual(undefined);
+    expect(stdout.mock.calls).toEqual([['successful-task\n']]);
+  });
+
+  it('should resolve a task relative to the run context when a partial module name supplied', async () => {
+    const result = await run([
+      [
+        { name: 'successful' },
+      ]
+    ], { context: path.join(__dirname, './fixtures') });
+
+    expect(result).toEqual(undefined);
+    expect(stdout.mock.calls).toEqual([['successful-task\n']]);
   });
 });
