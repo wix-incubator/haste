@@ -1,7 +1,7 @@
 const kodiak = require('../src/kodiak');
 
 const successful = require.resolve('./fixtures/successful-task');
-const unsuccessful = require.resolve('./fixtures/un-successful-task');
+const unsuccessful = require.resolve('./fixtures/unsuccessful-task');
 
 class TestPlugin {
   constructor(stdout) {
@@ -49,7 +49,7 @@ describe('kodiak', () => {
       ]);
     } catch (errors) {
       expect(errors).toEqual(['some-error']);
-      expect(stdout.mock.calls).toEqual([['un-successful-task\n']]);
+      expect(stdout.mock.calls).toEqual([['unsuccessful-task\n']]);
     }
   });
 
@@ -78,8 +78,62 @@ describe('kodiak', () => {
     } catch (errors) {
       expect(errors).toEqual(['some-error']);
       expect(stdout.mock.calls.length).toEqual(2);
-      expect(stdout.mock.calls).toContainEqual(['un-successful-task\n']);
+      expect(stdout.mock.calls).toContainEqual(['unsuccessful-task\n']);
       expect(stdout.mock.calls).toContainEqual(['successful-task\n']);
+    }
+  });
+
+  it('should run multiple successful tasks in sequence and resolve', async () => {
+    const result = await run([
+      [
+        { module: successful }
+      ],
+      [
+        { module: successful },
+      ]
+    ]);
+
+    expect(result).toEqual(undefined);
+    expect(stdout.mock.calls).toEqual([['successful-task\n'], ['successful-task\n']]);
+  });
+
+  it('should run a successful task followed by an unsuccessful task in sequence and reject', async () => {
+    expect.assertions(4);
+
+    try {
+      await run([
+        [
+          { module: successful },
+        ],
+        [
+          { module: unsuccessful },
+        ]
+      ]);
+    } catch (errors) {
+      expect(errors).toEqual(['some-error']);
+      expect(stdout.mock.calls.length).toEqual(2);
+      expect(stdout.mock.calls).toContainEqual(['unsuccessful-task\n']);
+      expect(stdout.mock.calls).toContainEqual(['successful-task\n']);
+    }
+  });
+
+  it('should run an unsuccessful task, not run the following successful task and reject', async () => {
+    expect.assertions(4);
+
+    try {
+      await run([
+        [
+          { module: unsuccessful },
+        ],
+        [
+          { module: successful },
+        ]
+      ]);
+    } catch (errors) {
+      expect(errors).toEqual(['some-error']);
+      expect(stdout.mock.calls.length).toEqual(1);
+      expect(stdout.mock.calls).toContainEqual(['unsuccessful-task\n']);
+      expect(stdout.mock.calls).not.toContainEqual(['successful-task\n']);
     }
   });
 });

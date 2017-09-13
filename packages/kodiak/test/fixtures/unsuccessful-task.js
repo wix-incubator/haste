@@ -1,4 +1,4 @@
 module.exports = () => {
-  console.log('un-successful-task');
+  console.log('unsuccessful-task');
   return Promise.reject('some-error');
 };
