@@ -6,6 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "rxjs": "^5.4.3",
-    "tapable": "^0.2.8"
+    "tapable": "^0.2.8",
+    "resolve-from": "^3.0.0"
   }
 }

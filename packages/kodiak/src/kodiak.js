@@ -1,7 +1,7 @@
 const Runner = require('./runner');
 
-function kodiak(plugins = []) {
-  const runner = new Runner();
+function kodiak({ plugins = [], context = __dirname, title } = {}) {
+  const runner = new Runner({ context, title });
 
   runner.apply(...plugins);
 

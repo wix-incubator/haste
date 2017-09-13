@@ -1,6 +1,6 @@
 const { fork } = require('child_process');
 const Tapable = require('tapable');
-const { flatten } = require('./utils');
+const { flatten, resolveTaskName } = require('./utils');
 const Task = require('./task');
 
 const WORKER_BIN = require.resolve('./worker');
@@ -29,8 +29,15 @@ async function resolve(taskList, name) {
 }
 
 module.exports = class Runner extends Tapable {
-  async run(sequence, command) {
-    this.applyPlugins('start', sequence, command);
+  constructor({ context, title }) {
+    super();
+
+    this.context = context;
+    this.title = title;
+  }
+
+  async run(sequence) {
+    this.applyPlugins('start', sequence, this.title);
 
     const digested = await this.digestSequence(sequence);
 
@@ -66,9 +73,11 @@ module.exports = class Runner extends Tapable {
     }, Promise.resolve([]));
   }
 
-  runTask({ module, options }) {
-    const child = forkTask({ module, options });
-    const task = new Task({ module, options, child });
+  runTask({ name, options }) {
+    const modulePath = resolveTaskName(name, this.context);
+
+    const child = forkTask({ module: modulePath, options });
+    const task = new Task({ module: modulePath, options, child });
 
     this.applyPlugins('start-task', task);
 
