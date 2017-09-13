@@ -2,7 +2,8 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "lint": "eslint .",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "devDependencies": {
     "eslint": "^4.4.1",
@@ -11,5 +12,16 @@
     "eslint-plugin-jest": "^21.0.2",
     "jest": "^21.0.2",
     "lerna": "^2.0.0"
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/test_setup_file.js",
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/packages/some-project/"
+    ],
+    "testMatch": [
+      "**/*.spec.js"
+    ]
   }
 }
