@@ -52,14 +52,17 @@ module.exports = class Runner extends Tapable {
   }
 
   digestSequence(sequence) {
-    return sequence.reduce((promise, parallel) => {
-      return promise.then((previousList) => {
-        const taskList = parallel.map(options => this.runTask(options));
-        const completed = taskList.map(task => task.complete);
+    return sequence.reduce(async (promise, parallel) => {
+      const previousList = await promise;
+      const taskList = parallel.map(options => this.runTask(options));
 
-        return Promise.all(completed)
-          .then(() => [...previousList, taskList]);
-      });
+      const errors = await resolve(taskList, 'complete');
+
+      if (errors.length) {
+        throw errors;
+      }
+
+      return [...previousList, taskList];
     }, Promise.resolve([]));
   }
 
