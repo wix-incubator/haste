@@ -1,6 +1,6 @@
 const Runner = require('./runner');
 
-function kodiak(plugins) {
+function kodiak(plugins = []) {
   const runner = new Runner();
 
   runner.apply(...plugins);
