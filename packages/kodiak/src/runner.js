@@ -6,11 +6,11 @@ const Task = require('./task');
 const WORKER_BIN = require.resolve('./worker');
 const WORKER_OPTIONS = { silent: true, env: { FORCE_COLOR: true } };
 
-function forkTask({ module, options }) {
+function forkTask({ modulePath, options }) {
   const child = fork(WORKER_BIN, [], WORKER_OPTIONS);
 
   process.on('exit', () => child.kill('SIGINT'));
-  child.send({ type: 'init', module, options });
+  child.send({ type: 'init', modulePath, options });
 
   return child;
 }
@@ -76,8 +76,8 @@ module.exports = class Runner extends Tapable {
   runTask({ name, options }) {
     const modulePath = resolveTaskName(name, this.context);
 
-    const child = forkTask({ module: modulePath, options });
-    const task = new Task({ module: modulePath, options, child });
+    const child = forkTask({ modulePath, options });
+    const task = new Task({ modulePath, options, child });
 
     this.applyPlugins('start-task', task);
 
