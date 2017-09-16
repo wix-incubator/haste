@@ -36,7 +36,7 @@ explorer.load(context)
 
     const options = {
       title: cmd,
-      context,
+      context: presetPath,
       plugins,
     };
 
