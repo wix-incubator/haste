@@ -1,9 +1,0 @@
-{
-  "name": "kodiak-webpack-plugin-example",
-  "version": "0.0.1",
-  "main": "./src/index.js",
-  "license": "MIT",
-  "dependencies": {
-    "raw-loader": "^0.5.1"
-  }
-}
