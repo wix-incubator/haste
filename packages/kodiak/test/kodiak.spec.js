@@ -32,11 +32,13 @@ describe('kodiak', () => {
   });
 
   it('should run a successful task and resolve', async () => {
-    const result = await run([
+    const sequence = [
       [
         { name: successful },
       ]
-    ]);
+    ];
+
+    const result = await run(sequence);
 
     expect(result).toEqual(undefined);
     expect(stdout.mock.calls).toEqual([['successful-task\n']]);
@@ -45,12 +47,14 @@ describe('kodiak', () => {
   it('should run an unsuccessful task and reject', async () => {
     expect.assertions(2);
 
+    const sequence = [
+      [
+        { name: unsuccessful },
+      ]
+    ];
+
     try {
-      await run([
-        [
-          { name: unsuccessful },
-        ]
-      ]);
+      await run(sequence);
     } catch (errors) {
       expect(errors).toEqual(['some-error']);
       expect(stdout.mock.calls).toEqual([['unsuccessful-task\n']]);
@@ -58,12 +62,14 @@ describe('kodiak', () => {
   });
 
   it('should run multiple successful tasks in parallel and resolve', async () => {
-    const result = await run([
+    const sequence = [
       [
         { name: successful },
         { name: successful },
       ]
-    ]);
+    ];
+
+    const result = await run(sequence);
 
     expect(result).toEqual(undefined);
     expect(stdout.mock.calls).toEqual([['successful-task\n'], ['successful-task\n']]);
@@ -72,13 +78,15 @@ describe('kodiak', () => {
   it('should run a successful and an unsucessful tasks in parallel and reject', async () => {
     expect.assertions(4);
 
+    const sequence = [
+      [
+        { name: successful },
+        { name: unsuccessful },
+      ]
+    ];
+
     try {
-      await run([
-        [
-          { name: successful },
-          { name: unsuccessful },
-        ]
-      ]);
+      await run(sequence);
     } catch (errors) {
       expect(errors).toEqual(['some-error']);
       expect(stdout.mock.calls.length).toEqual(2);
@@ -88,14 +96,16 @@ describe('kodiak', () => {
   });
 
   it('should run multiple successful tasks in sequence and resolve', async () => {
-    const result = await run([
+    const sequence = [
       [
         { name: successful }
       ],
       [
         { name: successful },
       ]
-    ]);
+    ];
+
+    const result = await run(sequence);
 
     expect(result).toEqual(undefined);
     expect(stdout.mock.calls).toEqual([['successful-task\n'], ['successful-task\n']]);
@@ -104,15 +114,17 @@ describe('kodiak', () => {
   it('should run a successful task followed by an unsuccessful task in sequence and reject', async () => {
     expect.assertions(4);
 
+    const sequence = [
+      [
+        { name: successful },
+      ],
+      [
+        { name: unsuccessful },
+      ]
+    ];
+
     try {
-      await run([
-        [
-          { name: successful },
-        ],
-        [
-          { name: unsuccessful },
-        ]
-      ]);
+      await run(sequence);
     } catch (errors) {
       expect(errors).toEqual(['some-error']);
       expect(stdout.mock.calls.length).toEqual(2);
@@ -124,15 +136,17 @@ describe('kodiak', () => {
   it('should run an unsuccessful task, not run the following successful task and reject', async () => {
     expect.assertions(4);
 
+    const sequence = [
+      [
+        { name: unsuccessful },
+      ],
+      [
+        { name: successful },
+      ]
+    ];
+
     try {
-      await run([
-        [
-          { name: unsuccessful },
-        ],
-        [
-          { name: successful },
-        ]
-      ]);
+      await run(sequence);
     } catch (errors) {
       expect(errors).toEqual(['some-error']);
       expect(stdout.mock.calls.length).toEqual(1);
@@ -142,33 +156,51 @@ describe('kodiak', () => {
   });
 
   it('should resolve a task relative to the run context', async () => {
-    const result = await run([
+    const sequence = [
       [
         { name: './successful-task' },
       ]
-    ], { context: path.join(__dirname, './fixtures') });
+    ];
+
+    const options = {
+      context: path.join(__dirname, './fixtures'),
+    };
+
+    const result = await run(sequence, options);
 
     expect(result).toEqual(undefined);
     expect(stdout.mock.calls).toEqual([['successful-task\n']]);
   });
 
   it('should resolve a task relative to the run context when a full module name supplied', async () => {
-    const result = await run([
+    const sequence = [
       [
         { name: 'kodiak-task-successful' },
       ]
-    ], { context: path.join(__dirname, './fixtures') });
+    ];
+
+    const options = {
+      context: path.join(__dirname, './fixtures'),
+    };
+
+    const result = await run(sequence, options);
 
     expect(result).toEqual(undefined);
     expect(stdout.mock.calls).toEqual([['successful-task\n']]);
   });
 
   it('should resolve a task relative to the run context when a partial module name supplied', async () => {
-    const result = await run([
+    const sequence = [
       [
         { name: 'successful' },
       ]
-    ], { context: path.join(__dirname, './fixtures') });
+    ];
+
+    const options = {
+      context: path.join(__dirname, './fixtures'),
+    };
+
+    const result = await run(sequence, options);
 
     expect(result).toEqual(undefined);
     expect(stdout.mock.calls).toEqual([['successful-task\n']]);
