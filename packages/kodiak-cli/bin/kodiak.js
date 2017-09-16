@@ -3,7 +3,7 @@
 const yargs = require('yargs');
 const resolveFrom = require('resolve-from');
 const cosmiconfig = require('cosmiconfig');
-const kodiak = require('kodiak');
+const kodiak = require('kodiak-core');
 
 process.on('unhandledRejection', (err) => {
   throw err;

@@ -1,5 +1,5 @@
 {
-  "name": "kodiak",
+  "name": "kodiak-core",
   "version": "0.0.1",
   "main": "src/kodiak.js",
   "author": "Ronen Amiel",

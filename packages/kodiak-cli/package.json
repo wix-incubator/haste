@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "cosmiconfig": "^2.2.2",
-    "kodiak": "^0.0.1",
+    "kodiak-core": "^0.0.1",
     "resolve-from": "~3.0.0",
     "yargs": "^8.0.2"
   }
