@@ -1,25 +1,20 @@
-# kodiak
-Next generation extendable task runner
-## Basic types
+# Kodiak
+Extendable, task runner that cares about your build performance.
 
-* task :: (...options) => Promise (undefined)
-* command :: [ [ tasknames ] ]
-* preset :: { string: command }
+## What is it
+Kodiak is an automation tool, that helps you create build configurations and share them.
 
-## Development
+## Summary
+* **Performance:** run tasks in parallel.
+* **Extendable:** use plugins to display a dashboard, collect insights on your builds and more.
+* **Reuseable:** presets are a way to share and reuse your build configuration.
 
-```
-git clone git@github.com:ronami/kodiak.git
-cd kodiak
-yarn
-yarn bootstrap
-```
+## Getting started
+TODO
+## Write your own preset
+TODO
+## API refrence
+TODO
 
-We're using [lerna](https://github.com/lerna/lerna) for managing kodiak repo.
-
-## Lint
-```
-yarn lint
-```
 ## Licensing
 The MIT License
