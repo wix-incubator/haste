@@ -39,8 +39,7 @@ module.exports = class Dashboard {
 
     layout.forEach(([width, height, left, top], i) => {
       const taskName = tasks[i];
-      const taskRelativePath = path.relative('./', taskName); // TODO - remove when there is name
-      this.createPanel({ width, height, left, top, label: taskRelativePath, panelKey: taskName });
+      this.createPanel({ width, height, left, top, label: taskName, panelKey: taskName });
     });
 
     this.screen.render();

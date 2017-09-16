@@ -77,7 +77,7 @@ module.exports = class Runner extends Tapable {
     const modulePath = resolveTaskName(name, this.context);
 
     const child = forkTask({ modulePath, options });
-    const task = new Task({ modulePath, options, child });
+    const task = new Task({ name, modulePath, options, child });
 
     this.applyPlugins('start-task', task);
 

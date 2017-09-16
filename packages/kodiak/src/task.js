@@ -2,9 +2,10 @@ const Tapable = require('tapable');
 const { Observable } = require('rxjs');
 
 module.exports = class extends Tapable {
-  constructor({ modulePath, options, child }) {
+  constructor({ name, modulePath, options, child }) {
     super();
 
+    this.name = name;
     this.modulePath = modulePath;
     this.options = options;
     this.child = child;
