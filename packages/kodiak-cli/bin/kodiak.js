@@ -4,11 +4,13 @@ const yargs = require('yargs');
 const resolveFrom = require('resolve-from');
 const cosmiconfig = require('cosmiconfig');
 const kodiak = require('kodiak');
-const loudRejection = require('loud-rejection');
+
+process.on('unhandledRejection', (err) => {
+  throw err;
+});
 
 const context = process.cwd();
-// Install the unhandledRejection listeners
-loudRejection();
+
 const explorer = cosmiconfig('kodiak');
 
 const { argv } = yargs
@@ -43,12 +45,13 @@ explorer.load(context)
     const runner = kodiak(options);
 
     runner.run(commands[cmd])
-      .then((errors) => {
+      .then(() => {
+        process.exit(0);
+      })
+      .catch((errors) => {
         if (errors.length) {
           errors.filter(Boolean).map(console.error);
           process.exit(1);
         }
-
-        process.exit(0);
       });
   });

@@ -10,7 +10,6 @@
   "dependencies": {
     "cosmiconfig": "^2.2.2",
     "kodiak": "^0.0.1",
-    "loud-rejection": "~1.6.0",
     "resolve-from": "~3.0.0",
     "yargs": "^8.0.2"
   }
