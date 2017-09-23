@@ -1,20 +1,7 @@
-const error = err => process.send({ type: 'error', err });
-const send = message => process.send({ type: 'custom', message });
-const listen = callback => process.on('message', callback);
+const task = require(process.argv[2]);
 
-process.on('message', (message) => {
-  switch (message.type) {
-    case 'init': {
-      require(message.modulePath)(message.options, { send, listen })
-        .then(({ idle } = {}) => idle ?
-          process.send({ type: 'idle' }) :
-          process.send({ type: 'complete' })
-        )
-        .catch(error);
-
-      break;
-    }
-    default:
-      break;
-  }
+process.on('message', ({ options }) => {
+  task(options)
+    .then(result => process.send({ result }))
+    .catch(error => process.send({ error }));
 });

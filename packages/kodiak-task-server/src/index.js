@@ -7,10 +7,10 @@ module.exports = () => {
     res.send('Hello World!');
   });
 
-  return new Promise((resolve) => {
-    app.listen(3000, () => {
-      resolve({ idle: true });
-      console.log('app listening on port 3000!');
-    });
+  const promise = new Promise((resolve) => {
+    app.listen(3000, resolve);
   });
+
+  return promise
+    .then(() => console.log('app listening on port 3000!'));
 };

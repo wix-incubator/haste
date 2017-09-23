@@ -13,10 +13,6 @@ module.exports = class extends Tapable {
     this.stream = Observable.fromEvent(child, 'message');
 
     this.complete = this.stream
-      .find(({ type }) => ['complete', 'error', 'idle'].includes(type))
-      .toPromise();
-
-    this.end = this.stream
       .find(({ type }) => ['complete', 'error'].includes(type))
       .toPromise();
   }
