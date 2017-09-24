@@ -33,13 +33,16 @@ explorer.load(context)
   .then(({ config }) => {
     const presetPath = resolveFrom(context, config.preset);
     const preset = require(presetPath);
-    const f = preset[cmd];
+    const command = preset[cmd];
 
-    return f(argv, config)
+    return command(argv, config)
       .then(({ persistent }) => {
         if (!persistent) {
           process.exit(0);
         }
       })
-      .catch(e => console.log('error', e));
+      .catch((error) => {
+        console.log(error.stack || error);
+        process.exit(1);
+      });
   });

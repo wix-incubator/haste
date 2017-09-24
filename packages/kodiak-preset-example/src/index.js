@@ -1,17 +1,4 @@
-const path = require('path');
 const { create } = require('kodiak-core');
-
-const parallelMiddleware = next => (definition) => {
-  const run = next(definition);
-
-  return (options) => {
-    if (Array.isArray(options)) {
-      return Promise.all(options.map(run));
-    }
-
-    return run(options);
-  };
-};
 
 const loggerMiddleware = next => (definition) => {
   const run = next(definition);
@@ -20,7 +7,7 @@ const loggerMiddleware = next => (definition) => {
     .forEach(key => run.child[key].pipe(process[key]));
 
   return (options) => {
-    console.log(`starting ${definition.name}...`);
+    console.log(`starting ${definition.name}`);
 
     return run(options)
       .then((result) => {
@@ -34,18 +21,20 @@ const loggerMiddleware = next => (definition) => {
   };
 };
 
-const { define, watch } = create([loggerMiddleware, parallelMiddleware]);
+const { define, watch } = create([loggerMiddleware], __dirname);
+
+const paths = {
+  build: 'dist',
+  javascripts: 'src/**/*.js',
+};
 
 module.exports.build = async () => {
-  const babel = define({ name: require.resolve('kodiak-task-babel') });
+  const babel = define({ name: 'babel' });
 
-  await babel([
-    { patterns: [path.resolve(process.cwd(), 'src', '**/*.js')] },
-    { patterns: [path.resolve(process.cwd(), 'src', '**/*.js')] },
-  ]);
+  await babel({ pattern: paths.javascripts, output: paths.build });
 
-  watch(path.resolve(process.cwd(), 'src', '**/*.js'), async (changed) => {
-    await babel({ patterns: [changed] });
+  watch(paths.javascripts, async (changed) => {
+    await babel({ pattern: changed, output: paths.build });
   });
 
   return {

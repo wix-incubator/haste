@@ -1,12 +1,14 @@
 const { fork } = require('child_process');
 const chokidar = require('chokidar');
+const { resolveTaskName } = require('./utils');
 
 const WORKER_BIN = require.resolve('./worker');
 const WORKER_OPTIONS = { silent: true, env: { FORCE_COLOR: true } };
 
-module.exports = function create(middleware = []) {
+module.exports = function create(middleware = [], context) {
   function define({ name }) {
-    const child = fork(WORKER_BIN, [name], WORKER_OPTIONS);
+    const modulePath = resolveTaskName(name, context);
+    const child = fork(WORKER_BIN, [modulePath], WORKER_OPTIONS);
 
     function run(options) {
       child.send({ options });
@@ -22,7 +24,7 @@ module.exports = function create(middleware = []) {
   }
 
   function watch(pattern, callback) {
-    return chokidar.watch(pattern, { ignoreInitial: true })
+    return chokidar.watch(pattern, { ignoreInitial: true, cwd: process.cwd() })
       .on('all', (event, path) => {
         callback(path);
       });
