@@ -20,11 +20,10 @@ module.exports = class Dashboard {
     this.screen;
   }
 
-  init({ panels }) {
+  init({ maxPanels = 4, tasks, cmd }) {
     // configure screen
     this.screen = blessed.screen({
-      title: '',
-      // title: `kodaik-dashboard${cmd ? ` - running ${cmd} command` : ''}`,
+      title: `kodaik-dashboard${cmd ? ` - running ${cmd} command` : ''}`,
       smartCSR: true,
       dockBorders: false,
       fullUnicode: true,
@@ -34,23 +33,18 @@ module.exports = class Dashboard {
     this.screen.key(['escape', 'q', 'C-c'], () => process.exit(0));
 
     // establish layout
-    const panelsAmount = panels;
-    this.layout = calcLayout(panelsAmount);
-    this.i = 0;
+    const panelsAmount = tasks.length < maxPanels ? tasks.length : maxPanels;
+    const layout = calcLayout(panelsAmount);
 
-    // layout.forEach(([width, height, left, top], i) => {
-    //   const taskName = tasks[i];
-    //   this.createPanel({ width, height, left, top, label: taskName, panelKey: taskName });
-    // });
+    layout.forEach(([width, height, left, top], i) => {
+      const taskName = tasks[i];
+      this.createPanel({ width, height, left, top, label: taskName, panelKey: taskName });
+    });
 
     this.screen.render();
   }
 
-  createPanel({ panelKey, label }) {
-    const i = this.i;
-
-    const [width, height, left, top] = this.layout[i];
-
+  createPanel({ panelKey, label, width, height, left, top }) {
     const box = blessed.box({
       label,
       padding: 1,
@@ -78,9 +72,6 @@ module.exports = class Dashboard {
 
     this.screen.append(box);
     this.panels[panelKey] = logger;
-    this.i += 1;
-
-    return this.getLogger(panelKey);
   }
 
   getLogger(panelKey) {
@@ -92,4 +83,3 @@ module.exports = class Dashboard {
     };
   }
 };
-

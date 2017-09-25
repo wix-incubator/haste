@@ -3,8 +3,9 @@
 const yargs = require('yargs');
 const resolveFrom = require('resolve-from');
 const cosmiconfig = require('cosmiconfig');
+const kodiak = require('kodiak-core');
 
-process.on('unhandledRejection', (err, a) => {
+process.on('unhandledRejection', (err) => {
   throw err;
 });
 
@@ -32,10 +33,11 @@ const [cmd] = argv._;
 explorer.load(context)
   .then(({ config }) => {
     const presetPath = resolveFrom(context, config.preset);
+    const run = kodiak(presetPath);
     const preset = require(presetPath);
     const command = preset[cmd];
 
-    return command(argv, config)
+    return run(command, [argv, config])
       .then(({ persistent }) => {
         if (!persistent) {
           process.exit(0);
