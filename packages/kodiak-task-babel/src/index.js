@@ -33,7 +33,9 @@ module.exports = async ({ pattern, output }) => {
     const data = await transformFile(filename, { sourceMaps: true });
     const code = addSourceMappingUrl(data.code, mapDest);
 
-    return Promise.all([
+    console.log(`${filename} -> ${fileDest}`);
+
+    await Promise.all([
       writeFile(mapDest, JSON.stringify(data.map)),
       writeFile(fileDest, code),
     ]);

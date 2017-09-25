@@ -6,14 +6,14 @@ function parseError(error) {
   }, {});
 }
 
-process.on('message', ({ options }) => {
+process.on('message', ({ options, id }) => {
   task(options)
-    .then(result => process.send({ result }))
+    .then(result => process.send({ result, id }))
     .catch((error) => {
       if (error instanceof Error) {
         error = parseError(error); // eslint-disable-line no-param-reassign
       }
 
-      process.send({ error });
+      process.send({ error, id });
     });
 });
