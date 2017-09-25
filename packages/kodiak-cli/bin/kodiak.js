@@ -33,25 +33,18 @@ const [cmd] = argv._;
 explorer.load(context)
   .then(({ config }) => {
     const presetPath = resolveFrom(context, config.preset);
+    const run = kodiak(presetPath);
     const preset = require(presetPath);
-    const { commands, plugins } = preset(argv, config);
+    const command = preset[cmd];
 
-    const options = {
-      title: cmd,
-      context: presetPath,
-      plugins,
-    };
-
-    const runner = kodiak(options);
-
-    runner.run(commands[cmd])
-      .then(() => {
-        process.exit(0);
-      })
-      .catch((errors) => {
-        if (errors.length) {
-          errors.filter(Boolean).map(console.error);
-          process.exit(1);
+    return run(command, [argv, config])
+      .then(({ persistent }) => {
+        if (!persistent) {
+          process.exit(0);
         }
+      })
+      .catch((error) => {
+        console.log(error.stack || error);
+        process.exit(1);
       });
   });

@@ -7,16 +7,16 @@ module.exports = class LoggerPlugin {
       ['stdout', 'stderr'].forEach(name => task.child[name].pipe(process[name]));
 
       const start = new Date();
-      console.log(`[${format(start)}] ${chalk.black.bgGreen('Starting')} '${task.modulePath}'...`);
+      console.log(`[${format(start)}] ${chalk.black.bgGreen('Starting')} '${task.name}'...`);
 
       task.plugin('succeed-task', () => {
         const [end, time] = delta(start);
-        console.log(`[${format(end)}] ${chalk.black.bgCyan('Finished')} '${task.modulePath}' after ${time} ms`);
+        console.log(`[${format(end)}] ${chalk.black.bgCyan('Finished')} '${task.name}' after ${time} ms`);
       });
 
       task.plugin('failed-task', () => {
         const [end, time] = delta(start);
-        console.log(`[${format(end)}] ${chalk.white.bgRed('Failed')} '${task.modulePath}' after ${time} ms`);
+        console.log(`[${format(end)}] ${chalk.white.bgRed('Failed')} '${task.name}' after ${time} ms`);
       });
     });
   }

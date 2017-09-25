@@ -1,32 +1,32 @@
-// const KodiakPluginLogger = require('kodiak-plugin-logger');
-const KodiakPluginDashboard = require('kodiak-plugin-dashboard');
-const KodiakPluginMapping = require('kodiak-plugin-mapping');
+const KodiakPluginLogger = require('kodiak-plugin-logger');
 
-module.exports = ({ files, watch }) => {
-  const commands = {
-    test: [
-      [
-        { name: require.resolve('kodiak-task-mocha'), options: { files, watch } },
-        { name: require.resolve('kodiak-task-webpack'), options: { plugins: [require.resolve('kodiak-webpack-plugin-example')] } },
-      ],
-      [
-        { name: require.resolve('kodiak-task-server') }
-      ]
-    ]
-  };
+const paths = {
+  build: 'dist',
+  target: 'target',
+  javascripts: 'src/**/*.js',
+};
 
-  const mapping = async ([[mocha, webpack], [server]]) => {
-    // webpack.stream.subscribe(({ message }) => server.send(message.hello));
-  };
+module.exports.build = async (configure, cliArgs, configArgs) => {
+  const { define, watch } = configure({
+    plugins: [new KodiakPluginLogger()],
+  });
 
-  const plugins = [
-    // new KodiakPluginLogger(),
-    new KodiakPluginDashboard(),
-    new KodiakPluginMapping({ mapping }),
-  ];
+  const clean = define({ name: 'clean' });
+  const babel = define({ name: 'babel' });
+
+  await Promise.all([
+    clean({ pattern: `{${paths.build},${paths.target}}/*` }),
+  ]);
+
+  await Promise.all([
+    babel({ pattern: paths.javascripts, output: paths.build }),
+  ]);
+
+  watch(paths.javascripts, async (changed) => {
+    await babel({ pattern: changed, output: paths.build });
+  });
 
   return {
-    commands,
-    plugins,
+    persistent: true,
   };
 };

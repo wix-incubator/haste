@@ -13,17 +13,13 @@ function bundle(webpackConfig) {
   });
 }
 
-module.exports = ({ plugins }) => {
-  const baseConfig = {
+module.exports = () => {
+  const config = {
     entry: './src/app.js',
     output: {
       filename: './dist/bundle.js'
     }
   };
-
-  const config = plugins
-    .map(require)
-    .reduce((webpackConfig, plugin) => plugin(webpackConfig), baseConfig);
 
   return bundle(config);
 };
