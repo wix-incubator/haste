@@ -5,6 +5,7 @@ module.exports = context => (action, params) => {
 
   const configure = ({ plugins = [] }) => {
     runner.apply(...plugins);
+    runner.applyPlugins('start');
 
     return {
       watch: (...args) => runner.watch(...args),
@@ -12,5 +13,13 @@ module.exports = context => (action, params) => {
     };
   };
 
-  return action(configure, ...params);
+  return action(configure, ...params)
+    .then((result) => {
+      runner.applyPlugins('finish-success', result);
+      return result;
+    })
+    .catch((error) => {
+      runner.applyPlugins('finish-failure', error);
+      throw error;
+    });
 };

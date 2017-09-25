@@ -1,4 +1,5 @@
-const KodiakPluginLogger = require('kodiak-plugin-logger');
+const LoggerPlugin = require('kodiak-plugin-logger');
+const ExtendPlugin = require('kodiak-plugin-extend');
 
 const paths = {
   build: 'dist',
@@ -6,9 +7,24 @@ const paths = {
   javascripts: 'src/**/*.js',
 };
 
+const basePreset = {
+  before: ({ define, watch }) => {
+
+  },
+  after: ({ define, watch }) => {
+
+  },
+  plugins: [
+    new LoggerPlugin(),
+  ],
+};
+
 module.exports.build = async (configure, cliArgs, configArgs) => {
   const { define, watch } = configure({
-    plugins: [new KodiakPluginLogger()],
+    plugins: [
+      // new LoggerPlugin(),
+      new ExtendPlugin(basePreset)
+    ],
   });
 
   const clean = define({ name: 'clean' });

@@ -14,6 +14,7 @@
     "kodiak-task-webpack": "^0.0.1",
     "kodiak-task-server": "^0.0.1",
     "kodiak-task-babel": "^0.0.1",
+    "kodiak-plugin-extend": "^0.0.1",
     "kodiak-webpack-plugin-example": "^0.0.1"
   }
 }
