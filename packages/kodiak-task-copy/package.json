@@ -4,6 +4,8 @@
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {
-    "copy-dir": "^0.3.0"
+    "copy-dir": "^0.3.0",
+    "glob": "^7.1.2",
+    "mkdirp": "^0.5.1"
   }
 }

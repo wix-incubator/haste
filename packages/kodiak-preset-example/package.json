@@ -7,14 +7,12 @@
     "kodiak-core": "^0.0.1",
     "kodiak-plugin-dashboard": "^0.0.1",
     "kodiak-plugin-logger": "^0.0.1",
-    "kodiak-plugin-mapping": "^0.0.1",
     "kodiak-task-mocha": "^0.0.1",
     "kodiak-task-clean": "^0.0.1",
     "kodiak-task-copy": "^0.0.1",
     "kodiak-task-webpack": "^0.0.1",
     "kodiak-task-server": "^0.0.1",
     "kodiak-task-babel": "^0.0.1",
-    "kodiak-plugin-extend": "^0.0.1",
-    "kodiak-webpack-plugin-example": "^0.0.1"
+    "kodiak-plugin-extend": "^0.0.1"
   }
 }
