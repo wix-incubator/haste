@@ -3,11 +3,14 @@ const { format, delta } = require('./utils');
 
 module.exports = class LoggerPlugin {
   apply(runner) {
-    runner.plugin('start-task', (task) => {
+    runner.plugin('define-task', (task) => {
       ['stdout', 'stderr'].forEach(name => task.child[name].pipe(process[name]));
+      let start;
 
-      const start = new Date();
-      console.log(`[${format(start)}] ${chalk.black.bgGreen('Starting')} '${task.name}'...`);
+      task.plugin('start-task', () => {
+        start = new Date();
+        console.log(`[${format(start)}] ${chalk.black.bgGreen('Starting')} '${task.name}'...`);
+      });
 
       task.plugin('succeed-task', () => {
         const [end, time] = delta(start);

@@ -9,6 +9,7 @@
     "kodiak-task-clean": "^0.0.1",
     "kodiak-task-copy": "^0.0.1",
     "kodiak-task-webpack": "^0.0.1",
+    "kodiak-task-webpack-dev-server": "^0.0.1",
     "kodiak-task-server": "^0.0.1",
     "kodiak-task-babel": "^0.0.1"
   }

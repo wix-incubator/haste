@@ -11,7 +11,7 @@ module.exports = {
   entry: './src/app.js',
   config: {
     webpack: {
-      development: './',
+      development: require.resolve('./webpack.config.development'),
       production: require.resolve('./webpack.config.production')
     }
   }

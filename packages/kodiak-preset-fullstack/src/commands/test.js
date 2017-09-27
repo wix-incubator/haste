@@ -1,7 +1,7 @@
 const LoggerPlugin = require('kodiak-plugin-logger');
-const paths = require('../config/paths');
+const paths = require('../../config/paths');
 
-module.exports.test = async (configure, { watch }) => {
+module.exports = async (configure, { watch }) => {
   const { define } = configure({
     plugins: [
       new LoggerPlugin(),
