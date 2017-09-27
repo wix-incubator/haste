@@ -1,0 +1,15 @@
+{
+  "name": "kodiak-preset-fullstack",
+  "version": "0.0.1",
+  "main": "./src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "kodiak-plugin-logger": "^0.0.1",
+    "kodiak-task-mocha": "^0.0.1",
+    "kodiak-task-clean": "^0.0.1",
+    "kodiak-task-copy": "^0.0.1",
+    "kodiak-task-webpack": "^0.0.1",
+    "kodiak-task-server": "^0.0.1",
+    "kodiak-task-babel": "^0.0.1"
+  }
+}
