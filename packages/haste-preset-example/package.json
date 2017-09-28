@@ -6,13 +6,13 @@
   "dependencies": {
     "haste-core": "^0.0.1",
     "haste-plugin-dashboard": "^0.0.1",
+    "haste-plugin-extend": "^0.0.1",
     "haste-plugin-logger": "^0.0.1",
-    "haste-task-mocha": "^0.0.1",
+    "haste-task-babel": "^0.0.1",
     "haste-task-clean": "^0.0.1",
     "haste-task-copy": "^0.0.1",
-    "haste-task-webpack": "^0.0.1",
+    "haste-task-mocha": "^0.0.1",
     "haste-task-server": "^0.0.1",
-    "haste-task-babel": "^0.0.1",
-    "haste-plugin-extend": "^0.0.1"
+    "haste-task-webpack": "^0.0.1"
   }
 }
