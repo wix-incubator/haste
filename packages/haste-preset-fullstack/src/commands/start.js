@@ -2,32 +2,25 @@ const LoggerPlugin = require('haste-plugin-logger');
 const paths = require('../../config/paths');
 
 module.exports = async (configure) => {
-  const { define, watch } = configure({
+  const { run, watch } = configure({
     plugins: [
       new LoggerPlugin(),
     ],
   });
 
-  const clean = define({ name: 'clean' });
-  const babel = define({ name: 'babel' });
-  // const sass = define({ name: 'sass' });
-  const copy = define({ name: 'copy' });
-  const webpackDevServer = define({ name: 'webpack-dev-server' });
-  // const server = define({ name: 'server' });
-
-  await clean({ pattern: `{${paths.build},${paths.target}}/*` });
+  await run('clean', { pattern: `{${paths.build},${paths.target}}/*` });
 
   await Promise.all([
     // sass({ pattern: paths.javascripts, output: paths.build }),
-    copy({ pattern: paths.assets, output: paths.build }),
-    babel({ pattern: paths.javascripts, output: paths.build }),
-    webpackDevServer({ configPath: paths.config.webpack.development }),
+    run('copy', { pattern: paths.assets, output: paths.build }),
+    run('babel', { pattern: paths.javascripts, output: paths.build }),
+    run('webpack-dev-server', { configPath: paths.config.webpack.development }),
   ]);
 
   // const restart = await server({ file });
 
   watch(paths.javascripts, async (changed) => {
-    await babel({ pattern: changed, output: paths.build });
+    await run('babel', { pattern: changed, output: paths.build });
     // await restart();
   });
 
@@ -36,7 +29,7 @@ module.exports = async (configure) => {
   // });
 
   watch(paths.assets, async (changed) => {
-    await copy({ pattern: changed, output: paths.build });
+    await run('copy', { pattern: changed, output: paths.build });
   });
 
   return {

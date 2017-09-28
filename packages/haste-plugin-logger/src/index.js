@@ -5,6 +5,7 @@ module.exports = class LoggerPlugin {
   apply(runner) {
     runner.plugin('define-task', (task) => {
       ['stdout', 'stderr'].forEach(name => task.child[name].pipe(process[name]));
+
       let start;
 
       task.plugin('start-task', () => {

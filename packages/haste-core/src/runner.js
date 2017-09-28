@@ -11,30 +11,35 @@ module.exports = class Runner extends Tapable {
   constructor(context) {
     super();
     this.context = context;
+    this.tasks = {};
   }
 
-  define({ name }) {
+  defineTask(name) {
     const modulePath = resolveTaskName(name, this.context);
     const child = fork(WORKER_BIN, [modulePath], WORKER_OPTIONS);
     const task = new Task({ child, name, modulePath });
 
     this.applyPlugins('define-task', task);
 
-    return (options) => {
-      task.applyPlugins('start-task', options);
+    return task;
+  }
 
-      child.send({ options });
+  run(name, options) {
+    const task = this.tasks[name] || this.defineTask(name);
 
-      const promise = new Promise((resolve, reject) =>
-        child.on('message', ({ result, error }) => error ? reject(error) : resolve(result))
-      );
+    task.applyPlugins('start-task', options);
 
-      promise
-        .then(result => task.applyPlugins('succeed-task', result))
-        .catch(error => task.applyPlugins('failed-task', error));
+    task.child.send({ options });
 
-      return promise;
-    };
+    const promise = new Promise((resolve, reject) =>
+      task.child.on('message', ({ result, error }) => error ? reject(error) : resolve(result))
+    );
+
+    promise
+      .then(result => task.applyPlugins('succeed-task', result))
+      .catch(error => task.applyPlugins('failed-task', error));
+
+    return promise;
   }
 
   watch(pattern, callback) {
