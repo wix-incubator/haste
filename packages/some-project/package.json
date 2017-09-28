@@ -1,6 +1,6 @@
 {
   "name": "some-project",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "main": "index.js",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "fast": true
   },
   "dependencies": {
-    "haste-cli": "^0.0.1",
-    "haste-preset-fullstack": "^0.0.1"
+    "haste-cli": "^0.0.2",
+    "haste-preset-fullstack": "^0.0.2"
   }
 }

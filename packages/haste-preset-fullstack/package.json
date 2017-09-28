@@ -1,16 +1,16 @@
 {
   "name": "haste-preset-fullstack",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {
-    "haste-plugin-logger": "^0.0.1",
-    "haste-task-babel": "^0.0.1",
-    "haste-task-clean": "^0.0.1",
-    "haste-task-copy": "^0.0.1",
-    "haste-task-mocha": "^0.0.1",
-    "haste-task-server": "^0.0.1",
-    "haste-task-webpack": "^0.0.1",
-    "haste-task-webpack-dev-server": "^0.0.1"
+    "haste-plugin-logger": "^0.0.2",
+    "haste-task-babel": "^0.0.2",
+    "haste-task-clean": "^0.0.2",
+    "haste-task-copy": "^0.0.2",
+    "haste-task-mocha": "^0.0.2",
+    "haste-task-server": "^0.0.2",
+    "haste-task-webpack": "^0.0.2",
+    "haste-task-webpack-dev-server": "^0.0.2"
   }
 }
