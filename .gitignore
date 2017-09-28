@@ -5,4 +5,4 @@ yarn-error.log*
 yarn.lock
 package-lock.json
 lerna-debug.log
-!packages/kodiak/test/fixtures/node_modules
+!packages/haste/test/fixtures/node_modules

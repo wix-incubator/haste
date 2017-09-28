@@ -1,8 +1,8 @@
-# Kodiak
+# Haste
 Extendable, task runner that cares about your build performance.
 
 ## What is it
-Kodiak is an automation tool, that helps you create build configurations and share them.
+Haste is an automation tool, that helps you create build configurations and share them.
 
 ## Summary
 * **Performance:** run tasks in parallel.

@@ -1,0 +1,13 @@
+{
+  "name": "haste-core",
+  "version": "0.0.1",
+  "main": "src/haste.js",
+  "author": "Ronen Amiel",
+  "license": "MIT",
+  "dependencies": {
+    "chokidar": "^1.7.0",
+    "resolve-from": "^3.0.0",
+    "rxjs": "^5.4.3",
+    "tapable": "^0.2.8"
+  }
+}

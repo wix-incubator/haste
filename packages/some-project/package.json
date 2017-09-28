@@ -4,12 +4,12 @@
   "private": true,
   "main": "index.js",
   "license": "MIT",
-  "kodiak": {
-    "preset": "kodiak-preset-fullstack",
+  "haste": {
+    "preset": "haste-preset-fullstack",
     "fast": true
   },
   "dependencies": {
-    "kodiak-cli": "^0.0.1",
-    "kodiak-preset-fullstack": "^0.0.1"
+    "haste-cli": "^0.0.1",
+    "haste-preset-fullstack": "^0.0.1"
   }
 }

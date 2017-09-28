@@ -1,0 +1,16 @@
+{
+  "name": "haste-cli",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "Ronen Amiel",
+  "license": "MIT",
+  "bin": {
+    "haste": "./bin/haste"
+  },
+  "dependencies": {
+    "cosmiconfig": "^2.2.2",
+    "haste-core": "^0.0.1",
+    "resolve-from": "~3.0.0",
+    "yargs": "^8.0.2"
+  }
+}
