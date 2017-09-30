@@ -47,7 +47,7 @@ module.exports = class Runner extends Tapable {
   run(...tasks) {
     return tasks.reduce((promise, task) => {
       return promise.then(input => task(input));
-    }, Promise.resolve([]));
+    }, Promise.resolve());
   }
 
   watch(pattern, callback) {

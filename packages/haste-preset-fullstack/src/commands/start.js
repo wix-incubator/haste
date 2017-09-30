@@ -1,59 +1,56 @@
-// const LoggerPlugin = require('haste-plugin-logger');
-// const paths = require('../../config/paths');
+const LoggerPlugin = require('haste-plugin-logger');
+const paths = require('../../config/paths');
 
-// module.exports = async (configure) => {
-//   const { run, watch, clean, babel, read, copy } = configure({
-//     plugins: [
-//       new LoggerPlugin(),
-//     ],
-//   });
+module.exports = async (configure) => {
+  const { run, watch, define } = configure({
+    plugins: [
+      new LoggerPlugin(),
+    ],
+  });
 
-//   await run(
-//     read([paths.build, paths.target]),
-//     clean(),
-//   );
+  const read = define('read');
+  const write = define('write');
+  const babel = define('babel');
+  const clean = define('clean');
+  const webpackDevServer = define('webpack-dev-server');
 
-//   await Promise.all([
-//     run(
-//       read([paths.styles]),
-//       sass({ options }),
-//       write(paths.build),
-//     ),
-//     run(
-//       read([paths.assets]),
-//       copy(paths.build),
-//     ),
-//     run(
-//       read([paths.javascripts]),
-//       babel({ options }),
-//       write(paths.build),
-//     ),
-//     run(
-//       webpackDevServer({ configPath: paths.config.webpack.development }),
-//     ),
-//   ]);
+  await run(
+    clean(`${paths.build}/*`)
+  );
 
-//   const restart = await run(
-//     server({ file })
-//   );
+  await Promise.all([
+    run(
+      read(`${paths.assets}/**/*.*`),
+      write(paths.build)
+    ),
 
-//   watch(paths.javascripts, async (changed) => {
-//     await run(
-//       read([changed]),
-//       babel({ options }),
-//       write(paths.build),
-//     );
-//   });
+    run(
+      read(`${paths.src}/**/*.js`),
+      babel(),
+      write(paths.build)
+    ),
 
-//   watch(paths.styles, async (changed) => {
-//     await sass({ pattern: changed, output: paths.build });
-//   });
+    run(
+      webpackDevServer({ configPath: paths.config.webpack.development })
+    ),
+  ]);
 
-//   watch(paths.assets, async (changed) => {
-//     await run('copy', { pattern: changed, output: paths.build });
-//   });
+  watch(paths.src, async (changed) => {
+    await run(
+      read(changed),
+      babel(),
+      write(paths.build)
+    );
+  });
 
-//   return {
-//     persistent: true,
-//   };
-// };
+  watch(paths.assets, async (changed) => {
+    await run(
+      read(changed),
+      write(paths.build)
+    );
+  });
+
+  return {
+    persistent: true,
+  };
+};
