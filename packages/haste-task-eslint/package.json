@@ -1,0 +1,9 @@
+{
+  "name": "haste-task-eslint",
+  "version": "0.0.2",
+  "main": "./src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "eslint": "^4.8.0"
+  }
+}

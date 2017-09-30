@@ -6,6 +6,7 @@
   "dependencies": {
     "haste-plugin-logger": "^0.0.2",
     "haste-task-babel": "^0.0.2",
+    "haste-task-eslint": "^0.0.2",
     "haste-task-clean": "^0.0.2",
     "haste-task-copy": "^0.0.2",
     "haste-task-mocha": "^0.0.2",
