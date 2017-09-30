@@ -2,8 +2,5 @@
   "name": "haste-task-server",
   "version": "0.0.2",
   "main": "./src/index.js",
-  "license": "MIT",
-  "dependencies": {
-    "express": "~4.15.4"
-  }
+  "license": "MIT"
 }

@@ -4,11 +4,6 @@
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {
-    "babel-core": "^6.26.0",
-    "chokidar": "^1.7.0",
-    "glob": "^7.1.2",
-    "globby": "^6.1.0",
-    "graceful-fs": "^4.1.11",
     "mkdirp": "^0.5.1"
   }
 }

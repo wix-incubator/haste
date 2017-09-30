@@ -4,10 +4,7 @@
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {
-    "babel-core": "^6.26.0",
-    "chokidar": "^1.7.0",
-    "glob": "^7.1.2",
-    "mkdirp": "^0.5.1"
+    "babel-core": "^6.26.0"
   },
   "devDependencies": {
     "babel-plugin-transform-es2015-block-scoping": "^6.26.0"
