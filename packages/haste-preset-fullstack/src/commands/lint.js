@@ -2,13 +2,17 @@ const LoggerPlugin = require('haste-plugin-logger');
 const paths = require('../../config/paths');
 
 module.exports = async (configure) => {
-  const { run } = configure({
+  const { run, define } = configure({
     plugins: [
       new LoggerPlugin(),
     ],
   });
 
-  await run('eslint', { pattern: paths.javascripts, output: paths.build });
+  const eslint = define('eslint');
+
+  await run(
+    eslint({ pattern: [`${paths.src}/**/*.js`] })
+  );
 
   return {
     persistent: false,

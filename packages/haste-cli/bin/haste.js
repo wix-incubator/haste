@@ -23,6 +23,7 @@ const { argv } = yargs
       default: false
     }
   })
+  .command('*')
   .demandCommand(1, 'You must specify a command for Haste to run.\nUSAGE:  haste <command>')
   .version()
   .recommendCommands()

@@ -22,7 +22,7 @@ module.exports = async (configure) => {
     mocha()
   );
 
-  watch('test/**/*.spec.js', changed => run(
+  watch('{src,test}/**/*.spec.js', changed => run(
     read(changed),
     mocha()
   ));
