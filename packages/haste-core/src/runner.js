@@ -1,4 +1,5 @@
 const { fork } = require('child_process');
+const uuid = require('uuid/v1');
 const Tapable = require('tapable');
 const chokidar = require('chokidar');
 const { resolveTaskName } = require('./utils');
@@ -11,35 +12,42 @@ module.exports = class Runner extends Tapable {
   constructor(context) {
     super();
     this.context = context;
-    this.tasks = {};
   }
 
-  defineTask(name) {
+  define(name) {
     const modulePath = resolveTaskName(name, this.context);
     const child = fork(WORKER_BIN, [modulePath], WORKER_OPTIONS);
     const task = new Task({ child, name, modulePath });
 
     this.applyPlugins('define-task', task);
 
-    return task;
+    return options => (input) => {
+      task.applyPlugins('start-task', options);
+
+      const callId = uuid();
+
+      task.child.send({ options, input, id: callId });
+
+      const promise = new Promise((resolve, reject) =>
+        task.child.on('message', ({ result, error, id }) => {
+          if (id === callId) {
+            error ? reject(error) : resolve(result);
+          }
+        })
+      );
+
+      promise
+        .then(result => task.applyPlugins('succeed-task', result))
+        .catch(error => task.applyPlugins('failed-task', error));
+
+      return promise;
+    };
   }
 
-  run(name, options) {
-    const task = this.tasks[name] || this.defineTask(name);
-
-    task.applyPlugins('start-task', options);
-
-    task.child.send({ options });
-
-    const promise = new Promise((resolve, reject) =>
-      task.child.on('message', ({ result, error }) => error ? reject(error) : resolve(result))
-    );
-
-    promise
-      .then(result => task.applyPlugins('succeed-task', result))
-      .catch(error => task.applyPlugins('failed-task', error));
-
-    return promise;
+  run(...tasks) {
+    return tasks.reduce((promise, task) => {
+      return promise.then(input => task(input));
+    }, Promise.resolve([]));
   }
 
   watch(pattern, callback) {

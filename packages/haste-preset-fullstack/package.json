@@ -9,6 +9,8 @@
     "haste-task-clean": "^0.0.2",
     "haste-task-copy": "^0.0.2",
     "haste-task-mocha": "^0.0.2",
+    "haste-task-read": "^0.0.2",
+    "haste-task-write": "^0.0.2",
     "haste-task-server": "^0.0.2",
     "haste-task-webpack": "^0.0.2",
     "haste-task-webpack-dev-server": "^0.0.2"

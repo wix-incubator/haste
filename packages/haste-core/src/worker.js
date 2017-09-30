@@ -6,8 +6,8 @@ function parseError(error) {
   }, {});
 }
 
-process.on('message', ({ options, id }) => {
-  task(options)
+process.on('message', ({ options, input, id }) => {
+  task(options)(input)
     .then(result => process.send({ result, id }))
     .catch((error) => {
       if (error instanceof Error) {
