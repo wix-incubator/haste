@@ -9,6 +9,7 @@
     "fast": true
   },
   "dependencies": {
+    "express": "^4.16.1",
     "haste-cli": "^0.0.2",
     "haste-preset-fullstack": "^0.0.2"
   }

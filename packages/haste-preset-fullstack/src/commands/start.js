@@ -1,3 +1,4 @@
+const path = require('path');
 const LoggerPlugin = require('haste-plugin-logger');
 const paths = require('../../config/paths');
 
@@ -13,42 +14,59 @@ module.exports = async (configure) => {
   const babel = define('babel');
   const clean = define('clean');
   const webpackDevServer = define('webpack-dev-server');
+  const server = define('server');
+  const mocha = define('mocha');
 
   await run(
-    clean(`${paths.build}/*`)
+    read('test/**/*.spec.js'),
+    mocha()
   );
 
-  await Promise.all([
-    run(
-      read(`${paths.assets}/**/*.*`),
-      write(paths.build)
-    ),
+  watch('test/**/*.spec.js', changed => run(
+    read(changed),
+    mocha()
+  ));
 
-    run(
-      read(`${paths.src}/**/*.js`),
-      babel(),
-      write(paths.build)
-    ),
+  // await run(
+  //   clean(`${paths.build}/*`)
+  // );
 
-    run(
-      webpackDevServer({ configPath: paths.config.webpack.development })
-    ),
-  ]);
+  // await Promise.all([
+  //   run(
+  //     read(`${paths.assets}/**/*.*`),
+  //     write(paths.build)
+  //   ),
 
-  watch(paths.src, async (changed) => {
-    await run(
-      read(changed),
-      babel(),
-      write(paths.build)
-    );
-  });
+  //   run(
+  //     read(`${paths.src}/**/*.js`),
+  //     babel(),
+  //     write(paths.build)
+  //   ),
 
-  watch(paths.assets, async (changed) => {
-    await run(
-      read(changed),
-      write(paths.build)
-    );
-  });
+  //   run(
+  //     webpackDevServer({ configPath: paths.config.webpack.development })
+  //   ),
+  // ]);
+
+  // await run(
+  //   server({ serverPath: path.resolve(process.cwd(), 'dist/src/server.js') })
+  // );
+
+  // watch(paths.src, async (changed) => {
+  //   await run(
+  //     read(changed),
+  //     babel(),
+  //     write(paths.build),
+  //     server({ serverPath: path.resolve(process.cwd(), 'dist/src/server.js') })
+  //   );
+  // });
+
+  // watch(paths.assets, async (changed) => {
+  //   await run(
+  //     read(changed),
+  //     write(paths.build)
+  //   );
+  // });
 
   return {
     persistent: true,
