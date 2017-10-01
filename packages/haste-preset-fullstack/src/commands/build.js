@@ -22,13 +22,11 @@ module.exports = async (configure) => {
       babel(),
       write(paths.build)
     ),
-
     run(
       read([`${paths.assets}/**/*.*`]),
       write(paths.build)
     ),
-
-    run(webpack({ configPath: paths.config.webpack.production })),
+    run(webpack({ configPath: paths.config.webpack.production }))
   ]);
 
   return {
