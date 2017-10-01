@@ -8,6 +8,7 @@ module.exports = {
   target: 'target',
   assets: 'assets',
   src: 'src',
+  test: 'test',
   entry: './src/app.js',
   config: {
     webpack: {
