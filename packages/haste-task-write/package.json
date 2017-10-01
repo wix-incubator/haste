@@ -1,9 +1,9 @@
 {
-  "name": "haste-task-mocha",
+  "name": "haste-task-write",
   "version": "0.0.2",
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {
-    "mocha": "^3.5.0"
+    "mkdirp": "^0.5.1"
   }
 }

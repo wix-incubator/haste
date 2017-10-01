@@ -1,9 +1,9 @@
 {
-  "name": "haste-task-check",
+  "name": "haste-task-read",
   "version": "0.0.2",
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {
-    "chalk": "^2.1.0"
+    "globby": "^6.1.0"
   }
 }

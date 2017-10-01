@@ -1,16 +1,20 @@
-const express = require('express');
+const { spawn } = require('child_process');
 
-module.exports = () => {
-  const app = express();
+let server;
 
-  app.get('/', (req, res) => {
-    res.send('Hello World!');
+module.exports = ({ serverPath }) => async () => {
+  if (server) {
+    server.kill('SIGTERM');
+  }
+
+  server = spawn(process.execPath, [serverPath], {
+    env: Object.assign({ NODE_ENV: 'development' }, process.env),
+    silent: false,
   });
-
-  const promise = new Promise((resolve) => {
-    app.listen(3000, resolve);
-  });
-
-  return promise
-    .then(() => console.log('app listening on port 3000!'));
 };
+
+process.on('exit', () => {
+  if (server) {
+    server.kill('SIGTERM');
+  }
+});

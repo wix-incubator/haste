@@ -9,6 +9,7 @@ module.exports = context => (action, params) => {
 
     return {
       watch: (...args) => runner.watch(...args),
+      define: (...args) => runner.define(...args),
       run: (...args) => runner.run(...args),
     };
   };

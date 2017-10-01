@@ -2,19 +2,31 @@ const LoggerPlugin = require('haste-plugin-logger');
 const paths = require('../../config/paths');
 
 module.exports = async (configure) => {
-  const { run } = configure({
+  const { run, define } = configure({
     plugins: [
       new LoggerPlugin(),
     ],
   });
 
-  await run('clean', { pattern: `{${paths.build},${paths.target}}/*` });
+  const read = define('read');
+  const write = define('write');
+  const babel = define('babel');
+  const clean = define('clean');
+  const webpack = define('webpack');
+
+  await run(clean(`${paths.build}/*`));
 
   await Promise.all([
-    // sass({ pattern: paths.javascripts, output: paths.build }),
-    run('copy', { pattern: paths.assets, output: paths.build }),
-    run('babel', { pattern: paths.javascripts, output: paths.build }),
-    run('webpack', { configPath: paths.config.webpack.production }),
+    run(
+      read([`${paths.src}/**/*.js`]),
+      babel(),
+      write(paths.build)
+    ),
+    run(
+      read([`${paths.assets}/**/*.*`]),
+      write(paths.build)
+    ),
+    run(webpack({ configPath: paths.config.webpack.production }))
   ]);
 
   return {

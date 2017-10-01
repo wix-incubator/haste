@@ -6,8 +6,9 @@ module.exports = {
   appDirectory,
   build: 'dist',
   target: 'target',
-  assets: 'assets/**/*.*',
-  javascripts: 'src/**/*.js',
+  assets: 'assets',
+  src: 'src',
+  test: 'test',
   entry: './src/app.js',
   config: {
     webpack: {
