@@ -1,4 +1,3 @@
-const path = require('path');
 const LoggerPlugin = require('haste-plugin-logger');
 const paths = require('../../config/paths');
 
@@ -15,58 +14,35 @@ module.exports = async (configure) => {
   const clean = define('clean');
   const webpackDevServer = define('webpack-dev-server');
   const server = define('server');
-  const mocha = define('mocha');
 
-  await run(
-    read('test/**/*.spec.js'),
-    mocha()
-  );
+  await run(clean(`${paths.build}/*`));
 
-  watch('{src,test}/**/*.spec.js', changed => run(
+  await Promise.all([
+    run(
+      read(`${paths.assets}/**/*.*`),
+      write(paths.build)
+    ),
+    run(
+      read(`${paths.src}/**/*.js`),
+      babel(),
+      write(paths.build)
+    ),
+    run(webpackDevServer({ configPath: paths.config.webpack.development })),
+  ]);
+
+  await run(server({ serverPath: 'dist/src/server.js' }));
+
+  watch(paths.src, changed => run(
     read(changed),
-    mocha()
+    babel(),
+    write(paths.build),
+    server({ serverPath: 'dist/src/server.js' })
   ));
 
-  // await run(
-  //   clean(`${paths.build}/*`)
-  // );
-
-  // await Promise.all([
-  //   run(
-  //     read(`${paths.assets}/**/*.*`),
-  //     write(paths.build)
-  //   ),
-
-  //   run(
-  //     read(`${paths.src}/**/*.js`),
-  //     babel(),
-  //     write(paths.build)
-  //   ),
-
-  //   run(
-  //     webpackDevServer({ configPath: paths.config.webpack.development })
-  //   ),
-  // ]);
-
-  // await run(
-  //   server({ serverPath: path.resolve(process.cwd(), 'dist/src/server.js') })
-  // );
-
-  // watch(paths.src, async (changed) => {
-  //   await run(
-  //     read(changed),
-  //     babel(),
-  //     write(paths.build),
-  //     server({ serverPath: path.resolve(process.cwd(), 'dist/src/server.js') })
-  //   );
-  // });
-
-  // watch(paths.assets, async (changed) => {
-  //   await run(
-  //     read(changed),
-  //     write(paths.build)
-  //   );
-  // });
+  watch(paths.assets, changed => run(
+    read(changed),
+    write(paths.build)
+  ));
 
   return {
     persistent: true,
