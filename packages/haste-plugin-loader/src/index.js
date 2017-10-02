@@ -42,7 +42,15 @@ module.exports = class LoaderPlugin {
       });
     });
 
-    runner.plugin('finish-success', () => {
+    runner.plugin('finish-success', ({ persistent }) => {
+      if (!persistent) {
+        return loader.stop();
+      }
+
+      return loader.watchMode();
+    });
+
+    runner.plugin('finish-failure', () => {
       loader.stop();
     });
   }

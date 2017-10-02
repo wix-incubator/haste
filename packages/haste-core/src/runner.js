@@ -29,7 +29,7 @@ module.exports = class Runner extends Tapable {
       const run = async (input, task) => {
         task.applyPlugins('start-task', options);
 
-        await sleep(1000); // use this so the loader will work with more realistic timings
+        await sleep(500); // use this so the loader will work with more realistic timings
 
         const callId = uuid();
 

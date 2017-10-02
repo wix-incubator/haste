@@ -17,7 +17,7 @@ module.exports = class TaskLoader {
 
   success() {
     this.done = true;
-    this.content = `${chalk.green('✔')} ${this.content}`;
+    this.content = `✔ ${this.content}`;
   }
 
   failure() {

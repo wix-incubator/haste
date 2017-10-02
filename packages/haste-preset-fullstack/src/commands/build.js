@@ -5,7 +5,7 @@ const paths = require('../../config/paths');
 module.exports = async (configure) => {
   const { run, define } = configure({
     plugins: [
-      new LoaderPlugin(),
+      new LoaderPlugin({ oneLinerTasks: false }),
     ],
   });
 
