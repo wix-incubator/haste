@@ -1,4 +1,5 @@
 const LoggerPlugin = require('haste-plugin-logger');
+// const LoaderPlugin = require('haste-plugin-loader');
 const paths = require('../../config/paths');
 
 module.exports = async (configure) => {
