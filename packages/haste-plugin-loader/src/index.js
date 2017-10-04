@@ -37,13 +37,13 @@ module.exports = class LoaderPlugin {
         loaderRun.success();
       });
 
-      runPhase.plugin('failed-run', () => {
-        loaderRun.failure();
+      runPhase.plugin('failed-run', (error) => {
+        loaderRun.failure(error);
       });
     });
 
-    runner.plugin('finish-success', ({ persistent }) => {
-      if (!persistent) {
+    runner.plugin('finish-success', () => {
+      if (!runner.persistent) {
         return loader.done();
       }
 

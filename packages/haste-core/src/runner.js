@@ -53,7 +53,9 @@ module.exports = class Runner extends Tapable {
       })
       .catch((error) => {
         runPhase.applyPlugins('failed-run', error);
-        throw error;
+        if (!this.persistent || !this.done) {
+          throw error;
+        }
       });
   }
 
