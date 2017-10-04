@@ -5,7 +5,7 @@ const paths = require('../../config/paths');
 module.exports = async (configure) => {
   const { run } = configure({
     plugins: [
-      new LoaderPlugin({ oneLinerTasks: true }),
+      new LoaderPlugin({ oneLinerTasks: false }),
       // new LoggerPlugin(),
     ],
   });
@@ -24,8 +24,4 @@ module.exports = async (configure) => {
     ),
     run(['webpack', { configPath: paths.config.webpack.production }])
   ]);
-
-  return {
-    persistent: false,
-  };
 };

@@ -11,8 +11,4 @@ module.exports = async (configure) => {
   const eslint = define('eslint');
 
   await run(eslint({ pattern: [`${paths.src}/**/*.js`] }));
-
-  return {
-    persistent: false,
-  };
 };

@@ -4,6 +4,7 @@ const paths = require('../../config/paths');
 
 module.exports = async (configure) => {
   const { run, watch } = configure({
+    persistent: true,
     plugins: [
       new LoaderPlugin({ oneLinerTasks: true }),
     ],
@@ -37,8 +38,4 @@ module.exports = async (configure) => {
     ['read', changed],
     ['write', paths.build]
   ));
-
-  return {
-    persistent: true,
-  };
 };

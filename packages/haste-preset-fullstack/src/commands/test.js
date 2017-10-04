@@ -3,6 +3,7 @@ const paths = require('../../config/paths');
 
 module.exports = async (configure, { watch: shouldWatch }) => {
   const { run, define, watch } = configure({
+    persistent: shouldWatch,
     plugins: [
       new LoggerPlugin(),
     ],
@@ -22,9 +23,5 @@ module.exports = async (configure, { watch: shouldWatch }) => {
       mocha()
     ));
   }
-
-  return {
-    persistent: shouldWatch,
-  };
 };
 

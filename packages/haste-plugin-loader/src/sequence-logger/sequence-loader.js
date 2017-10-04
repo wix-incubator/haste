@@ -24,12 +24,14 @@ module.exports = class SequenceLoader {
   }
 
   renderFrame() {
+    const getRunError = run => this.watch ? `\n\n${run.getError()}` : '';
+
     return this.runs.map((run) => {
       const tasksContent = this.oneLinerTasks ?
         run.getCurrentRunningTask() :
         run.getTasksContent();
 
-      return run.getContent() + tasksContent;
+      return run.getContent() + tasksContent + getRunError(run);
     }).join('\n');
   }
 

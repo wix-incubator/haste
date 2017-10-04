@@ -41,8 +41,4 @@ module.exports.build = async (configure, cliArgs, configArgs) => {
   watch(paths.javascripts, async (changed) => {
     await babel({ pattern: changed, output: paths.build });
   });
-
-  return {
-    persistent: true,
-  };
 };

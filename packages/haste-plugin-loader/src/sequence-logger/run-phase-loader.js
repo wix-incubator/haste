@@ -10,6 +10,7 @@ module.exports = class RunPhaseLoader {
     this.content = `${chalk.bold(name)}`;
     this.frame = elegantSpinner();
     this.tasks = [];
+    this.error;
   }
 
   startTask(name) {
@@ -49,10 +50,15 @@ module.exports = class RunPhaseLoader {
     this.content = `${chalk.green('✔')} ${this.content}`;
   }
 
-  failure() {
+  failure(error) {
     if (this.status) return;
     this.status = 'failed';
+    this.error = error;
     this.content = `${chalk.red('✖')} ${this.content}`;
+  }
+
+  getError() {
+    return this.error ? this.error.stack : '';
   }
 
   stop() {
