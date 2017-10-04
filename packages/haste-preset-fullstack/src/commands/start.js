@@ -1,10 +1,11 @@
-const LoggerPlugin = require('haste-plugin-logger');
+// const LoggerPlugin = require('haste-plugin-logger');
+const LoaderPlugin = require('haste-plugin-loader');
 const paths = require('../../config/paths');
 
 module.exports = async (configure) => {
   const { run, watch, define } = configure({
     plugins: [
-      new LoggerPlugin(),
+      new LoaderPlugin({ oneLinerTasks: true }),
     ],
   });
 
