@@ -35,6 +35,7 @@ module.exports = class SequenceLoader {
 
   render() {
     console.log(chalk.bold('starting haste runner 🏃'));
+
     this.interval = setInterval(() => {
       logUpdate(this.renderFrame());
     }, this.frameRate);
@@ -45,9 +46,21 @@ module.exports = class SequenceLoader {
     return `💫  Done in ${deltaTime}s.`;
   }
 
-  stop() {
+  done() {
     const currentFrame = this.renderFrame();
     logUpdate(`${currentFrame}\n${this.generateDoneMessage()}`);
+    clearInterval(this.interval);
+    this.runs = [];
+  }
+
+  stopAllRuns() {
+    this.runs.forEach(run => run.stop());
+  }
+
+  exitOnError() {
+    this.stopAllRuns();
+    const currentFrame = this.renderFrame();
+    logUpdate(`${currentFrame}\n`);
     clearInterval(this.interval);
     this.runs = [];
   }

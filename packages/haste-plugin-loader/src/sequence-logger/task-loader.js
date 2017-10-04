@@ -3,12 +3,12 @@ const chalk = require('chalk');
 module.exports = class TaskLoader {
   constructor(name) {
     this.name = name;
-    this.done = false;
+    this.status = null; // 'succeed' | 'failed' | 'stopped'
     this.content = name;
   }
 
   getContent() {
-    if (this.done) {
+    if (this.status) {
       return chalk.dim(`  ${this.content}`);
     }
 
@@ -16,12 +16,17 @@ module.exports = class TaskLoader {
   }
 
   success() {
-    this.done = true;
+    this.status = 'succeed';
     this.content = `✔ ${this.content}`;
   }
 
   failure() {
-    this.done = true;
+    this.status = 'failed';
     this.content = `${chalk.red('✖')} ${this.content}`;
+  }
+
+  stop() {
+    this.status = 'stopped';
+    this.content = `  ${this.content}`;
   }
 };

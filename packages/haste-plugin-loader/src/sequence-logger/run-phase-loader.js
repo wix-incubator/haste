@@ -6,7 +6,7 @@ module.exports = class RunPhaseLoader {
   constructor(name, tasksLength) {
     this.tasksLength = tasksLength;
     this.name = name;
-    this.done = false;
+    this.status = null; // 'succeed' | 'failed' | 'stopped'
     this.content = `${chalk.bold(name)}`;
     this.frame = elegantSpinner();
     this.tasks = [];
@@ -19,7 +19,7 @@ module.exports = class RunPhaseLoader {
   }
 
   getContent() {
-    if (this.done) {
+    if (this.status) {
       return this.content;
     }
 
@@ -27,7 +27,7 @@ module.exports = class RunPhaseLoader {
   }
 
   getCurrentRunningTask() {
-    if (this.done) {
+    if (this.status === 'succeed') {
       return '';
     }
 
@@ -44,12 +44,20 @@ module.exports = class RunPhaseLoader {
   }
 
   success() {
-    this.done = true;
+    if (this.status) return;
+    this.status = 'succeed';
     this.content = `${chalk.green('✔')} ${this.content}`;
   }
 
   failure() {
-    this.done = true;
+    if (this.status) return;
+    this.status = 'failed';
     this.content = `${chalk.red('✖')} ${this.content}`;
+  }
+
+  stop() {
+    if (this.status) return;
+    this.status = 'stopped';
+    this.content = ` ${this.content}`;
   }
 };
