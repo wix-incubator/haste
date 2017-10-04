@@ -6,3 +6,4 @@ yarn.lock
 package-lock.json
 lerna-debug.log
 !packages/haste/test/fixtures/node_modules
+.vscode
