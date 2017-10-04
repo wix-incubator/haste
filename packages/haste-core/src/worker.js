@@ -1,19 +1,28 @@
-const task = require(process.argv[2]);
+const Tapable = require('tapable');
+const uuid = require('uuid/v1');
 
-function parseError(error) {
-  return Object.getOwnPropertyNames(error).reduce((obj, key) => {
-    return Object.assign(obj, { [key]: error[key] });
-  }, {});
-}
+module.exports = class extends Tapable {
+  constructor({ name, modulePath, child }) {
+    super();
 
-process.on('message', ({ options, input, id }) => {
-  task(options)(input)
-    .then(result => process.send({ result, id }))
-    .catch((error) => {
-      if (error instanceof Error) {
-        error = parseError(error); // eslint-disable-line no-param-reassign
-      }
+    this.name = name;
+    this.modulePath = modulePath;
+    this.child = child;
+  }
 
-      process.send({ error, id });
-    });
-});
+  run(options, input) {
+    const callId = uuid();
+
+    this.child.send({ options, input, id: callId });
+
+    const promise = new Promise((resolve, reject) =>
+      this.child.on('message', ({ result, error, id }) => {
+        if (id === callId) {
+          error ? reject(error) : resolve(result);
+        }
+      })
+    );
+
+    return promise;
+  }
+};

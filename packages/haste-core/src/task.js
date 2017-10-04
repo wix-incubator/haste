@@ -1,12 +1,18 @@
 const Tapable = require('tapable');
 
 module.exports = class extends Tapable {
-  constructor({ name, modulePath, options, child }) {
+  constructor({ worker, options }) {
     super();
 
-    this.name = name;
-    this.modulePath = modulePath;
+    this.worker = worker;
     this.options = options;
-    this.child = child;
+  }
+
+  get name() {
+    return this.worker.name;
+  }
+
+  run(input) {
+    return this.worker.run(this.options, input);
   }
 };

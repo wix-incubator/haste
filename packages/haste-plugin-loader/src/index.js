@@ -13,7 +13,7 @@ module.exports = class LoaderPlugin {
     });
 
     runner.plugin('start-run', (runPhase) => {
-      const runTitle = runPhase.tasks.map(t => t.name).join(',');
+      const runTitle = runPhase.tasks.map(task => task.name).join(',');
       const tasksLength = runPhase.tasks.length;
       const loaderRun = loader.startRun(runTitle, tasksLength);
 

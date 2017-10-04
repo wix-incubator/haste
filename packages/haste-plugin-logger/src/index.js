@@ -3,10 +3,12 @@ const { format, delta } = require('./utils');
 
 module.exports = class LoggerPlugin {
   apply(runner) {
+    runner.plugin('start-worker', (worker) => {
+      ['stdout', 'stderr'].forEach(name => worker.child[name].pipe(process[name]));
+    });
+
     runner.plugin('start-run', (runPhase) => {
       runPhase.tasks.forEach((task) => {
-        ['stdout', 'stderr'].forEach(name => task.child[name].pipe(process[name]));
-
         let start;
 
         task.plugin('start-task', () => {

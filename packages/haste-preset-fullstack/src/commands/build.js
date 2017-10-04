@@ -3,31 +3,26 @@ const LoaderPlugin = require('haste-plugin-loader');
 const paths = require('../../config/paths');
 
 module.exports = async (configure) => {
-  const { run, define } = configure({
+  const { run } = configure({
     plugins: [
-      new LoaderPlugin({ oneLinerTasks: false }),
+      new LoaderPlugin({ oneLinerTasks: true }),
+      // new LoggerPlugin(),
     ],
   });
 
-  const read = define('read');
-  const write = define('write');
-  const babel = define('babel');
-  const clean = define('clean');
-  const webpack = define('webpack');
-
-  await run(clean(`${paths.build}/*`));
+  await run(['clean', `${paths.build}/*`]);
 
   await Promise.all([
     run(
-      read([`${paths.src}/**/*.js`]),
-      babel(),
-      write(paths.build)
+      ['read', `${paths.src}/**/*.js`],
+      ['babel'],
+      ['write', paths.build]
     ),
     run(
-      read([`${paths.assets}/**/*.*`]),
-      write(paths.build)
+      ['read', `${paths.assets}/**/*.*`],
+      ['write', paths.build]
     ),
-    run(webpack({ configPath: paths.config.webpack.production }))
+    run(['webpack', { configPath: paths.config.webpack.production }])
   ]);
 
   return {
