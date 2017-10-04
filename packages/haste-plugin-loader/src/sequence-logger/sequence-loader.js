@@ -66,7 +66,7 @@ module.exports = class SequenceLoader {
   }
 
   watchMode() {
-    this.stop();
+    this.done();
     logUpdate();
     console.log('\x1Bc');
     console.log('watching files ...\n\n');
