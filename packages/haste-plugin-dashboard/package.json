@@ -6,6 +6,6 @@
   "dependencies": {
     "blessed": "~0.1.81",
     "chalk": "^2.1.0",
-    "ramda": "~0.24.1"
+    "haste-plugin-loader":"0.0.2"
   }
 }

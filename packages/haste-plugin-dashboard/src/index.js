@@ -1,23 +1,89 @@
-const { flatten, prop } = require('ramda');
 const Dashboard = require('./dashboard');
+const SequenceLoader = require('haste-plugin-loader/src/sequence-logger/sequence-loader');
 
 module.exports = class DashboardPlugin {
-  apply(runner) {
-    const dashboard = new Dashboard();
+  constructor({ oneLinerTasks = true, frameRate = 60, tasks = [] } = {}) {
+    this.oneLinerTasks = oneLinerTasks;
+    this.frameRate = frameRate;
+    this.tasks = tasks;
+  }
 
-    runner.plugin('start', (tasks, cmd) => {
-      const taskList = flatten(tasks).map(prop('name'));
-      dashboard.init({ tasks: taskList, maxPanels: 4, cmd });
+  apply(runner) {
+    const dashboard = new Dashboard({
+      tasks: this.tasks,
+      maxPanels: 4
     });
 
-    runner.plugin('start-task', (task) => {
-      const log = dashboard.getLogger(task.name);
-      task.child.stdout.setEncoding('utf8');
-      task.child.stderr.setEncoding('utf8');
+    runner.plugin('start-worker', (worker) => {
+      const log = dashboard.getLogger(worker.name);
+      worker.child.stdout.setEncoding('utf8');
+      worker.child.stderr.setEncoding('utf8');
 
-      ['stdout', 'stderr'].forEach(name =>
-        task.child[name].on('data', log)
+      ['stdout', 'stderr'].forEach(std =>
+        worker.child[std].on('data', log)
       );
+    });
+
+    const loader = new SequenceLoader({
+      oneLinerTasks: this.oneLinerTasks,
+      frameRate: this.frameRate
+    });
+
+    runner.plugin('start', () => {
+      loader.render();
+    });
+
+    runner.plugin('start-run', (runPhase) => {
+      const runTitle = runPhase.tasks.map(task => task.name).join(',');
+      const tasksLength = runPhase.tasks.length;
+      const loaderRun = loader.startRun(runTitle, tasksLength);
+
+      runPhase.tasks.forEach((task) => {
+        let loaderTask;
+
+        task.plugin('start-task', () => {
+          loaderTask = loaderRun.startTask(task.name);
+          const panel = dashboard.getPanel(task.name);
+          if (!this.tasks.includes(task.name) || !panel) return;
+          panel.clear();
+          panel.changeBorderColor('#e1e502');
+        });
+
+        task.plugin('succeed-task', () => {
+          loaderTask.success(task.name);
+          const panel = dashboard.getPanel(task.name);
+          if (!this.tasks.includes(task.name) || !panel) return;
+          panel.changeBorderColor('#02e520');
+        });
+
+        task.plugin('failed-task', () => {
+          loaderTask.failure(task.name);
+          const panel = dashboard.getPanel(task.name);
+          if (!this.tasks.includes(task.name) || !panel) return;
+          panel.changeBorderColor('#e20b0b');
+        });
+      });
+
+      runPhase.plugin('succeed-run', () => {
+        loaderRun.success();
+      });
+
+      runPhase.plugin('failed-run', (error) => {
+        loaderRun.failure(error);
+      });
+    });
+
+    runner.plugin('finish-success', () => {
+      if (!runner.persistent) {
+        return loader.done();
+      }
+
+      loader.exitAndClear();
+      return dashboard.render();
+    });
+
+    runner.plugin('finish-failure', () => {
+      loader.exitOnError();
     });
   }
 };
