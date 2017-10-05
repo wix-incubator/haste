@@ -12,6 +12,10 @@ module.exports = class LoaderPlugin {
       frameRate: this.frameRate
     });
 
+    runner.plugin('start', () => {
+      loader.render();
+    });
+
     runner.plugin('start-run', (runPhase) => {
       const runTitle = runPhase.tasks.map(task => task.name).join(',');
       const tasksLength = runPhase.tasks.length;
