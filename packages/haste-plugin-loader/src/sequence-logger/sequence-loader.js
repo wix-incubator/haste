@@ -14,10 +14,6 @@ module.exports = class SequenceLoader {
   }
 
   startRun(name, tasksLength) {
-    if (!this.interval) {
-      this.render();
-    }
-
     const runPhaseLoader = new RunPhaseLoader(name, tasksLength);
     this.watch ? this.runs = [runPhaseLoader] : this.runs.push(runPhaseLoader);
     return runPhaseLoader;
@@ -63,6 +59,12 @@ module.exports = class SequenceLoader {
     this.stopAllRuns();
     const currentFrame = this.renderFrame();
     logUpdate(`${currentFrame}\n`);
+    clearInterval(this.interval);
+    this.runs = [];
+  }
+
+  exitAndClear() {
+    logUpdate();
     clearInterval(this.interval);
     this.runs = [];
   }

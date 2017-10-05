@@ -1,12 +1,16 @@
 // const LoggerPlugin = require('haste-plugin-logger');
-const LoaderPlugin = require('haste-plugin-loader');
+// const LoaderPlugin = require('haste-plugin-loader');
+const DashboardPlugin = require('haste-plugin-dashboard');
 const paths = require('../../config/paths');
 
 module.exports = async (configure) => {
   const { run, watch } = configure({
     persistent: true,
     plugins: [
-      new LoaderPlugin({ oneLinerTasks: true }),
+      new DashboardPlugin({
+        oneLinerTasks: true,
+        tasks: ['babel', 'server', 'webpack-dev-server']
+      }),
     ],
   });
 

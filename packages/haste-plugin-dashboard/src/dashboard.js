@@ -1,26 +1,17 @@
 const blessed = require('blessed');
 const calcLayout = require('./calc-layout');
-
-const DEFAULT_SCROLL_OPTIONS = {
-  scrollable: true,
-  input: true,
-  alwaysScroll: true,
-  scrollbar: {
-    ch: ' ',
-    inverse: true
-  },
-  keys: true,
-  vi: true,
-  mouse: true
-};
+const Panel = require('./panel');
 
 module.exports = class Dashboard {
-  constructor() {
+  constructor({ maxPanels = 4, tasks }) {
     this.panels = {};
     this.screen;
+    this.maxPanels = maxPanels;
+    this.tasks = tasks;
   }
 
-  init({ maxPanels = 4, tasks, cmd }) {
+  render() {
+    const cmd = '';
     // configure screen
     this.screen = blessed.screen({
       title: `kodaik-dashboard${cmd ? ` - running ${cmd} command` : ''}`,
@@ -33,53 +24,31 @@ module.exports = class Dashboard {
     this.screen.key(['escape', 'q', 'C-c'], () => process.exit(0));
 
     // establish layout
-    const panelsAmount = tasks.length < maxPanels ? tasks.length : maxPanels;
+    const panelsAmount = this.tasks.length < this.maxPanels ? this.tasks.length : this.maxPanels;
     const layout = calcLayout(panelsAmount);
 
     layout.forEach(([width, height, left, top], i) => {
-      const taskName = tasks[i];
-      this.createPanel({ width, height, left, top, label: taskName, panelKey: taskName });
+      const taskName = this.tasks[i];
+      this.addPanel({ width, height, left, top, label: taskName, panelKey: taskName });
     });
 
     this.screen.render();
   }
 
-  createPanel({ panelKey, label, width, height, left, top }) {
-    const box = blessed.box({
-      label,
-      padding: 1,
-      width,
-      height,
-      left,
-      top,
-      border: {
-        type: 'line'
-      },
-      style: {
-        border: {
-          fg: 'white'
-        }
-      }
-    });
+  addPanel({ panelKey, label, width, height, left, top }) {
+    const panel = Panel.create({ screen: this.screen, label, width, height, left, top });
+    this.panels[panelKey] = panel;
+  }
 
-    const logger = blessed.log(
-      Object.assign({}, DEFAULT_SCROLL_OPTIONS, {
-        parent: box,
-        tags: true,
-        width: '100%-4'
-      })
-    );
-
-    this.screen.append(box);
-    this.panels[panelKey] = logger;
+  getPanel(panelKey) {
+    if (!this.panels[panelKey]) return null;
+    return this.panels[panelKey];
   }
 
   getLogger(panelKey) {
-    return (message) => {
-      if (!this.panels[panelKey]) return;
-      message.split('\n').forEach((sentence) => {
-        this.panels[panelKey].log(sentence);
-      });
+    return (log) => {
+      if (!this.panels[panelKey]) return null;
+      return this.panels[panelKey].log(log);
     };
   }
 };
