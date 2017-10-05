@@ -1,5 +1,5 @@
 const Tapable = require('tapable');
-const uuid = require('uuid/v1');
+const uuid = require('uuid/v4');
 
 module.exports = class extends Tapable {
   constructor({ name, modulePath, child }) {
@@ -14,14 +14,16 @@ module.exports = class extends Tapable {
     const callId = uuid();
 
     this.child.send({ options, input, id: callId });
-
-    const promise = new Promise((resolve, reject) =>
-      this.child.on('message', ({ result, error, id }) => {
+    const promise = new Promise((resolve, reject) => {
+      const handler = ({ result, error, id }) => {
         if (id === callId) {
+          this.child.removeListener('message', handler);
           error ? reject(error) : resolve(result);
         }
-      })
-    );
+      };
+
+      this.child.on('message', handler);
+    });
 
     return promise;
   }
