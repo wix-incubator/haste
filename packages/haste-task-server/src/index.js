@@ -9,11 +9,17 @@ module.exports = ({ serverPath }) => async () => {
 
   server = spawn(process.execPath, [serverPath], {
     env: Object.assign({ NODE_ENV: 'development' }, process.env),
-    silent: false,
+    stdio: 'inherit'
   });
 };
 
 process.on('exit', () => {
+  if (server) {
+    server.kill('SIGTERM');
+  }
+});
+
+process.on('SIGINT', () => {
   if (server) {
     server.kill('SIGTERM');
   }

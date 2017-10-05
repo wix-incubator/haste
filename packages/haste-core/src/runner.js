@@ -18,7 +18,7 @@ module.exports = class Runner extends Tapable {
     process.on('exit', () => {
       Object.values(this.workers)
         .forEach((worker) => {
-          worker.child.kill();
+          worker.child.kill('SIGINT');
         });
     });
   }
