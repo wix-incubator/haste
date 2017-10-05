@@ -14,6 +14,13 @@ module.exports = class Runner extends Tapable {
     super();
     this.context = context;
     this.workers = {};
+
+    process.on('exit', () => {
+      Object.values(this.workers)
+        .forEach((worker) => {
+          worker.child.kill();
+        });
+    });
   }
 
   resolveWorker(name) {
