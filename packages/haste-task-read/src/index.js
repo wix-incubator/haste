@@ -5,7 +5,7 @@ const readFile = file => new Promise((resolve, reject) => {
   fs.readFile(file, 'utf8', (err, data) => err ? reject(err) : resolve(data));
 });
 
-module.exports = pattern => async () => {
+module.exports = ({ pattern }) => async () => {
   const files = await globby(pattern);
 
   return Promise.all(

@@ -11,8 +11,8 @@ const writeFile = (filename, content) => new Promise(async (resolve, reject) => 
   fs.writeFile(filename, content, 'utf8', err => err ? reject(err) : resolve());
 });
 
-module.exports = destination => async (files) => {
+module.exports = ({ target }) => async (files) => {
   return Promise.all(
-    files.map(({ filename, content }) => writeFile(path.join(destination, filename), content))
+    files.map(({ filename, content }) => writeFile(path.join(target, filename), content))
   );
 };

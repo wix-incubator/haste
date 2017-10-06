@@ -14,32 +14,32 @@ module.exports = async (configure) => {
     ],
   });
 
-  await run(['clean', `${paths.build}/*`]);
+  await run({ name: 'clean', options: { pattern: `${paths.build}/*` } });
 
   await Promise.all([
     run(
-      ['read', `${paths.assets}/**/*.*`],
-      ['write', paths.build]
+      { name: 'read', options: { pattern: `${paths.assets}/**/*.*` } },
+      { name: 'write', options: { target: paths.build } }
     ),
     run(
-      ['read', `${paths.src}/**/*.js`],
-      ['babel'],
-      ['write', paths.build]
+      { name: 'read', options: { pattern: `${paths.src}/**/*.js` } },
+      { name: 'babel' },
+      { name: 'write', options: { target: paths.build } }
     ),
-    run(['webpack-dev-server', { configPath: paths.config.webpack.development }]),
+    run({ name: 'webpack-dev-server', options: { configPath: paths.config.webpack.development } }),
   ]);
 
-  await run(['server', { serverPath: 'dist/src/server.js' }]);
+  await run({ name: 'server', options: { serverPath: 'dist/src/server.js' } });
 
   watch(paths.src, changed => run(
-    ['read', changed],
-    ['babel'],
-    ['write', paths.build],
-    ['server', { serverPath: 'dist/src/server.js' }]
+    { name: 'read', options: { pattern: changed } },
+    { name: 'babel' },
+    { name: 'write', options: { target: paths.build } },
+    { name: 'server', options: { serverPath: 'dist/src/server.js' } }
   ));
 
   watch(paths.assets, changed => run(
-    ['read', changed],
-    ['write', paths.build]
+    { name: 'read', options: { pattern: changed } },
+    { name: 'write', options: { target: paths.build } }
   ));
 };

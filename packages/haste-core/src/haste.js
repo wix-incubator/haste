@@ -13,6 +13,7 @@ module.exports = context => (action, params) => {
 
   const configure = ({ plugins = [], persistent = false }) => {
     runner.persistent = persistent;
+
     runner.apply(...plugins);
     runner.applyPlugins('start');
 
@@ -24,8 +25,9 @@ module.exports = context => (action, params) => {
 
   return action(configure, ...params)
     .then(() => {
-      runner.applyPlugins('finish-success');
       runner.done = true;
+
+      runner.applyPlugins('finish-success');
       return { persistent: runner.persistent };
     })
     .catch((error) => {

@@ -1,14 +1,12 @@
-const LoggerPlugin = require('haste-plugin-logger');
+const LoaderPlugin = require('haste-plugin-loader');
 const paths = require('../../config/paths');
 
 module.exports = async (configure) => {
-  const { run, define } = configure({
+  const { run } = configure({
     plugins: [
-      new LoggerPlugin(),
+      new LoaderPlugin({ oneLinerTasks: false }),
     ],
   });
 
-  const eslint = define('eslint');
-
-  await run(eslint({ pattern: [`${paths.src}/**/*.js`] }));
+  await run({ name: 'eslint', options: { patterns: [`${paths.src}/**/*.js`] } });
 };
