@@ -18,12 +18,12 @@ process.on('message', ({ options, input, id }) => {
   let promise;
 
   try {
-    promise = require(process.argv[2])(options)(input);
+    promise = require(process.argv[2])(options)(input)
+      .then(result => process.send({ result, id }));
   } catch (error) {
     handleError(error);
   }
 
   promise
-    .then(result => process.send({ result, id }))
     .catch(handleError);
 });
