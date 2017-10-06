@@ -17,6 +17,11 @@ module.exports = async (configure) => {
       { name: 'write', options: { target: paths.build } }
     ),
     run(
+      { name: 'read', options: { pattern: `${paths.src}/**/*.scss` } },
+      { name: 'sass' },
+      { name: 'write', options: { target: paths.build } }
+    ),
+    run(
       { name: 'read', options: { pattern: `${paths.assets}/**/*.*` } },
       { name: 'write', options: { target: paths.build } }
     ),
