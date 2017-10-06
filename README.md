@@ -1,20 +1,40 @@
-# Haste
-Extendable, task runner that cares about your build performance.
+<p align="center"><img width="120" src="images/logo.png"></p>
+<h1 align="center">Haste</h1>
+<p align="center">The extendable, blazing fast build system for JavaScript.</p>
 
-## What is it
-Haste is an automation tool, that helps you create build configurations and share them.
+<p align="center">
+  <a href="https://travis-ci.org/ronami/haste"><img src="https://travis-ci.org/ronami/haste.svg?branch=master" alt="Build Status"></a>
+  <a href="https://codecov.io/gh/ronami/haste"><img src="https://codecov.io/gh/ronami/haste/branch/master/graph/badge.svg" alt="Code Coverage"></a>
+  <a href="https://www.npmjs.com/package/haste-core"><img src="https://img.shields.io/npm/dm/haste.svg" alt="Downloads"></a>
+  <a href="https://ronami.github.io/license"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+  <a href=""><img src="https://img.shields.io/david/ronami/haste.svg"></a>
+  <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
+</p>
+
+## Introduction
+Haste is a build system that helps you automate painful or time-consuming tasks in your development workflow and create the best user experience.
 
 ## Summary
-* **Performance:** run tasks in parallel.
-* **Extendable:** use plugins to display a dashboard, collect insights on your builds and more.
-* **Reuseable:** presets are a way to share and reuse your build configuration.
+- :zap: Blazing fast performance
+- :tada: Highly modular plugin system
+- :video_game: Amazing user experience
+- :rocket: Simple, Intuitive API
 
-## Getting started
-TODO
-## Write your own preset
-TODO
-## API refrence
+## A taste of Haste
 TODO
 
-## Licensing
+## Further reading
+- [Getting started guide]()
+- [FAQ]()
+- [Registry for community tasks and plugins]()
+- [Writing a task]()
+- [Writing a plugin and using Tapable]()
+- [API reference]()
+
+## Contributing
+Please open issues and open pull requests with your ideas. For more information about contributing, see our [Contribution Guidelines](CONTRIBUTING.md).
+
+[Good First Task](https://github.com/ronami/haste/labels/Good%20First%20Task) is a great starting point for PRs.
+
+## License
 The MIT License
