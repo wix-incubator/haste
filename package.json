@@ -14,9 +14,6 @@
     "lerna": "^2.0.0"
   },
   "jest": {
-    "projects": [
-      "packages/*"
-    ],
     "setupTestFrameworkScriptFile": "<rootDir>/test_setup_file.js",
     "testEnvironment": "node",
     "testPathIgnorePatterns": [
