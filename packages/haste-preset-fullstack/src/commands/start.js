@@ -12,43 +12,43 @@ module.exports = async (configure) => {
     ],
   });
 
-  await run({ name: 'clean', options: { pattern: `${paths.build}/*` } });
+  await run({ task: 'clean', options: { pattern: `${paths.build}/*` } });
 
   await Promise.all([
     run(
-      { name: 'read', options: { pattern: `${paths.assets}/**/*.*` } },
-      { name: 'write', options: { target: paths.build } }
+      { task: 'read', options: { pattern: `${paths.assets}/**/*.*` } },
+      { task: 'write', options: { target: paths.build } }
     ),
     run(
-      { name: 'read', options: { pattern: `${paths.src}/**/*.js` } },
-      { name: 'babel' },
-      { name: 'write', options: { target: paths.build } }
+      { task: 'read', options: { pattern: `${paths.src}/**/*.js` } },
+      { task: 'babel' },
+      { task: 'write', options: { target: paths.build } }
     ),
     run(
-      { name: 'read', options: { pattern: `${paths.src}/**/*.scss` } },
-      { name: 'sass' },
-      { name: 'write', options: { target: paths.build } }
+      { task: 'read', options: { pattern: `${paths.src}/**/*.scss` } },
+      { task: 'sass' },
+      { task: 'write', options: { target: paths.build } }
     ),
-    run({ name: 'webpack-dev-server', options: { configPath: paths.config.webpack.development } }),
+    run({ task: 'webpack-dev-server', options: { configPath: paths.config.webpack.development } }),
   ]);
 
-  await run({ name: 'server', options: { serverPath: 'src/server.js' } });
+  await run({ task: 'server', options: { serverPath: 'src/server.js' } });
 
   watch(`${paths.src}/**/*.js`, changed => run(
-    { name: 'read', options: { pattern: changed } },
-    { name: 'babel' },
-    { name: 'write', options: { target: paths.build } },
-    { name: 'server', options: { serverPath: 'dist/src/server.js' } }
+    { task: 'read', options: { pattern: changed } },
+    { task: 'babel' },
+    { task: 'write', options: { target: paths.build } },
+    { task: 'server', options: { serverPath: 'dist/src/server.js' } }
   ));
 
   watch(`${paths.src}/**/*.scss`, changed => run(
-    { name: 'read', options: { pattern: changed } },
-    { name: 'sass' },
-    { name: 'write', options: { target: paths.build } }
+    { task: 'read', options: { pattern: changed } },
+    { task: 'sass' },
+    { task: 'write', options: { target: paths.build } }
   ));
 
   watch(paths.assets, changed => run(
-    { name: 'read', options: { pattern: changed } },
-    { name: 'write', options: { target: paths.build } }
+    { task: 'read', options: { pattern: changed } },
+    { task: 'write', options: { target: paths.build } }
   ));
 };
