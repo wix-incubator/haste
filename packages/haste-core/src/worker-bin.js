@@ -14,6 +14,8 @@ process.on('message', ({ options, input, id }) => {
         error = parseError(error); // eslint-disable-line no-param-reassign
       }
 
+      console.log(error.stack || error);
+
       process.send({ error, id });
     });
 });
