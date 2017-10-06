@@ -8,21 +8,21 @@ module.exports = class extends Tapable {
     this.name = name;
     this.modulePath = modulePath;
     this.child = child;
+
+    this.callbacks = {};
+
+    this.child.on('message', ({ result, error, id }) => {
+      error ? this.callbacks[id].reject(error) : this.callbacks[id].resolve(result);
+    });
   }
 
   run(options, input) {
-    const callId = uuid();
+    const id = uuid();
 
-    this.child.send({ options, input, id: callId });
+    this.child.send({ options, input, id });
+
     const promise = new Promise((resolve, reject) => {
-      const handler = ({ result, error, id }) => {
-        if (id === callId) {
-          this.child.removeListener('message', handler);
-          error ? reject(error) : resolve(result);
-        }
-      };
-
-      this.child.on('message', handler);
+      this.callbacks[id] = { resolve, reject };
     });
 
     return promise;
