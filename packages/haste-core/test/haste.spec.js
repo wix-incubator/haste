@@ -7,6 +7,8 @@ const hardError = require.resolve('./fixtures/hard-error-task');
 const requireError = require.resolve('./fixtures/require-error-task');
 const noPromise = require.resolve('./fixtures/no-promise-task');
 const returnedValue = require.resolve('./fixtures/returned-value-task');
+const loggingValue = require.resolve('./fixtures/logging-value-task');
+const loggingOptions = require.resolve('./fixtures/logging-options-task');
 
 class TestPlugin {
   constructor(stdout) {
@@ -193,6 +195,39 @@ describe('haste', () => {
 
         expect(result).toEqual('some-value');
         expect(stdout.mock.calls).toEqual([['returned-value-task\n']]);
+      });
+    });
+
+    it('should run a sequence of tasks and pass each output as the following tasks\'s input', () => {
+      const start = haste();
+
+      return start(async (configure) => {
+        const { run } = configure({
+          plugins: [new TestPlugin(stdout)]
+        });
+
+        const result = await run(
+          { task: returnedValue },
+          { task: loggingValue }
+        );
+
+        expect(result).toEqual('some-other-value');
+        expect(stdout.mock.calls).toEqual([['returned-value-task\n'], ['logging-value-task\n'], ['some-value\n']]);
+      });
+    });
+
+    it('should run a task with options and resolve', () => {
+      const start = haste();
+
+      return start(async (configure) => {
+        const { run } = configure({
+          plugins: [new TestPlugin(stdout)]
+        });
+
+        const result = await run({ task: loggingOptions, options: { value: 'some-value' } });
+
+        expect(result).toEqual('some-value');
+        expect(stdout.mock.calls).toEqual([['logging-options-task\n'], ['{ value: \'some-value\' }\n']]);
       });
     });
   });
