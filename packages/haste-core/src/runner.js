@@ -13,6 +13,7 @@ module.exports = class Runner extends Tapable {
     super();
     this.context = context;
     this.workers = {};
+    this.done = false;
 
     process.on('exit', () => {
       Object.values(this.workers)
@@ -41,7 +42,7 @@ module.exports = class Runner extends Tapable {
 
   run(...taskDefs) {
     const tasks = taskDefs
-      .map(([name, options]) => {
+      .map(({ name, options }) => {
         const worker = this.resolveWorker(name);
         const task = new Task({ options, worker });
 
