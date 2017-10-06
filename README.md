@@ -14,6 +14,8 @@
 ## Introduction
 Haste is a build system that helps you automate painful or time-consuming tasks in your development workflow and create the best user experience.
 
+![Dashboard screenshot](images/dashboard.png)
+
 ## Summary
 - :zap: Blazing fast performance
 - :tada: Highly modular plugin system

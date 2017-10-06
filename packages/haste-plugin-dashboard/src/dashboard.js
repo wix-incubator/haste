@@ -14,7 +14,7 @@ module.exports = class Dashboard {
     const cmd = '';
     // configure screen
     this.screen = blessed.screen({
-      title: `kodaik-dashboard${cmd ? ` - running ${cmd} command` : ''}`,
+      title: `haste-dashboard${cmd ? ` - running ${cmd} command` : ''}`,
       smartCSR: true,
       dockBorders: false,
       fullUnicode: true,
