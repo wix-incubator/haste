@@ -8,10 +8,10 @@ const watch = (pattern, callback) => {
   return watcher;
 };
 
-module.exports = context => (action, params) => {
+module.exports = context => (action, params = []) => {
   const runner = new Runner(context);
 
-  const configure = ({ plugins = [], persistent = false }) => {
+  const configure = ({ plugins = [], persistent = false } = {}) => {
     runner.persistent = persistent;
 
     runner.apply(...plugins);
