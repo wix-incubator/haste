@@ -1,6 +1,5 @@
 const { fork } = require('child_process');
 const Tapable = require('tapable');
-const chokidar = require('chokidar');
 const { resolveTaskName } = require('./utils');
 const Task = require('./task');
 const Worker = require('./worker');
@@ -64,10 +63,5 @@ module.exports = class Runner extends Tapable {
           throw error;
         }
       });
-  }
-
-  watch(pattern, callback) {
-    return chokidar.watch(pattern, { ignoreInitial: true, cwd: process.cwd() })
-      .on('all', (event, path) => callback(path));
   }
 };

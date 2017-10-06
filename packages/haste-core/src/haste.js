@@ -1,4 +1,12 @@
+const chokidar = require('chokidar');
 const Runner = require('./runner');
+
+const watch = (pattern, callback) => {
+  const watcher = chokidar.watch(pattern, { ignoreInitial: true, cwd: process.cwd() })
+    .on('all', (event, path) => callback(path));
+
+  return watcher;
+};
 
 module.exports = context => (action, params) => {
   const runner = new Runner(context);
@@ -9,7 +17,7 @@ module.exports = context => (action, params) => {
     runner.applyPlugins('start');
 
     return {
-      watch: (...args) => runner.watch(...args),
+      watch,
       run: (...args) => runner.run(...args)
     };
   };
