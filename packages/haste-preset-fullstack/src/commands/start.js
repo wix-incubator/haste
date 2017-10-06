@@ -1,5 +1,3 @@
-// const LoggerPlugin = require('haste-plugin-logger');
-// const LoaderPlugin = require('haste-plugin-loader');
 const DashboardPlugin = require('haste-plugin-dashboard');
 const paths = require('../../config/paths');
 
@@ -9,7 +7,7 @@ module.exports = async (configure) => {
     plugins: [
       new DashboardPlugin({
         oneLinerTasks: true,
-        tasks: ['babel', 'server', 'webpack-dev-server']
+        tasks: ['babel', 'sass', 'server', 'webpack-dev-server']
       }),
     ],
   });
@@ -26,16 +24,27 @@ module.exports = async (configure) => {
       { name: 'babel' },
       { name: 'write', options: { target: paths.build } }
     ),
+    run(
+      { name: 'read', options: { pattern: `${paths.src}/**/*.scss` } },
+      { name: 'sass' },
+      { name: 'write', options: { target: paths.build } }
+    ),
     run({ name: 'webpack-dev-server', options: { configPath: paths.config.webpack.development } }),
   ]);
 
-  await run({ name: 'server', options: { serverPath: 'dist/src/server.js' } });
+  await run({ name: 'server', options: { serverPath: 'src/server.js' } });
 
-  watch(paths.src, changed => run(
+  watch(`${paths.src}/**/*.js`, changed => run(
     { name: 'read', options: { pattern: changed } },
     { name: 'babel' },
     { name: 'write', options: { target: paths.build } },
     { name: 'server', options: { serverPath: 'dist/src/server.js' } }
+  ));
+
+  watch(`${paths.src}/**/*.scss`, changed => run(
+    { name: 'read', options: { pattern: changed } },
+    { name: 'sass' },
+    { name: 'write', options: { target: paths.build } }
   ));
 
   watch(paths.assets, changed => run(

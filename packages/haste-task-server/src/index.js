@@ -4,7 +4,7 @@ let server;
 
 module.exports = ({ serverPath }) => async () => {
   if (server) {
-    server.kill('SIGKILL');
+    server.kill('SIGTERM');
   }
 
   server = spawn(process.execPath, [serverPath], {
@@ -13,8 +13,8 @@ module.exports = ({ serverPath }) => async () => {
   });
 };
 
-process.on('SIGKILL', () => {
+process.on('SIGTERM', () => {
   if (server) {
-    server.kill('SIGKILL');
+    server.kill('SIGTERM');
   }
 });
