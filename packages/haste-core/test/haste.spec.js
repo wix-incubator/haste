@@ -26,6 +26,7 @@ describe('haste', () => {
   const stdout = jest.fn();
 
   afterEach(() => {
+    process.removeAllListeners();
     stdout.mockClear();
   });
 
