@@ -42,7 +42,7 @@ module.exports = class Runner extends Tapable {
 
   run(...taskDefs) {
     const tasks = taskDefs
-      .map(({ name, options }) => {
+      .map(({ task: name, options }) => {
         const worker = this.resolveWorker(name);
         const task = new Task({ options, worker });
 

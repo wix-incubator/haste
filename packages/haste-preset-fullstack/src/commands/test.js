@@ -10,14 +10,14 @@ module.exports = async (configure, { watch: shouldWatch }) => {
   });
 
   await run(
-    { name: 'read', options: { pattern: `${paths.test}/**/*.spec.js` } },
-    { name: 'mocha' }
+    { task: 'read', options: { pattern: `${paths.test}/**/*.spec.js` } },
+    { task: 'mocha' }
   );
 
   if (shouldWatch) {
     watch([`${paths.src}/**/*.js`, `${paths.test}/**/*.js`], changed => run(
-      { name: 'read', options: { pattern: changed } },
-      { name: 'mocha' }
+      { task: 'read', options: { pattern: changed } },
+      { task: 'mocha' }
     ));
   }
 };
