@@ -22,15 +22,11 @@ Haste is a build system that helps you automate painful or time-consuming tasks 
 - :video_game: Amazing user experience
 - :rocket: Simple, Intuitive API
 
-## A taste of Haste
-TODO
-
 ## Further reading
 - [Getting started guide]()
 - [FAQ]()
 - [Registry for community tasks and plugins]()
-- [Writing a task]()
-- [Writing a plugin and using Tapable]()
+- [Writing tasks and plugins]()
 - [API reference]()
 
 ## Contributing
