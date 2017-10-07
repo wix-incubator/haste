@@ -11,8 +11,10 @@ module.exports = class extends Tapable {
 
     this.callbacks = {};
 
-    this.child.on('message', ({ result, error, id }) => {
-      error ? this.callbacks[id].reject(error) : this.callbacks[id].resolve(result);
+    this.child.on('message', ({ type, result, error, id }) => {
+      return type === 'failure' ?
+        this.callbacks[id].reject(error) :
+        this.callbacks[id].resolve(result);
     });
   }
 

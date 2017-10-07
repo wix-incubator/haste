@@ -45,7 +45,9 @@ explorer.load(context)
         }
       })
       .catch((error) => {
-        console.log(error.stack || error);
+        if (error) {
+          console.log(error.stack || error);
+        }
         process.exit(1);
       });
   });
