@@ -10,16 +10,18 @@ process.on('message', ({ options, input, id }) => {
       error = parseError(error); // eslint-disable-line no-param-reassign
     }
 
-    console.log(error.stack || error);
+    if (error) {
+      console.log(error.stack || error);
+    }
 
-    process.send({ error, id });
+    process.send({ type: 'failure', error, id });
   };
 
   let promise;
 
   try {
     promise = require(process.argv[2])(options)(input)
-      .then(result => process.send({ result, id }));
+      .then(result => process.send({ type: 'success', result, id }));
   } catch (error) {
     handleError(error);
   }

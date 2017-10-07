@@ -9,6 +9,7 @@ const noPromise = require.resolve('./fixtures/no-promise-task');
 const returnedValue = require.resolve('./fixtures/returned-value-task');
 const loggingValue = require.resolve('./fixtures/logging-value-task');
 const loggingOptions = require.resolve('./fixtures/logging-options-task');
+const noError = require.resolve('./fixtures/no-error-task');
 
 class TestPlugin {
   constructor(stdout) {
@@ -180,6 +181,24 @@ describe('haste', () => {
           await run({ task: noPromise });
         } catch (error) {
           expect(error.message).toEqual('Cannot read property \'then\' of undefined');
+        }
+      });
+    });
+
+    it('should run a task that rejects without an error value and reject', async () => {
+      expect.assertions(1);
+
+      const start = haste();
+
+      return start(async (configure) => {
+        const { run } = configure({
+          plugins: [new TestPlugin(stdout)]
+        });
+
+        try {
+          await run({ task: noError });
+        } catch (error) {
+          expect(error).toEqual(undefined);
         }
       });
     });
