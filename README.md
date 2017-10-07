@@ -17,9 +17,9 @@ Haste helps you automate common tasks in your development workflow. Prioritizing
 ![Dashboard screenshot](images/dashboard.png)
 
 ## Summary
-- :zap: **Blazing fast performance:** running tasks in parallel using multiple processes
-- :electric_plug: **Highly modular plugin system:** making it possible to change almost anything
-- :video_game: **Intuitive user experience:** managing output to allow the creation of loaders and dashboards
+- :zap: **Blazing fast performance:** running tasks in parallel using multiple processes.
+- :electric_plug: **Highly modular plugin system:** making it possible to change almost anything.
+- :video_game: **Intuitive user experience:** managing output to allow the creation of loaders and dashboards.
 - :rocket: **Simple, programmatic API:** Leveraging ES2015's async await with a minimal API.
 
 ## Further reading
