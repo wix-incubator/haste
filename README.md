@@ -1,6 +1,6 @@
 <p align="center"><img width="150" src="images/rocket.png"></p>
 <h1 align="center">Haste</h1>
-<p align="center">The extendable, blazing fast build system for JavaScript.</p>
+<p align="center">The extendable, blazing fast build system</p>
 
 <p align="center">
   <a href="https://travis-ci.org/ronami/haste"><img src="https://travis-ci.org/ronami/haste.svg?branch=master" alt="Build Status"></a>
