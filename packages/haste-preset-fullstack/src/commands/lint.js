@@ -8,5 +8,8 @@ module.exports = async (configure) => {
     ],
   });
 
-  await run({ task: 'eslint', options: { patterns: [`${paths.src}/**/*.js`] } });
+  await run(
+    { task: 'read', options: { pattern: `${paths.src}/**/*.js` } },
+    { task: 'eslint' }
+  );
 };
