@@ -9,7 +9,6 @@ module.exports = options => files => new Promise((resolve, reject) => {
   const errors = CLIEngine.getErrorResults(report.results);
 
   if (errors.length) {
-    console.log(formatter(report.results));
     return reject(formatter(report.results));
   }
 
