@@ -1,6 +1,6 @@
 <p align="center"><img width="150" src="images/rocket.png"></p>
 <h1 align="center">Haste</h1>
-<p align="center">The extendable, blazing fast build system</p>
+<p align="center">An extendable, blazing fast build system that cares about user experience</p>
 
 <p align="center">
   <a href="https://travis-ci.org/ronami/haste"><img src="https://travis-ci.org/ronami/haste.svg?branch=master" alt="Build Status"></a>
@@ -12,22 +12,22 @@
 </p>
 
 ## Introduction
-Haste is a build system that helps you automate common tasks in your development workflow and create the best user experience.
+Haste helps you automate common tasks in your development workflow. Prioritizing performance, extendability and user experience.
 
 ![Dashboard screenshot](images/dashboard.png)
 
 ## Summary
-- :zap: Blazing fast performance
-- :tada: Highly modular plugin system
-- :video_game: Amazing user experience
-- :rocket: Simple, Intuitive API
+- :zap: **Blazing fast performance:** running tasks in parallel using multiple processes
+- :electric_plug: **Highly modular plugin system:** making it possible to change almost anything
+- :video_game: **Intuitive user experience:** managing output to allow the creation of loaders and dashboards
+- :rocket: **Simple, programmatic API:** Leveraging ES2015's async await with a minimal API.
 
 ## Further reading
 - [Getting started guide]()
-- [FAQ]()
 - [Registry for community tasks and plugins]()
 - [Writing tasks and plugins]()
 - [API reference]()
+- [FAQ]()
 
 ## Contributing
 Please open issues and open pull requests with your ideas. For more information about contributing, see our [Contribution Guidelines](CONTRIBUTING.md).
