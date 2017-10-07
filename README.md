@@ -1,4 +1,4 @@
-<p align="center"><img width="120" src="images/logo.png"></p>
+<p align="center"><img width="150" src="images/rocket.png"></p>
 <h1 align="center">Haste</h1>
 <p align="center">The extendable, blazing fast build system for JavaScript.</p>
 
