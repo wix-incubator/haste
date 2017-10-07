@@ -32,13 +32,25 @@ const { argv } = yargs
 const [cmd] = argv._;
 
 explorer.load(context)
-  .then(({ config }) => {
-    const presetPath = resolveFrom(context, config.preset);
+  .then((result) => {
+    if (!result) {
+      throw new Error('Can\'t find .hasterc or a "haste" field under package.json');
+    }
+
+    if (!result.config.preset) {
+      throw new Error('"preset" is a mandatory field');
+    }
+
+    const presetPath = resolveFrom(context, result.config.preset);
     const run = haste(presetPath);
     const preset = require(presetPath);
     const command = preset[cmd];
 
-    return run(command, [argv, config])
+    if (!command) {
+      throw new Error(`${result.config.preset} doesn't support command ${cmd}`);
+    }
+
+    return run(command, [argv, result.config])
       .then(({ persistent }) => {
         if (!persistent) {
           process.exit(0);

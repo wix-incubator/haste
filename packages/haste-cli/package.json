@@ -12,5 +12,8 @@
     "haste-core": "^0.0.2",
     "resolve-from": "~3.0.0",
     "yargs": "^8.0.2"
+  },
+  "devDependencies": {
+    "execa": "^0.8.0"
   }
 }
