@@ -58,6 +58,11 @@ module.exports = class Panel {
       }
     });
 
+    box.key('C-l', () => {
+      this.text = '';
+      this.update();
+    });
+
     this.box = box;
     this.screen = screen;
     screen.append(box);
