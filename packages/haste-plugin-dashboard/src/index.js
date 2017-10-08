@@ -43,24 +43,14 @@ module.exports = class DashboardPlugin {
 
         task.plugin('start-task', () => {
           loaderTask = loaderRun.startTask(task.name);
-          const panel = dashboard.getPanel(task.name);
-          if (!this.tasks.includes(task.name) || !panel) return;
-          panel.clear();
-          panel.changeBorderColor('#e1e502');
         });
 
         task.plugin('succeed-task', () => {
           loaderTask.success(task.name);
-          const panel = dashboard.getPanel(task.name);
-          if (!this.tasks.includes(task.name) || !panel) return;
-          panel.changeBorderColor('#02e520');
         });
 
         task.plugin('failed-task', () => {
           loaderTask.failure(task.name);
-          const panel = dashboard.getPanel(task.name);
-          if (!this.tasks.includes(task.name) || !panel) return;
-          panel.changeBorderColor('#e20b0b');
         });
       });
 
