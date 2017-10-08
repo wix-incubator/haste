@@ -1,30 +1,36 @@
 const blessed = require('blessed');
 
 module.exports = class Panel {
-  constructor({ box, screen }) {
-    this.box = box;
-    this.screen = screen;
+  constructor({ label, width, height, left, top }) {
+    this.label = label;
+    this.width = width;
+    this.height = height;
+    this.left = left;
+    this.top = top;
     this.text = '';
+    this.screen;
   }
 
   log(log) {
     this.text = `${this.text}\n${log}`;
-    this.box.setText(this.text);
-    this.box.setScrollPerc(100);
-    this.screen.render();
+    this.update();
   }
 
   clear() {
     this.text = '';
-    this.box.setText(this.text);
-    this.screen.render();
+    this.update();
   }
 
-  changeBorderColor(color) {
-    this.box.style.border.fg = color;
+  update() {
+    if (!this.screen) return;
+    this.box.setContent(this.text);
+    this.box.setScrollPerc(100);
+    this.screen.render(); // Todo here
   }
 
-  static create({ screen, label, width, height, left, top }) {
+  render(screen) {
+    if (this.screen) throw new Error('screen is already rendered');
+
     const box = blessed.box({
       scrollable: true,
       input: true,
@@ -36,12 +42,12 @@ module.exports = class Panel {
       keys: true,
       vi: true,
       mouse: true,
-      label,
+      label: this.label,
       padding: 1,
-      width,
-      height,
-      left,
-      top,
+      width: this.width,
+      height: this.height,
+      left: this.left,
+      top: this.top,
       border: {
         type: 'line'
       },
@@ -52,15 +58,10 @@ module.exports = class Panel {
       }
     });
 
-    // const logger = blessed.log(
-    //   Object.assign({}, DEFAULT_SCROLL_OPTIONS, {
-    //     parent: box,
-    //     tags: true,
-    //     width: '100%-4'
-    //   })
-    // );
-
+    this.box = box;
+    this.screen = screen;
     screen.append(box);
-    return new Panel({ screen, box });
+
+    this.update();
   }
 };
