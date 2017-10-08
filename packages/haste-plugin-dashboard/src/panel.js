@@ -9,13 +9,14 @@ module.exports = class Panel {
 
   log(log) {
     this.text = `${this.text}\n${log}`;
-    this.box.setContent(this.text);
+    this.box.setText(this.text);
+    this.box.setScrollPerc(100);
     this.screen.render();
   }
 
   clear() {
     this.text = '';
-    this.box.setContent(this.text);
+    this.box.setText(this.text);
     this.screen.render();
   }
 
