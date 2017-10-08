@@ -8,6 +8,33 @@ module.exports = class Dashboard {
     this.screen;
     this.maxPanels = maxPanels;
     this.tasks = tasks;
+
+    this.createPanels();
+  }
+
+  addPanel({ panelKey, label, width, height, left, top }) {
+    const panel = new Panel({ label, width, height, left, top });
+    this.panels[panelKey] = panel;
+  }
+
+  getPanel(panelKey) {
+    return this.panels[panelKey];
+  }
+
+  getLogger(panelKey) {
+    return (log) => {
+      return this.panels[panelKey].log(log);
+    };
+  }
+
+  createPanels() {
+    const panelsAmount = this.tasks.length < this.maxPanels ? this.tasks.length : this.maxPanels;
+    const layout = calcLayout(panelsAmount);
+
+    layout.forEach(([width, height, left, top], i) => {
+      const taskName = this.tasks[i];
+      this.addPanel({ width, height, left, top, label: taskName, panelKey: taskName });
+    });
   }
 
   render() {
@@ -23,32 +50,11 @@ module.exports = class Dashboard {
 
     this.screen.key(['escape', 'q', 'C-c'], () => process.exit(0));
 
-    // establish layout
-    const panelsAmount = this.tasks.length < this.maxPanels ? this.tasks.length : this.maxPanels;
-    const layout = calcLayout(panelsAmount);
-
-    layout.forEach(([width, height, left, top], i) => {
-      const taskName = this.tasks[i];
-      this.addPanel({ width, height, left, top, label: taskName, panelKey: taskName });
-    });
+    Object.values(this.panels)
+      .forEach((panel) => {
+        panel.render(this.screen);
+      });
 
     this.screen.render();
-  }
-
-  addPanel({ panelKey, label, width, height, left, top }) {
-    const panel = Panel.create({ screen: this.screen, label, width, height, left, top });
-    this.panels[panelKey] = panel;
-  }
-
-  getPanel(panelKey) {
-    if (!this.panels[panelKey]) return null;
-    return this.panels[panelKey];
-  }
-
-  getLogger(panelKey) {
-    return (log) => {
-      if (!this.panels[panelKey]) return null;
-      return this.panels[panelKey].log(log);
-    };
   }
 };
