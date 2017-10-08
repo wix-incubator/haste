@@ -17,3 +17,5 @@ module.exports.resolveTaskName = (taskName, runContext) => {
 
   return resolveFrom(runContext, standardizeTaskName(taskName));
 };
+
+module.exports.camelCaseToDash = str => str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();

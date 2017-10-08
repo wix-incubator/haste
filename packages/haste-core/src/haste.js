@@ -1,5 +1,6 @@
 const chokidar = require('chokidar');
 const Runner = require('./runner');
+const { camelCaseToDash } = require('./utils');
 
 const watch = (pattern, callback) => {
   const watcher = chokidar.watch(pattern, { ignoreInitial: true, cwd: process.cwd() })
@@ -7,6 +8,15 @@ const watch = (pattern, callback) => {
 
   return watcher;
 };
+
+const tasks = new Proxy({}, {
+  get: (target, prop) => (options) => {
+    return {
+      task: camelCaseToDash(prop),
+      options,
+    };
+  }
+});
 
 module.exports = context => (action, params = []) => {
   const runner = new Runner(context);
@@ -18,8 +28,9 @@ module.exports = context => (action, params = []) => {
     runner.applyPlugins('start');
 
     return {
+      tasks,
       watch,
-      run: (...args) => runner.run(...args)
+      run: (...args) => runner.run(...args),
     };
   };
 

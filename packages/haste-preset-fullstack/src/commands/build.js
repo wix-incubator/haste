@@ -2,29 +2,31 @@ const LoaderPlugin = require('haste-plugin-loader');
 const paths = require('../../config/paths');
 
 module.exports = async (configure) => {
-  const { run } = configure({
+  const { run, tasks } = configure({
     plugins: [
       new LoaderPlugin({ oneLinerTasks: false }),
     ],
   });
 
-  await run({ task: 'clean', options: { pattern: `${paths.build}/*` } });
+  const { clean, read, babel, write, sass, webpack } = tasks;
+
+  await run(clean({ pattern: `${paths.build}/*` }));
 
   await Promise.all([
     run(
-      { task: 'read', options: { pattern: `${paths.src}/**/*.js` } },
-      { task: 'babel' },
-      { task: 'write', options: { target: paths.build } }
+      read({ pattern: `${paths.src}/**/*.js` }),
+      babel(),
+      write({ target: paths.build })
     ),
     run(
-      { task: 'read', options: { pattern: `${paths.src}/**/*.scss` } },
-      { task: 'sass' },
-      { task: 'write', options: { target: paths.build } }
+      read({ pattern: `${paths.src}/**/*.scss` }),
+      sass(),
+      write({ target: paths.build })
     ),
     run(
-      { task: 'read', options: { pattern: `${paths.assets}/**/*.*` } },
-      { task: 'write', options: { target: paths.build } }
+      read({ pattern: `${paths.assets}/**/*.*` }),
+      write({ target: paths.build })
     ),
-    run({ task: 'webpack', options: { configPath: paths.config.webpack.production } })
+    run(webpack({ configPath: paths.config.webpack.production }))
   ]);
 };
