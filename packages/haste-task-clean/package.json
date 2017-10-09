@@ -5,5 +5,8 @@
   "license": "MIT",
   "dependencies": {
     "rimraf": "^2.6.2"
+  },
+  "devDependencies": {
+    "temp-write": "^3.3.0"
   }
 }
