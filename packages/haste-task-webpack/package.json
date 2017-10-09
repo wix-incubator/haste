@@ -5,5 +5,8 @@
   "license": "MIT",
   "dependencies": {
     "webpack": "^3.5.5"
+  },
+  "devDependencies": {
+    "uuid": "^3.1.0"
   }
 }
