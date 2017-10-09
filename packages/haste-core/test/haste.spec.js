@@ -297,19 +297,38 @@ describe('haste', () => {
         expect(stdout.mock.calls).toEqual([['successful-task\n']]);
       });
     });
+  });
 
-    it('should resolve a task relative to the run context when a partial module name supplied', async () => {
-      const start = haste(path.join(__dirname, '/fixtures'));
+  describe('function notation', () => {
+    it('should be supported for running tasks', async () => {
+      const start = haste();
 
       return start(async (configure) => {
-        const { run } = configure({
+        const { run, tasks } = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
-        const result = await run({ task: 'successful' });
+        const options = { value: 'some-value' };
+        const result = await run(tasks[loggingOptions](options));
 
-        expect(result).toEqual(undefined);
-        expect(stdout.mock.calls).toEqual([['successful-task\n']]);
+        expect(result).toEqual('some-value');
+        expect(stdout.mock.calls).toEqual([['logging-options-task\n'], ['{ value: \'some-value\' }\n']]);
+      });
+    });
+
+    it('should convert camelcase to dashes', async () => {
+      const start = haste(path.join(__dirname, '/fixtures'));
+
+      return start(async (configure) => {
+        const { run, tasks } = configure({
+          plugins: [new TestPlugin(stdout)]
+        });
+
+        const options = { value: 'some-value' };
+        const result = await run(tasks.successfulCamelCase(options));
+
+        expect(result).toEqual('some-value');
+        expect(stdout.mock.calls).toEqual([['successful-camel-case-task\n'], ['{ value: \'some-value\' }\n']]);
       });
     });
   });
