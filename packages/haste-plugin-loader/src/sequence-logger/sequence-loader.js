@@ -55,12 +55,15 @@ module.exports = class SequenceLoader {
     this.runs.forEach(run => run.stop());
   }
 
-  exitOnError() {
+  exitOnError(error) {
     this.stopAllRuns();
     const currentFrame = this.renderFrame();
     logUpdate(`${currentFrame}\n`);
     clearInterval(this.interval);
     this.runs = [];
+    if (error) {
+      console.log(error.stack || error);
+    }
   }
 
   exitAndClear() {

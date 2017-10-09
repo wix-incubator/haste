@@ -56,10 +56,5 @@ explorer.load(context)
           process.exit(0);
         }
       })
-      .catch((error) => {
-        if (error) {
-          console.log(error.stack || error);
-        }
-        process.exit(1);
-      });
+      .catch(() => process.exit(1));
   });

@@ -54,8 +54,8 @@ module.exports = class LoaderPlugin {
       return loader.watchMode();
     });
 
-    runner.plugin('finish-failure', () => {
-      loader.exitOnError();
+    runner.plugin('finish-failure', (error) => {
+      loader.exitOnError(error);
     });
   }
 };
