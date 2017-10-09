@@ -72,8 +72,8 @@ module.exports = class DashboardPlugin {
       return dashboard.render();
     });
 
-    runner.plugin('finish-failure', () => {
-      loader.exitOnError();
+    runner.plugin('finish-failure', (error) => {
+      loader.exitOnError(error);
     });
   }
 };
