@@ -1,11 +1,9 @@
-const os = require('os');
-const path = require('path');
-const uuid = require('uuid/v4');
+const tempy = require('tempy');
 
 module.exports = {
   entry: require.resolve('./entry.js'),
   output: {
-    path: path.join(os.tmpdir(), uuid()),
+    path: tempy.directory(),
     filename: 'bundle.js',
   }
 };

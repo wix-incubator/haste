@@ -7,6 +7,6 @@
     "webpack": "^3.5.5"
   },
   "devDependencies": {
-    "uuid": "^3.1.0"
+    "tempy": "^0.2.1"
   }
 }
