@@ -2,5 +2,8 @@
   "name": "haste-task-server",
   "version": "0.0.2",
   "main": "./src/index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "retry-promise": "^1.0.0"
+  }
 }
