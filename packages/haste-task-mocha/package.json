@@ -5,5 +5,8 @@
   "license": "MIT",
   "dependencies": {
     "mocha": "^3.5.0"
+  },
+  "devDependencies": {
+    "haste-test-utils": "^0.0.2"
   }
 }
