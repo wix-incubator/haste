@@ -4,3 +4,13 @@ module.exports.delta = (start) => {
 
   return [end, time];
 };
+
+module.exports.generateRunTitle = (tasks) => {
+  if (tasks[0].name === 'read' && tasks[1].name === 'write') {
+    return 'copy';
+  }
+
+  return tasks
+    .filter(t => !['read', 'write'].includes(t.name))
+    .map(task => task.name).join(',');
+};

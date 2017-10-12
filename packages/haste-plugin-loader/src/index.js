@@ -1,4 +1,5 @@
 const SequenceLoader = require('./sequence-logger/sequence-loader');
+const { generateRunTitle } = require('./utils');
 
 module.exports = class LoaderPlugin {
   constructor({ oneLinerTasks = true, frameRate = 60 } = {}) {
@@ -17,7 +18,7 @@ module.exports = class LoaderPlugin {
     });
 
     runner.plugin('start-run', (runPhase) => {
-      const runTitle = runPhase.tasks.map(task => task.name).join(',');
+      const runTitle = generateRunTitle(runPhase.tasks);
       const tasksLength = runPhase.tasks.length;
       const loaderRun = loader.startRun(runTitle, tasksLength);
 
