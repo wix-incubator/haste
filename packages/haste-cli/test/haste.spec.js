@@ -14,7 +14,7 @@ describe('haste-cli', () => {
     expect.assertions(2);
 
     try {
-      await run({ presetPath: './fixtures/empty', command: 'build' });
+      await run({ presetPath: './fixtures/no-config', command: 'build' });
     } catch (error) {
       expect(error.code).toEqual(1);
       expect(error.message).toMatch(/Can't find .hasterc or a "haste" field under package.json/);
