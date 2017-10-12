@@ -1,22 +1,22 @@
 {
   "name": "haste-preset-fullstack",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {
-    "haste-plugin-logger": "^0.0.2",
-    "haste-plugin-loader": "^0.0.2",
-    "haste-plugin-dashboard": "^0.0.2",
-    "haste-task-babel": "^0.0.2",
-    "haste-task-eslint": "^0.0.2",
-    "haste-task-clean": "^0.0.2",
+    "haste-plugin-dashboard": "^0.1.0",
+    "haste-plugin-loader": "^0.1.0",
+    "haste-plugin-logger": "^0.1.0",
+    "haste-task-babel": "^0.1.0",
+    "haste-task-clean": "^0.1.0",
     "haste-task-copy": "^0.0.2",
-    "haste-task-mocha": "^0.0.2",
-    "haste-task-sass": "^0.0.2",
-    "haste-task-read": "^0.0.2",
-    "haste-task-write": "^0.0.2",
-    "haste-task-server": "^0.0.2",
-    "haste-task-webpack": "^0.0.2",
-    "haste-task-webpack-dev-server": "^0.0.2"
+    "haste-task-eslint": "^0.1.0",
+    "haste-task-mocha": "^0.1.0",
+    "haste-task-read": "^0.1.0",
+    "haste-task-sass": "^0.1.0",
+    "haste-task-server": "^0.1.0",
+    "haste-task-webpack": "^0.1.0",
+    "haste-task-webpack-dev-server": "^0.1.0",
+    "haste-task-write": "^0.1.0"
   }
 }
