@@ -6,5 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 0.1.1 - 2017-10-12
+
+### Bug Fixes
+ - Correct file path to haste bin
+
 ## 0.1.0 - 2017-10-12
  - Initial release (see commit history for changes in previous versions of haste)
