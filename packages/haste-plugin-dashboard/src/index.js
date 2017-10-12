@@ -1,5 +1,6 @@
 const Dashboard = require('./dashboard');
 const SequenceLoader = require('haste-plugin-loader/src/sequence-logger/sequence-loader');
+const { generateRunTitle } = require('haste-plugin-loader/src/utils');
 
 module.exports = class DashboardPlugin {
   constructor({ oneLinerTasks = true, frameRate = 60, tasks = [] } = {}) {
@@ -34,7 +35,7 @@ module.exports = class DashboardPlugin {
     });
 
     runner.plugin('start-run', (runPhase) => {
-      const runTitle = runPhase.tasks.map(task => task.name).join(',');
+      const runTitle = generateRunTitle(runPhase.tasks);
       const tasksLength = runPhase.tasks.length;
       const loaderRun = loader.startRun(runTitle, tasksLength);
 
