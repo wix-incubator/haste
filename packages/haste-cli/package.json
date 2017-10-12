@@ -5,7 +5,7 @@
   "author": "Ronen Amiel",
   "license": "MIT",
   "bin": {
-    "haste": "./bin/haste"
+    "haste": "./bin/haste.js"
   },
   "dependencies": {
     "cosmiconfig": "^2.2.2",
