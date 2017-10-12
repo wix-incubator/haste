@@ -1,4 +1,4 @@
-<p align="center"><img width="150" src="images/rocket.png"></p>
+<p align="center"><img width="150" src="images/logo.png"></p>
 <h1 align="center">Haste</h1>
 <p align="center">An extendable, blazing fast build system that cares about user experience</p>
 
