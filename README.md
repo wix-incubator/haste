@@ -14,7 +14,7 @@
 ## Introduction
 Haste helps you automate common tasks in your development workflow. Prioritizing performance, extendability and user experience.
 
-![Dashboard screenshot](images/dashboard.png)
+![Dashboard screenshot](images/dashboard.gif)
 
 ## Summary
 - :zap: **Blazing fast performance:** running tasks in parallel using multiple processes.
