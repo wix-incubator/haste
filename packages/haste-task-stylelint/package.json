@@ -1,0 +1,9 @@
+{
+  "name": "haste-task-stylelint",
+  "version": "0.1.0",
+  "main": "./src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "stylelint": "^8.2.0"
+  }
+}
