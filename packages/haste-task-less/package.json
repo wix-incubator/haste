@@ -4,6 +4,6 @@
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {
-    "less": "^3.0.0-alpha.3"
+    "less": "^2.7.2"
   }
 }
