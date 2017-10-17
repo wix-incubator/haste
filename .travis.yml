@@ -1,0 +1,17 @@
+language: node_js
+
+before_install:
+ - npm install -g yarn@1.1.0
+
+install:
+ - yarn install
+
+script:
+ - yarn build
+ - yarn test
+
+notifications:
+  email:
+    recipients:
+      - rany@wix.com
+      - ronena@wix.com
