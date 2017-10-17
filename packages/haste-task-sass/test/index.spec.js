@@ -22,7 +22,7 @@ describe('haste-sass', () => {
       });
   });
 
-  it('should faile for invalid scss', () => {
+  it('should fail for invalid scss', () => {
     expect.assertions(1);
 
     const task = sass();
