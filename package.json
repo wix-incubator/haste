@@ -1,4 +1,5 @@
 {
+  "private": true,
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "lint": "eslint .",
