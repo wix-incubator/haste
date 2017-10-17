@@ -4,7 +4,8 @@
     "bootstrap": "lerna bootstrap",
     "lint": "eslint .",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "build": "npm run bootstrap"
   },
   "devDependencies": {
     "eslint": "^4.4.1",
