@@ -3,11 +3,12 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "lint": "eslint .",
-    "test": "jest",
+    "test": "jest --coverage && codecov",
     "test:watch": "jest --watch",
     "build": "npm run bootstrap && npm run lint"
   },
   "devDependencies": {
+    "codecov": "^2.3.1",
     "eslint": "^4.4.1",
     "eslint-config-airbnb-base": "^11.3.1",
     "eslint-plugin-import": "^2.7.0",
