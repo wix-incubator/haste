@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://travis-ci.org/wix/haste"><img src="https://travis-ci.org/wix/haste.svg?branch=master" alt="Build Status"></a>
   <a href="https://codecov.io/gh/wix/haste"><img src="https://codecov.io/gh/wix/haste/branch/master/graph/badge.svg" alt="Code Coverage"></a>
-  <a href="https://www.npmjs.com/package/haste-core"><img src="https://img.shields.io/npm/dm/haste.svg" alt="Downloads"></a>
+  <a href="https://www.npmjs.com/package/haste-core"><img src="https://img.shields.io/npm/dm/haste-core.svg" alt="Downloads"></a>
   <a href="https://wix.github.io/license"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
   <a href=""><img src="https://img.shields.io/david/wix/haste.svg"></a>
   <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
