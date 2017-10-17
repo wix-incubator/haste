@@ -3,11 +3,11 @@
 <p align="center">An extendable, blazing fast build system that cares about user experience</p>
 
 <p align="center">
-  <a href="https://travis-ci.org/ronami/haste"><img src="https://travis-ci.org/ronami/haste.svg?branch=master" alt="Build Status"></a>
-  <a href="https://codecov.io/gh/ronami/haste"><img src="https://codecov.io/gh/ronami/haste/branch/master/graph/badge.svg" alt="Code Coverage"></a>
+  <a href="https://travis-ci.org/wix/haste"><img src="https://travis-ci.org/wix/haste.svg?branch=master" alt="Build Status"></a>
+  <a href="https://codecov.io/gh/wix/haste"><img src="https://codecov.io/gh/wix/haste/branch/master/graph/badge.svg" alt="Code Coverage"></a>
   <a href="https://www.npmjs.com/package/haste-core"><img src="https://img.shields.io/npm/dm/haste.svg" alt="Downloads"></a>
-  <a href="https://ronami.github.io/license"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
-  <a href=""><img src="https://img.shields.io/david/ronami/haste.svg"></a>
+  <a href="https://wix.github.io/license"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+  <a href=""><img src="https://img.shields.io/david/wix/haste.svg"></a>
   <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
 </p>
 
@@ -32,7 +32,7 @@ Haste helps you automate common tasks in your development workflow. Prioritizing
 ## Contributing
 Please open issues and open pull requests with your ideas. For more information about contributing, see our [Contribution Guidelines](CONTRIBUTING.md).
 
-[Good First Task](https://github.com/ronami/haste/labels/Good%20First%20Task) is a great starting point for PRs.
+[Good First Task](https://github.com/wix/haste/labels/Good%20First%20Task) is a great starting point for PRs.
 
 ## License
 The MIT License
