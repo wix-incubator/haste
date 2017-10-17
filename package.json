@@ -3,8 +3,9 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "lint": "eslint .",
-    "test": "jest --coverage && codecov",
+    "test:coverage": "jest --coverage && codecov",
     "test:watch": "jest --watch",
+    "test": "jest",
     "build": "npm run bootstrap && npm run lint"
   },
   "devDependencies": {
