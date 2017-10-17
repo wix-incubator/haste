@@ -11,16 +11,19 @@ const WORKER_OPTIONS = { silent: true, env: { FORCE_COLOR: true } };
 module.exports = class Runner extends Tapable {
   constructor(context) {
     super();
+
     this.context = context;
     this.workers = {};
     this.done = false;
 
-    process.on('exit', () => {
-      Object.values(this.workers)
-        .forEach((worker) => {
-          worker.child.kill('SIGTERM');
-        });
-    });
+    process.on('exit', () => this.close());
+  }
+
+  close() {
+    Object.values(this.workers)
+      .forEach((worker) => {
+        worker.child.kill('SIGTERM');
+      });
   }
 
   resolveWorker(name) {

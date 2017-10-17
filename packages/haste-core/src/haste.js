@@ -31,18 +31,20 @@ module.exports = context => (action, params = []) => {
       tasks,
       watch,
       run: (...args) => runner.run(...args),
+      close: (...args) => runner.close(...args),
     };
   };
 
   return action(configure, ...params)
     .then(() => {
       runner.done = true;
-
       runner.applyPlugins('finish-success');
+
       return { persistent: runner.persistent };
     })
     .catch((error) => {
       runner.applyPlugins('finish-failure', error);
+
       throw error;
     });
 };

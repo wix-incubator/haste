@@ -24,10 +24,12 @@ class TestPlugin {
 }
 
 describe('haste', () => {
+  let runner;
   const stdout = jest.fn();
 
   afterEach(() => {
     process.removeAllListeners();
+    runner.close();
     stdout.mockClear();
   });
 
@@ -36,11 +38,11 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        const { run } = configure({
+        runner = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
-        const result = await run({ task: successful });
+        const result = await runner.run({ task: successful });
 
         expect(result).toEqual(undefined);
         expect(stdout.mock.calls).toEqual([['successful-task\n']]);
@@ -53,12 +55,12 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        const { run } = configure({
+        runner = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
         try {
-          await run({ task: unsuccessful });
+          await runner.run({ task: unsuccessful });
         } catch (error) {
           expect(error).toEqual('some-error');
           expect(stdout.mock.calls).toEqual([['unsuccessful-task\n'], ['some-error\n']]);
@@ -72,11 +74,11 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        const { run } = configure({
+        runner = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
-        const result = await run(
+        const result = await runner.run(
           { task: successful },
           { task: successful }
         );
@@ -92,12 +94,12 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        const { run } = configure({
+        runner = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
         try {
-          await run(
+          await runner.run(
             { task: successful },
             { task: unsuccessful }
           );
@@ -114,12 +116,12 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        const { run } = configure({
+        runner = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
         try {
-          await run(
+          await runner.run(
             { task: unsuccessful },
             { task: successful }
           );
@@ -136,12 +138,12 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        const { run } = configure({
+        runner = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
         try {
-          await run({ task: hardError });
+          await runner.run({ task: hardError });
         } catch (error) {
           expect(error.message).toEqual('some-error');
           expect(stdout.mock.calls).toContainEqual(['hard-error-task\n']);
@@ -155,12 +157,12 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        const { run } = configure({
+        runner = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
         try {
-          await run({ task: requireError });
+          await runner.run({ task: requireError });
         } catch (error) {
           expect(error.message).toEqual('some-error');
         }
@@ -173,12 +175,12 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        const { run } = configure({
+        runner = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
         try {
-          await run({ task: noPromise });
+          await runner.run({ task: noPromise });
         } catch (error) {
           expect(error.message).toEqual('Cannot read property \'then\' of undefined');
         }
@@ -191,12 +193,12 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        const { run } = configure({
+        runner = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
         try {
-          await run({ task: noError });
+          await runner.run({ task: noError });
         } catch (error) {
           expect(error).toEqual(undefined);
         }
@@ -207,11 +209,11 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        const { run } = configure({
+        runner = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
-        const result = await run({ task: returnedValue });
+        const result = await runner.run({ task: returnedValue });
 
         expect(result).toEqual('some-value');
         expect(stdout.mock.calls).toEqual([['returned-value-task\n']]);
@@ -222,11 +224,11 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        const { run } = configure({
+        runner = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
-        const result = await run(
+        const result = await runner.run(
           { task: returnedValue },
           { task: loggingValue }
         );
@@ -240,11 +242,11 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        const { run } = configure({
+        runner = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
-        const result = await run({ task: loggingOptions, options: { value: 'some-value' } });
+        const result = await runner.run({ task: loggingOptions, options: { value: 'some-value' } });
 
         expect(result).toEqual('some-value');
         expect(stdout.mock.calls).toEqual([['logging-options-task\n'], ['{ value: \'some-value\' }\n']]);
@@ -257,11 +259,11 @@ describe('haste', () => {
       const start = haste(path.join(__dirname, '/fixtures'));
 
       return start(async (configure) => {
-        const { run } = configure({
+        runner = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
-        const result = await run({ task: './successful-task' });
+        const result = await runner.run({ task: './successful-task' });
 
         expect(result).toEqual(undefined);
         expect(stdout.mock.calls).toEqual([['successful-task\n']]);
@@ -272,11 +274,11 @@ describe('haste', () => {
       const start = haste(path.join(__dirname, '/fixtures'));
 
       return start(async (configure) => {
-        const { run } = configure({
+        runner = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
-        const result = await run({ task: 'haste-task-successful' });
+        const result = await runner.run({ task: 'haste-task-successful' });
 
         expect(result).toEqual(undefined);
         expect(stdout.mock.calls).toEqual([['successful-task\n']]);
@@ -287,11 +289,11 @@ describe('haste', () => {
       const start = haste(path.join(__dirname, '/fixtures'));
 
       return start(async (configure) => {
-        const { run } = configure({
+        runner = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
-        const result = await run({ task: 'successful' });
+        const result = await runner.run({ task: 'successful' });
 
         expect(result).toEqual(undefined);
         expect(stdout.mock.calls).toEqual([['successful-task\n']]);
@@ -304,12 +306,12 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        const { run, tasks } = configure({
+        runner = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
         const options = { value: 'some-value' };
-        const result = await run(tasks[loggingOptions](options));
+        const result = await runner.run(runner.tasks[loggingOptions](options));
 
         expect(result).toEqual('some-value');
         expect(stdout.mock.calls).toEqual([['logging-options-task\n'], ['{ value: \'some-value\' }\n']]);
@@ -320,12 +322,12 @@ describe('haste', () => {
       const start = haste(path.join(__dirname, '/fixtures'));
 
       return start(async (configure) => {
-        const { run, tasks } = configure({
+        runner = configure({
           plugins: [new TestPlugin(stdout)]
         });
 
         const options = { value: 'some-value' };
-        const result = await run(tasks.successfulCamelCase(options));
+        const result = await runner.run(runner.tasks.successfulCamelCase(options));
 
         expect(result).toEqual('some-value');
         expect(stdout.mock.calls).toEqual([['successful-camel-case-task\n'], ['{ value: \'some-value\' }\n']]);
