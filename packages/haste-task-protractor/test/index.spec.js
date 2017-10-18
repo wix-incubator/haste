@@ -37,7 +37,8 @@ describe('haste-protractor', () => {
 
   //   return task()
   //     .catch(() => {
-  //       expect(stdout()).toMatch(/Error message: failed loading configuration file missing.conf.js/);
+  //       expect(stdout()).toMatch(/Error message: failed 
+  // loading configuration file missing.conf.js/);
   //     });
   // });
 });
