@@ -1,10 +1,10 @@
 {
   "name": "haste-task-server",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "main": "./src/index.js",
   "license": "MIT",
   "devDependencies": {
-    "haste-test-utils": "^0.1.0",
+    "haste-test-utils": "^0.1.2",
     "retry-promise": "^1.0.0"
   }
 }
