@@ -1,10 +1,12 @@
 const { run } = require('haste-test-utils');
 
-const protractor = run(require.resolve('../src'));
+const { command: protractor, kill } = run(require.resolve('../src'));
 
 jest.setTimeout(20000);
 
 describe('haste-protractor', () => {
+  afterEach(kill);
+
   it('should run protractor with a passing test and resolve', async () => {
     const configPath = require.resolve('./fixtures/passing.conf.js');
     const { task, stdout } = protractor({ configPath });

@@ -1,8 +1,10 @@
 const { run } = require('haste-test-utils');
 
-const mocha = run(require.resolve('../src'));
+const { command: mocha, kill } = run(require.resolve('../src'));
 
 describe('haste-mocha', () => {
+  afterEach(kill);
+
   it('should run a passing test and resolve', () => {
     const { task, stdout } = mocha();
 
