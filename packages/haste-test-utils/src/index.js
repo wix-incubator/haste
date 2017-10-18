@@ -35,9 +35,10 @@ module.exports.run = (modulePath) => {
   };
 
   const kill = () => {
-    Object.values(workers)
-      .forEach((worker) => {
-        worker.kill('SIGTERM');
+    Object.keys(workers)
+      .forEach((key) => {
+        workers[key].kill();
+        delete workers[key];
       });
   };
 
