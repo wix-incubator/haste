@@ -24,6 +24,11 @@ module.exports.run = (modulePath) => {
       stdout += buffer.toString();
     });
 
+    child.stderr.on('data', (buffer) => {
+      console.log(buffer.toString());
+      // stdout += buffer.toString();
+    });
+
     process.on('SIGTERM', () => child.kill('SIGTERM'));
 
     return {
