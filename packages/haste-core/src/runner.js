@@ -6,7 +6,7 @@ const Worker = require('./worker');
 const RunPhase = require('./run-phase');
 
 const WORKER_BIN = require.resolve('./worker-bin');
-const WORKER_OPTIONS = { silent: true, env: { FORCE_COLOR: true } };
+const WORKER_OPTIONS = { silent: true, env: Object.assign({ FORCE_COLOR: true }, process.env) };
 
 module.exports = class Runner extends Tapable {
   constructor(context) {

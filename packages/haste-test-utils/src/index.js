@@ -1,7 +1,7 @@
 const { fork } = require('child_process');
 
 const WORKER_BIN = require.resolve('./worker-bin');
-const WORKER_OPTIONS = { silent: true, env: { FORCE_COLOR: true } };
+const WORKER_OPTIONS = { silent: true, env: Object.assign({ FORCE_COLOR: true }, process.env) };
 
 module.exports.run = modulePath => (options) => {
   let stdout = '';
