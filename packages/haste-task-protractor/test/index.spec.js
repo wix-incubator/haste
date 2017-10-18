@@ -1,4 +1,3 @@
-// const protractor = require('../src');
 const { run } = require('haste-test-utils');
 
 const protractor = run(require.resolve('../src'));
@@ -37,26 +36,6 @@ describe('haste-protractor', () => {
     return task()
       .catch(() => {
         expect(stdout()).toMatch(/Error message: failed loading configuration file missing.conf.js/);
-      });
-  });
-
-  it('should update webdriver manager', async () => {
-    const configPath = require.resolve('./fixtures/passing.conf.js');
-    const { task, stdout } = protractor({ configPath });
-
-    return task()
-      .then(() => {
-        expect(stdout()).toMatch(/update - chromedriver: unzipping/);
-      });
-  });
-
-  it('should pass cli arguments when updating webdriver manager', async () => {
-    const configPath = require.resolve('./fixtures/passing.conf.js');
-    const { task, stdout } = protractor({ configPath, webdriverManagerArgs: ['--versions.chrome', '2.28'] });
-
-    return task()
-      .then(() => {
-        expect(stdout()).toMatch(/unzipping chromedriver_2.28.zip/);
       });
   });
 });
