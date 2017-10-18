@@ -26,6 +26,9 @@
     ],
     "testMatch": [
       "**/*.spec.js"
+    ],
+    "watchPathIgnorePatterns": [
+      "node_modules"
     ]
   }
 }

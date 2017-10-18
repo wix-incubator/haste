@@ -14,7 +14,9 @@ module.exports.run = modulePath => (options) => {
     });
   });
 
-  child.stdout.on('data', buffer => stdout += buffer.toString());
+  child.stdout.on('data', (buffer) => {
+    stdout += buffer.toString();
+  });
 
   process.on('SIGTERM', () => child.kill('SIGTERM'));
 
