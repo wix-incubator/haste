@@ -18,15 +18,15 @@ describe('haste-protractor', () => {
   // });
 
   it('should run protractor with a failing test and reject', async () => {
-    expect.assertions(1);
+    // expect.assertions(1);
 
     const configPath = require.resolve('./fixtures/failing.conf.js');
     const { task, stdout } = protractor({ configPath });
 
-    return task()
-      .catch(() => {
-        expect(stdout()).toMatch(/1 spec, 1 failure/);
-      });
+    return task();
+    // .catch(() => {
+    //   expect(stdout()).toMatch(/1 spec, 1 failure/);
+    // });
   });
 
   // it('should run protractor with a missing config and reject', async () => {
