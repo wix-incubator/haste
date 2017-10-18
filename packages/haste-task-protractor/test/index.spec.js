@@ -3,7 +3,7 @@ const { run } = require('haste-test-utils');
 
 const protractor = run(require.resolve('../src'));
 
-jest.setTimeout(10000);
+jest.setTimeout(20000);
 
 describe('haste-protractor', () => {
   it('should run protractor with a passing test and resolve', async () => {
