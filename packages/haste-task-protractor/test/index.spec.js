@@ -29,15 +29,15 @@ describe('haste-protractor', () => {
   //     });
   // });
 
-  // it('should run protractor with a missing config and reject', async () => {
-  //   expect.assertions(1);
+  it('should run protractor with a missing config and reject', async () => {
+    expect.assertions(1);
 
-  //   const configPath = 'missing.conf.js';
-  //   const { task, stdout } = protractor({ configPath });
+    const configPath = 'missing.conf.js';
+    const { task, stdout } = protractor({ configPath });
 
-  //   return task()
-  //     .catch(() => {
-  //       expect(stdout()).toMatch(/Error message: failed loading configuration file missing.conf.js/);
-  //     });
-  // });
+    return task()
+      .catch(() => {
+        expect(stdout()).toMatch(/Error message: failed loading configuration file missing.conf.js/);
+      });
+  });
 });
