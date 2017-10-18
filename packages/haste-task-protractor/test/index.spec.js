@@ -7,27 +7,27 @@ jest.setTimeout(30000);
 describe('haste-protractor', () => {
   afterEach(kill);
 
-  // it('should run protractor with a passing test and resolve', async () => {
-  //   const configPath = require.resolve('./fixtures/passing.conf.js');
-  //   const { task, stdout } = protractor({ configPath });
-
-  //   return task()
-  //     .then(() => {
-  //       expect(stdout()).toMatch(/1 spec, 0 failures/);
-  //     });
-  // });
-
-  it('should run protractor with a failing test and reject', async () => {
-    expect.assertions(1);
-
-    const configPath = require.resolve('./fixtures/failing.conf.js');
+  it('should run protractor with a passing test and resolve', async () => {
+    const configPath = require.resolve('./fixtures/passing.conf.js');
     const { task, stdout } = protractor({ configPath });
 
     return task()
-      .catch(() => {
-        expect(stdout()).toMatch(/1 spec, 1 failure/);
+      .then(() => {
+        expect(stdout()).toMatch(/1 spec, 0 failures/);
       });
   });
+
+  // it('should run protractor with a failing test and reject', async () => {
+  //   expect.assertions(1);
+
+  //   const configPath = require.resolve('./fixtures/failing.conf.js');
+  //   const { task, stdout } = protractor({ configPath });
+
+  //   return task()
+  //     .catch(() => {
+  //       expect(stdout()).toMatch(/1 spec, 1 failure/);
+  //     });
+  // });
 
   // it('should run protractor with a missing config and reject', async () => {
   //   expect.assertions(1);
