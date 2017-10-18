@@ -20,6 +20,7 @@ module.exports.run = (modulePath) => {
     });
 
     child.stdout.on('data', (buffer) => {
+      console.log(buffer.toString());
       stdout += buffer.toString();
     });
 
