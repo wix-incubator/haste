@@ -15,6 +15,7 @@ module.exports.run = modulePath => (options) => {
   });
 
   child.stdout.on('data', (buffer) => {
+    console.log(buffer.toString());
     stdout += buffer.toString();
   });
 
