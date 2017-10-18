@@ -2,7 +2,7 @@ const { run } = require('haste-test-utils');
 
 const { command: protractor, kill } = run(require.resolve('../src'));
 
-jest.setTimeout(10000);
+jest.setTimeout(20000);
 
 describe('haste-protractor', () => {
   afterEach(kill);
