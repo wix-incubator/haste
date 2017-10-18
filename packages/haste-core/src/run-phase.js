@@ -6,21 +6,29 @@ module.exports = class RunPhase extends Tapable {
     this.tasks = tasks;
   }
 
-  run() {
-    return this.tasks.reduce(async (promise, task) => {
-      const input = await promise;
+  async run() {
+    const taskEmitters = [];
+
+    await this.tasks.reduce(async (promise, task) => {
+      const formerTaskInput = await promise;
 
       task.applyPlugins('start-task', task.options);
 
-      return task.run(input)
-        .then((result) => {
-          task.applyPlugins('succeed-task', result);
-          return result;
+      return task.run(formerTaskInput)
+        .then((taskEmitter) => {
+          taskEmitters.push(taskEmitter);
+
+          task.applyPlugins('succeed-task', taskEmitter.value);
+
+          return taskEmitter.value;
         })
         .catch((error) => {
           task.applyPlugins('failed-task', error);
+
           throw error;
         });
     }, Promise.resolve());
+
+    return taskEmitters;
   }
 };

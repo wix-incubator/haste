@@ -58,9 +58,9 @@ module.exports = class Runner extends Tapable {
     this.applyPlugins('start-run', runPhase);
 
     return runPhase.run()
-      .then((results) => {
-        runPhase.applyPlugins('succeed-run', results);
-        return results;
+      .then((taskEmitters) => {
+        runPhase.applyPlugins('succeed-run', taskEmitters);
+        return taskEmitters;
       })
       .catch((error) => {
         runPhase.applyPlugins('failed-run', error);

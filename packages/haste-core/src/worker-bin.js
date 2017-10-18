@@ -4,7 +4,12 @@ function parseError(error) {
   }, {});
 }
 
+
 process.on('message', ({ options = {}, input, id }) => {
+  const emitEvent = (eventName, value) => {
+    process.send({ type: eventName, value, id });
+  };
+
   const handleError = (error) => {
     if (error instanceof Error) {
       error = parseError(error); // eslint-disable-line no-param-reassign
@@ -14,14 +19,14 @@ process.on('message', ({ options = {}, input, id }) => {
       console.log(error.stack || error);
     }
 
-    process.send({ type: 'failure', error, id });
+    emitEvent('failure', error);
   };
 
   let promise;
 
   try {
-    promise = require(process.argv[2])(options)(input)
-      .then(result => process.send({ type: 'success', result, id }));
+    promise = require(process.argv[2])(options, emitEvent)(input)
+      .then(result => emitEvent('success', result));
   } catch (error) {
     handleError(error);
   }
