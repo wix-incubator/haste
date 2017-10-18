@@ -3,27 +3,44 @@ const { fork } = require('child_process');
 const WORKER_BIN = require.resolve('./worker-bin');
 const WORKER_OPTIONS = { silent: true, env: Object.assign({ FORCE_COLOR: true }, process.env) };
 
-module.exports.run = modulePath => (options) => {
-  let stdout = '';
+module.exports.run = (modulePath) => {
+  const workers = {};
 
-  const child = fork(WORKER_BIN, [modulePath], WORKER_OPTIONS);
+  const command = (options) => {
+    let stdout = '';
 
-  const promise = new Promise((resolve, reject) => {
-    child.on('message', ({ result, error }) => {
-      error ? reject(error) : resolve(result);
+    const child = fork(WORKER_BIN, [modulePath], WORKER_OPTIONS);
+
+    workers[child.pid] = child;
+
+    const promise = new Promise((resolve, reject) => {
+      child.on('message', ({ result, error }) => {
+        error ? reject(error) : resolve(result);
+      });
     });
-  });
 
-  child.stdout.on('data', buffer => stdout += buffer.toString());
+    child.stdout.on('data', (buffer) => {
+      stdout += buffer.toString();
+    });
 
-  process.on('SIGTERM', () => child.kill('SIGTERM'));
+    process.on('SIGTERM', () => child.kill('SIGTERM'));
 
-  return {
-    kill: () => child.kill(),
-    stdout: () => stdout,
-    task: (input) => {
-      child.send({ options, input });
-      return promise;
-    },
+    return {
+      stdout: () => stdout,
+      task: (input) => {
+        child.send({ options, input });
+        return promise;
+      },
+    };
   };
+
+  const kill = () => {
+    Object.keys(workers)
+      .forEach((key) => {
+        workers[key].kill();
+        delete workers[key];
+      });
+  };
+
+  return { command, kill };
 };
