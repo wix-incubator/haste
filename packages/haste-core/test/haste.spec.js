@@ -146,7 +146,7 @@ describe('haste', () => {
           await runner.run({ task: hardError });
         } catch (error) {
           expect(error.message).toEqual('some-error');
-          expect(stdout.mock.calls).toContainEqual(['hard-error-task\n']);
+          expect(stdout.mock.calls[0]).toEqual(expect.stringMatching('hard-error-task\n'));
         }
       });
     });
