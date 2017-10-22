@@ -1,6 +1,6 @@
 const chokidar = require('chokidar');
 const Runner = require('./runner');
-const { camelCaseToDash } = require('./utils');
+const { camelCaseToDash, isPath } = require('./utils');
 
 const watch = (pattern, callback) => {
   const watcher = chokidar.watch(pattern, { ignoreInitial: true, cwd: process.cwd() })
@@ -12,7 +12,7 @@ const watch = (pattern, callback) => {
 const tasks = new Proxy({}, {
   get: (target, prop) => (options) => {
     return {
-      task: camelCaseToDash(prop),
+      task: isPath(prop) ? prop : camelCaseToDash(prop),
       options,
     };
   }

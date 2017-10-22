@@ -326,35 +326,33 @@ describe('haste', () => {
   });
 
   describe('function notation', () => {
-    it('should be supported for running tasks', async () => {
+    it('should return a task object which can be inserted into runner.run() calls', async () => {
       const start = haste();
 
       return start(async (configure) => {
-        runner = configure({
+        const { tasks } = configure({
           plugins: [testPlugin]
         });
 
         const options = { value: 'some-value' };
-        const result = await runner.run(runner.tasks[loggingOptions](options));
+        const resultTaskObject = { task: loggingOptions, options };
 
-        expect(result).toEqual('some-value');
-        expect(stdout).toEqual('logging-options-task\n{ value: \'some-value\' }\n');
+        expect(tasks[loggingOptions](options)).toEqual(resultTaskObject);
       });
     });
 
-    it('should convert camelcase to dashes', async () => {
-      const start = haste(path.join(__dirname, '/fixtures'));
+    it('should convert camelcase to dashes for non path task names', async () => {
+      const start = haste();
 
       return start(async (configure) => {
-        runner = configure({
+        const { tasks } = configure({
           plugins: [testPlugin]
         });
 
         const options = { value: 'some-value' };
-        const result = await runner.run(runner.tasks.successfulCamelCase(options));
+        const resultTaskObject = { task: 'camel-case-task', options };
 
-        expect(result).toEqual('some-value');
-        expect(stdout).toEqual('successful-camel-case-task\n{ value: \'some-value\' }\n');
+        expect(tasks.camelCaseTask(options)).toEqual(resultTaskObject);
       });
     });
   });
