@@ -1,8 +1,10 @@
 const path = require('path');
 const Mocha = require('mocha');
 
-module.exports = options => async (files) => {
+module.exports = ({ requireFiles = [], ...options }) => async (files) => {
   const mochaRunner = new Mocha(options);
+
+  requireFiles.forEach(file => require(file));
 
   files.forEach(({ filename }) => {
     mochaRunner.addFile(filename);

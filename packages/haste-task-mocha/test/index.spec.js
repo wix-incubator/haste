@@ -45,4 +45,19 @@ describe('haste-mocha', () => {
         expect(stdout()).toMatch(/✈/);
       });
   });
+
+  it('should support requiring files before mocha starts running', () => {
+    const { task, stdout } = mocha({
+      requireFiles: [require.resolve('./fixtures/setup')]
+    });
+
+    const file = {
+      filename: require.resolve('./fixtures/pass'),
+    };
+
+    return task([file])
+      .then(() => {
+        expect(stdout()).toMatch(/setup/);
+      });
+  });
 });
