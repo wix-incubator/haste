@@ -11,36 +11,32 @@ const loggingValue = require.resolve('./fixtures/logging-value-task');
 const loggingOptions = require.resolve('./fixtures/logging-options-task');
 const noError = require.resolve('./fixtures/no-error-task');
 
-class TestPlugin {
-  constructor({ stdout, runPhase }) {
-    this.stdout = stdout;
-    this.runPhase = runPhase;
-  }
-
-  apply(runner) {
-    runner.plugin('start-worker', (worker) => {
-      worker.child.stdout.on('data', buffer => this.stdout(buffer.toString()));
-    });
-
-    runner.plugin('start-run', this.runPhase);
-  }
-}
-
 describe('haste', () => {
   let runner;
   let testPlugin;
-
-  const stdout = jest.fn();
+  let stdout = '';
   const runPhase = jest.fn();
 
+  class TestPlugin {
+    apply(runnerTapable) {
+      runnerTapable.plugin('start-worker', (worker) => {
+        worker.child.stdout.on('data', (buffer) => {
+          stdout += buffer.toString();
+        });
+      });
+
+      runnerTapable.plugin('start-run', runPhase);
+    }
+  }
+
   beforeEach(() => {
-    testPlugin = new TestPlugin({ stdout, runPhase });
+    testPlugin = new TestPlugin();
   });
 
   afterEach(() => {
     process.removeAllListeners();
     runner.close();
-    stdout.mockClear();
+    stdout = '';
     runPhase.mockClear();
   });
 
@@ -56,12 +52,12 @@ describe('haste', () => {
         const result = await runner.run({ task: successful });
 
         expect(result).toEqual(undefined);
-        expect(stdout.mock.calls).toEqual([['successful-task\n']]);
+        expect(stdout).toMatch('successful-task\n');
       });
     });
 
     it('should run an unsuccessful task and reject', async () => {
-      expect.assertions(2);
+      expect.assertions(3);
 
       const start = haste();
 
@@ -74,7 +70,8 @@ describe('haste', () => {
           await runner.run({ task: unsuccessful });
         } catch (error) {
           expect(error).toEqual('some-error');
-          expect(stdout.mock.calls).toEqual([['unsuccessful-task\n'], ['some-error\n']]);
+          expect(stdout).toMatch('unsuccessful-task\n');
+          expect(stdout).toMatch('some-error\n');
         }
       });
     });
@@ -95,7 +92,7 @@ describe('haste', () => {
         );
 
         expect(result).toEqual(undefined);
-        expect(stdout.mock.calls).toEqual([['successful-task\n'], ['successful-task\n']]);
+        expect(stdout).toMatch('successful-task\nsuccessful-task\n');
       });
     });
 
@@ -116,13 +113,13 @@ describe('haste', () => {
           );
         } catch (error) {
           expect(error).toEqual('some-error');
-          expect(stdout.mock.calls).toEqual([['successful-task\n'], ['unsuccessful-task\n'], ['some-error\n']]);
+          expect(stdout).toMatch('successful-task\nunsuccessful-task\nsome-error\n');
         }
       });
     });
 
     it('should run a sequence of an unsuccessful task and a successful task and reject', async () => {
-      expect.assertions(2);
+      expect.assertions(3);
 
       const start = haste();
 
@@ -138,7 +135,8 @@ describe('haste', () => {
           );
         } catch (error) {
           expect(error).toEqual('some-error');
-          expect(stdout.mock.calls).toEqual([['unsuccessful-task\n'], ['some-error\n']]);
+          expect(stdout).toMatch('unsuccessful-task\n');
+          expect(stdout).toMatch('some-error\n');
         }
       });
     });
@@ -157,7 +155,7 @@ describe('haste', () => {
           await runner.run({ task: hardError });
         } catch (error) {
           expect(error.message).toEqual('some-error');
-          expect(stdout.mock.calls[0]).toEqual(expect.stringMatching('hard-error-task\n'));
+          expect(stdout).toMatch('hard-error-task\n');
         }
       });
     });
@@ -227,7 +225,7 @@ describe('haste', () => {
         const result = await runner.run({ task: returnedValue });
 
         expect(result).toEqual('some-value');
-        expect(stdout.mock.calls).toEqual([['returned-value-task\n']]);
+        expect(stdout).toMatch('returned-value-task\n');
       });
     });
 
@@ -245,7 +243,7 @@ describe('haste', () => {
         );
 
         expect(result).toEqual('some-other-value');
-        expect(stdout.mock.calls).toEqual([['returned-value-task\n'], ['logging-value-task\n'], ['some-value\n']]);
+        expect(stdout).toEqual('returned-value-task\nlogging-value-task\nsome-value\n');
       });
     });
 
@@ -260,7 +258,7 @@ describe('haste', () => {
         const result = await runner.run({ task: loggingOptions, options: { value: 'some-value' } });
 
         expect(result).toEqual('some-value');
-        expect(stdout.mock.calls).toEqual([['logging-options-task\n'], ['{ value: \'some-value\' }\n']]);
+        expect(stdout).toEqual('logging-options-task\n{ value: \'some-value\' }\n');
       });
     });
 
@@ -292,7 +290,7 @@ describe('haste', () => {
         const result = await runner.run({ task: './successful-task' });
 
         expect(result).toEqual(undefined);
-        expect(stdout.mock.calls).toEqual([['successful-task\n']]);
+        expect(stdout).toMatch('successful-task\n');
       });
     });
 
@@ -307,7 +305,7 @@ describe('haste', () => {
         const result = await runner.run({ task: 'haste-task-successful' });
 
         expect(result).toEqual(undefined);
-        expect(stdout.mock.calls).toEqual([['successful-task\n']]);
+        expect(stdout).toMatch('successful-task\n');
       });
     });
 
@@ -322,7 +320,7 @@ describe('haste', () => {
         const result = await runner.run({ task: 'successful' });
 
         expect(result).toEqual(undefined);
-        expect(stdout.mock.calls).toEqual([['successful-task\n']]);
+        expect(stdout).toEqual('successful-task\n');
       });
     });
   });
@@ -340,7 +338,7 @@ describe('haste', () => {
         const result = await runner.run(runner.tasks[loggingOptions](options));
 
         expect(result).toEqual('some-value');
-        expect(stdout.mock.calls).toEqual([['logging-options-task\n'], ['{ value: \'some-value\' }\n']]);
+        expect(stdout).toEqual('logging-options-task\n{ value: \'some-value\' }\n');
       });
     });
 
@@ -356,7 +354,7 @@ describe('haste', () => {
         const result = await runner.run(runner.tasks.successfulCamelCase(options));
 
         expect(result).toEqual('some-value');
-        expect(stdout.mock.calls).toEqual([['successful-camel-case-task\n'], ['{ value: \'some-value\' }\n']]);
+        expect(stdout).toEqual('successful-camel-case-task\n{ value: \'some-value\' }\n');
       });
     });
   });
