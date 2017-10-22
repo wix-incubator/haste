@@ -57,7 +57,7 @@ describe('haste', () => {
     });
 
     it('should run an unsuccessful task and reject', async () => {
-      expect.assertions(3);
+      expect.assertions(2);
 
       const start = haste();
 
@@ -70,8 +70,7 @@ describe('haste', () => {
           await runner.run({ task: unsuccessful });
         } catch (error) {
           expect(error).toEqual('some-error');
-          expect(stdout).toMatch('unsuccessful-task\n');
-          expect(stdout).toMatch('some-error\n');
+          expect(stdout).toMatch(['unsuccessful-task\n', 'some-error\n'].join(''));
         }
       });
     });
@@ -92,7 +91,7 @@ describe('haste', () => {
         );
 
         expect(result).toEqual(undefined);
-        expect(stdout).toMatch('successful-task\nsuccessful-task\n');
+        expect(stdout).toMatch(['successful-task\n', 'successful-task\n'].join(''));
       });
     });
 
@@ -113,13 +112,13 @@ describe('haste', () => {
           );
         } catch (error) {
           expect(error).toEqual('some-error');
-          expect(stdout).toMatch('successful-task\nunsuccessful-task\nsome-error\n');
+          expect(stdout).toMatch(['successful-task\n', 'unsuccessful-task\n', 'some-error\n'].join(''));
         }
       });
     });
 
     it('should run a sequence of an unsuccessful task and a successful task and reject', async () => {
-      expect.assertions(3);
+      expect.assertions(2);
 
       const start = haste();
 
@@ -135,8 +134,7 @@ describe('haste', () => {
           );
         } catch (error) {
           expect(error).toEqual('some-error');
-          expect(stdout).toMatch('unsuccessful-task\n');
-          expect(stdout).toMatch('some-error\n');
+          expect(stdout).toMatch(['unsuccessful-task\n', 'some-error\n'].join(''));
         }
       });
     });
@@ -243,7 +241,7 @@ describe('haste', () => {
         );
 
         expect(result).toEqual('some-other-value');
-        expect(stdout).toEqual('returned-value-task\nlogging-value-task\nsome-value\n');
+        expect(stdout).toEqual(['returned-value-task\n', 'logging-value-task\n', 'some-value\n'].join(''));
       });
     });
 
@@ -258,7 +256,7 @@ describe('haste', () => {
         const result = await runner.run({ task: loggingOptions, options: { value: 'some-value' } });
 
         expect(result).toEqual('some-value');
-        expect(stdout).toEqual('logging-options-task\n{ value: \'some-value\' }\n');
+        expect(stdout).toEqual(['logging-options-task\n', '{ value: \'some-value\' }\n'].join(''));
       });
     });
 
