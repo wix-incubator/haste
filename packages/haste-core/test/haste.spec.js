@@ -12,25 +12,36 @@ const loggingOptions = require.resolve('./fixtures/logging-options-task');
 const noError = require.resolve('./fixtures/no-error-task');
 
 class TestPlugin {
-  constructor(stdout) {
+  constructor({ stdout, runPhase }) {
     this.stdout = stdout;
+    this.runPhase = runPhase;
   }
 
   apply(runner) {
     runner.plugin('start-worker', (worker) => {
       worker.child.stdout.on('data', buffer => this.stdout(buffer.toString()));
     });
+
+    runner.plugin('start-run', this.runPhase);
   }
 }
 
 describe('haste', () => {
   let runner;
+  let testPlugin;
+
   const stdout = jest.fn();
+  const runPhase = jest.fn();
+
+  beforeEach(() => {
+    testPlugin = new TestPlugin({ stdout, runPhase });
+  });
 
   afterEach(() => {
     process.removeAllListeners();
     runner.close();
     stdout.mockClear();
+    runPhase.mockClear();
   });
 
   describe('running tasks', () => {
@@ -39,7 +50,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         runner = configure({
-          plugins: [new TestPlugin(stdout)]
+          plugins: [testPlugin]
         });
 
         const result = await runner.run({ task: successful });
@@ -56,7 +67,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         runner = configure({
-          plugins: [new TestPlugin(stdout)]
+          plugins: [testPlugin]
         });
 
         try {
@@ -75,7 +86,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         runner = configure({
-          plugins: [new TestPlugin(stdout)]
+          plugins: [testPlugin]
         });
 
         const result = await runner.run(
@@ -95,7 +106,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         runner = configure({
-          plugins: [new TestPlugin(stdout)]
+          plugins: [testPlugin]
         });
 
         try {
@@ -117,7 +128,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         runner = configure({
-          plugins: [new TestPlugin(stdout)]
+          plugins: [testPlugin]
         });
 
         try {
@@ -139,7 +150,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         runner = configure({
-          plugins: [new TestPlugin(stdout)]
+          plugins: [testPlugin]
         });
 
         try {
@@ -158,7 +169,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         runner = configure({
-          plugins: [new TestPlugin(stdout)]
+          plugins: [testPlugin]
         });
 
         try {
@@ -176,7 +187,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         runner = configure({
-          plugins: [new TestPlugin(stdout)]
+          plugins: [testPlugin]
         });
 
         try {
@@ -194,7 +205,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         runner = configure({
-          plugins: [new TestPlugin(stdout)]
+          plugins: [testPlugin]
         });
 
         try {
@@ -210,7 +221,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         runner = configure({
-          plugins: [new TestPlugin(stdout)]
+          plugins: [testPlugin]
         });
 
         const result = await runner.run({ task: returnedValue });
@@ -225,7 +236,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         runner = configure({
-          plugins: [new TestPlugin(stdout)]
+          plugins: [testPlugin]
         });
 
         const result = await runner.run(
@@ -243,13 +254,28 @@ describe('haste', () => {
 
       return start(async (configure) => {
         runner = configure({
-          plugins: [new TestPlugin(stdout)]
+          plugins: [testPlugin]
         });
 
         const result = await runner.run({ task: loggingOptions, options: { value: 'some-value' } });
 
         expect(result).toEqual('some-value');
         expect(stdout.mock.calls).toEqual([['logging-options-task\n'], ['{ value: \'some-value\' }\n']]);
+      });
+    });
+
+    it('should run a task with metadata object and pass it to plugins', () => {
+      const start = haste();
+      return start(async (configure) => {
+        runner = configure({
+          plugins: [testPlugin]
+        });
+
+        const result = await runner.run({ task: successful, metadata: { title: 'awesome-task' } });
+        expect(result).toEqual(undefined);
+
+        const firstRunPhase = runPhase.mock.calls[0][0];
+        expect(firstRunPhase.tasks[0].metadata).toEqual({ title: 'awesome-task' });
       });
     });
   });
@@ -260,7 +286,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         runner = configure({
-          plugins: [new TestPlugin(stdout)]
+          plugins: [testPlugin]
         });
 
         const result = await runner.run({ task: './successful-task' });
@@ -275,7 +301,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         runner = configure({
-          plugins: [new TestPlugin(stdout)]
+          plugins: [testPlugin]
         });
 
         const result = await runner.run({ task: 'haste-task-successful' });
@@ -290,7 +316,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         runner = configure({
-          plugins: [new TestPlugin(stdout)]
+          plugins: [testPlugin]
         });
 
         const result = await runner.run({ task: 'successful' });
@@ -307,7 +333,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         runner = configure({
-          plugins: [new TestPlugin(stdout)]
+          plugins: [testPlugin]
         });
 
         const options = { value: 'some-value' };
@@ -323,7 +349,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         runner = configure({
-          plugins: [new TestPlugin(stdout)]
+          plugins: [testPlugin]
         });
 
         const options = { value: 'some-value' };
