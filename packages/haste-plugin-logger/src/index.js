@@ -1,5 +1,5 @@
 const chalk = require('chalk');
-const { format, delta } = require('./utils');
+const { format, delta, generateRunTitle } = require('./utils');
 
 module.exports = class LoggerPlugin {
   apply(runner) {
@@ -8,23 +8,19 @@ module.exports = class LoggerPlugin {
     });
 
     runner.plugin('start-run', (runPhase) => {
-      runPhase.tasks.forEach((task) => {
-        let start;
+      const runTitle = generateRunTitle(runPhase.tasks);
 
-        task.plugin('start-task', () => {
-          start = new Date();
-          console.log(`[${format(start)}] ${chalk.black.bgGreen('Starting')} '${task.name}'...`);
-        });
+      const start = new Date();
+      console.log(`[${format(start)}] ${chalk.black.bgGreen('Starting')} '${runTitle}'...`);
 
-        task.plugin('succeed-task', () => {
-          const [end, time] = delta(start);
-          console.log(`[${format(end)}] ${chalk.black.bgCyan('Finished')} '${task.name}' after ${time} ms`);
-        });
+      runPhase.plugin('succeed-run', () => {
+        const [end, time] = delta(start);
+        console.log(`[${format(end)}] ${chalk.black.bgCyan('Finished')} '${runTitle}' after ${time} ms`);
+      });
 
-        task.plugin('failed-task', () => {
-          const [end, time] = delta(start);
-          console.log(`[${format(end)}] ${chalk.white.bgRed('Failed')} '${task.name}' after ${time} ms`);
-        });
+      runPhase.plugin('failed-run', () => {
+        const [end, time] = delta(start);
+        console.log(`[${format(end)}] ${chalk.white.bgRed('Failed')} '${runTitle}' after ${time} ms`);
       });
     });
   }
