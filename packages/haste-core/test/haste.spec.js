@@ -68,7 +68,7 @@ describe('haste', () => {
 
         try {
           await runner.run({ task: unsuccessful });
-        } catch (error) {
+        } catch ({ error }) {
           expect(error).toEqual('some-error');
           expect(stdout).toMatch(['unsuccessful-task\n', 'some-error\n'].join(''));
         }
@@ -110,7 +110,7 @@ describe('haste', () => {
             { task: successful },
             { task: unsuccessful }
           );
-        } catch (error) {
+        } catch ({ error }) {
           expect(error).toEqual('some-error');
           expect(stdout).toMatch(['successful-task\n', 'unsuccessful-task\n', 'some-error\n'].join(''));
         }
@@ -132,7 +132,7 @@ describe('haste', () => {
             { task: unsuccessful },
             { task: successful }
           );
-        } catch (error) {
+        } catch ({ error }) {
           expect(error).toEqual('some-error');
           expect(stdout).toMatch(['unsuccessful-task\n', 'some-error\n'].join(''));
         }
@@ -151,7 +151,7 @@ describe('haste', () => {
 
         try {
           await runner.run({ task: hardError });
-        } catch (error) {
+        } catch ({ error }) {
           expect(error.message).toEqual('some-error');
           expect(stdout).toMatch('hard-error-task\n');
         }
@@ -170,7 +170,7 @@ describe('haste', () => {
 
         try {
           await runner.run({ task: requireError });
-        } catch (error) {
+        } catch ({ error }) {
           expect(error.message).toEqual('some-error');
         }
       });
@@ -188,7 +188,7 @@ describe('haste', () => {
 
         try {
           await runner.run({ task: noPromise });
-        } catch (error) {
+        } catch ({ error }) {
           expect(error.message).toEqual('Cannot read property \'then\' of undefined');
         }
       });
@@ -206,7 +206,7 @@ describe('haste', () => {
 
         try {
           await runner.run({ task: noError });
-        } catch (error) {
+        } catch ({ error }) {
           expect(error).toEqual(undefined);
         }
       });

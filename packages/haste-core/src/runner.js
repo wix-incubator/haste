@@ -4,6 +4,7 @@ const { resolveTaskName } = require('./utils');
 const Task = require('./task');
 const Worker = require('./worker');
 const RunPhase = require('./run-phase');
+const WorkerError = require('./errors/worker-error');
 
 const WORKER_BIN = require.resolve('./worker-bin');
 const WORKER_OPTIONS = { silent: true, env: Object.assign({ FORCE_COLOR: true }, process.env) };
@@ -63,8 +64,9 @@ module.exports = class Runner extends Tapable {
       })
       .catch((error) => {
         runPhase.applyPlugins('failed-run', error);
+
         if (!this.persistent || !this.done) {
-          throw error;
+          throw new WorkerError(error);
         }
       });
   }

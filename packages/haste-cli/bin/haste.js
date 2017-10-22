@@ -56,5 +56,11 @@ explorer.load(context)
           process.exit(0);
         }
       })
-      .catch(() => process.exit(1));
+      .catch((error) => {
+        if (error.name !== 'WorkerError') {
+          console.log(error);
+        }
+
+        process.exit(1);
+      });
   });
