@@ -341,6 +341,23 @@ describe('haste', () => {
       });
     });
 
+    it('should use the second argument of the function notation as a the metadata object of the task object', async () => {
+      const start = haste();
+
+      return start(async (configure) => {
+        const { tasks } = configure({
+          plugins: [testPlugin]
+        });
+
+        const options = { value: 'some-value' };
+        const metadata = { title: 'awesome-task' };
+
+        const resultTaskObject = { task: loggingOptions, options, metadata };
+
+        expect(tasks[loggingOptions](options, metadata)).toEqual(resultTaskObject);
+      });
+    });
+
     it('should convert camelcase to dashes for non path task names', async () => {
       const start = haste();
 

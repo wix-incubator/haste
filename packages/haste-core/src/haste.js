@@ -10,10 +10,11 @@ const watch = (pattern, callback) => {
 };
 
 const tasks = new Proxy({}, {
-  get: (target, prop) => (options) => {
+  get: (target, prop) => (options, metadata) => {
     return {
       task: isPath(prop) ? prop : camelCaseToDash(prop),
       options,
+      metadata,
     };
   }
 });
