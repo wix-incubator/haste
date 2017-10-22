@@ -16,8 +16,6 @@ module.exports = options => (input) => {
           outFile: filename,
         }, options));
 
-        console.log(`compiled - ${filename}`);
-
         return {
           filename,
           content: css.toString(),

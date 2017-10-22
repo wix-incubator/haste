@@ -10,8 +10,6 @@ module.exports = options => (input) => {
       .map(async ({ filename, content }) => {
         const { css, map } = await render(content, Object.assign({ filename }, options));
 
-        console.log(`compiled - ${filename}`);
-
         return {
           filename,
           content: css,
