@@ -38,4 +38,27 @@ describe('haste-write', () => {
         expect(fs.existsSync(path.join(target, expectedFilename))).toEqual(true);
       });
   });
+
+  it('should write source maps if they exist', async () => {
+    const target = tempy.directory();
+
+    const file = {
+      filename: 'test.js',
+      content: 'const a = 5;',
+      map: {
+        hello: 'world'
+      },
+    };
+
+    const task = write({ target });
+
+    return task([file])
+      .then(() => {
+        const mapContent = fs
+          .readFileSync(path.join(target, `${file.filename}.map`))
+          .toString();
+
+        expect(mapContent).toEqual(JSON.stringify(file.map));
+      });
+  });
 });
