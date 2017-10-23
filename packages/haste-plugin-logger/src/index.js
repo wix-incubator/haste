@@ -8,10 +8,6 @@ module.exports = class LoggerPlugin {
     });
 
     runner.plugin('start-run', (runPhase) => {
-      if (runner.idle) {
-        return;
-      }
-
       const runTitle = generateRunTitle(runPhase.tasks);
 
       const start = new Date();
