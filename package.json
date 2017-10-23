@@ -15,10 +15,12 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jest": "^21.0.2",
     "jest": "^21.0.2",
+    "jest-teamcity-reporter": "^0.7.0",
     "lerna": "^2.0.0"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>/test_setup_file.js",
+    "testResultsProcessor": "jest-teamcity-reporter",
     "testEnvironment": "node",
     "testPathIgnorePatterns": [
       "/node_modules/",
