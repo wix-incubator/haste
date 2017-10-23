@@ -287,6 +287,26 @@ describe('haste', () => {
         expect(firstRunPhase.tasks[0].metadata).toEqual({ title: 'awesome-task' });
       });
     });
+
+    it('should pass persistent property when configured in preset', async () => {
+      const start = haste();
+
+      const { persistent } = await start(async (configure) => {
+        runner = configure({ persistent: true });
+      });
+
+      expect(persistent).toBe(true);
+    });
+
+    it('should pass idle property that is true when initial run is done on persistent mode', async () => {
+      const start = haste();
+
+      const { idle } = await start(async (configure) => {
+        runner = configure({ persistent: true });
+      });
+
+      expect(idle).toBe(true);
+    });
   });
 
   describe('run context', () => {
