@@ -1,6 +1,6 @@
 {
   "name": "haste-task-protractor",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {
@@ -8,6 +8,6 @@
     "protractor": "^5.1.2"
   },
   "devDependencies": {
-    "haste-test-utils": "^0.1.2"
+    "haste-test-utils": "^0.1.3"
   }
 }

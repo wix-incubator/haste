@@ -1,6 +1,6 @@
 {
   "name": "haste-test-utils",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "main": "./src/index.js",
   "license": "MIT"
 }
