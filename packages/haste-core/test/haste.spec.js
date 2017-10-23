@@ -12,7 +12,7 @@ const loggingOptions = require.resolve('./fixtures/logging-options-task');
 const noError = require.resolve('./fixtures/no-error-task');
 
 describe('haste', () => {
-  let runner;
+  let api;
   let testPlugin;
   let stdout = '';
   const runPhase = jest.fn();
@@ -35,7 +35,7 @@ describe('haste', () => {
 
   afterEach(() => {
     process.removeAllListeners();
-    runner.close();
+    api.close();
     stdout = '';
     runPhase.mockClear();
   });
@@ -45,11 +45,11 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        runner = configure({
+        api = configure({
           plugins: [testPlugin]
         });
 
-        const result = await runner.run({ task: successful });
+        const result = await api.run({ task: successful });
 
         expect(result).toEqual(undefined);
         expect(stdout).toMatch('successful-task\n');
@@ -62,12 +62,12 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        runner = configure({
+        api = configure({
           plugins: [testPlugin]
         });
 
         try {
-          await runner.run({ task: unsuccessful });
+          await api.run({ task: unsuccessful });
         } catch ({ error }) {
           expect(error).toEqual('some-error');
           expect(stdout).toMatch(['unsuccessful-task\n', 'some-error\n'].join(''));
@@ -79,12 +79,12 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        runner = configure({
+        api = configure({
           persistent: true,
           plugins: [testPlugin]
         });
 
-        return runner.run({ task: unsuccessful });
+        return api.run({ task: unsuccessful });
       });
     });
 
@@ -94,11 +94,11 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        runner = configure({
+        api = configure({
           plugins: [testPlugin]
         });
 
-        const result = await runner.run(
+        const result = await api.run(
           { task: successful },
           { task: successful }
         );
@@ -114,12 +114,12 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        runner = configure({
+        api = configure({
           plugins: [testPlugin]
         });
 
         try {
-          await runner.run(
+          await api.run(
             { task: successful },
             { task: unsuccessful }
           );
@@ -136,12 +136,12 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        runner = configure({
+        api = configure({
           plugins: [testPlugin]
         });
 
         try {
-          await runner.run(
+          await api.run(
             { task: unsuccessful },
             { task: successful }
           );
@@ -158,12 +158,12 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        runner = configure({
+        api = configure({
           plugins: [testPlugin]
         });
 
         try {
-          await runner.run({ task: hardError });
+          await api.run({ task: hardError });
         } catch ({ error }) {
           expect(error.message).toEqual('some-error');
           expect(stdout).toMatch('hard-error-task\n');
@@ -177,12 +177,12 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        runner = configure({
+        api = configure({
           plugins: [testPlugin]
         });
 
         try {
-          await runner.run({ task: requireError });
+          await api.run({ task: requireError });
         } catch ({ error }) {
           expect(error.message).toEqual('some-error');
         }
@@ -195,12 +195,12 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        runner = configure({
+        api = configure({
           plugins: [testPlugin]
         });
 
         try {
-          await runner.run({ task: noPromise });
+          await api.run({ task: noPromise });
         } catch ({ error }) {
           expect(error.message).toEqual('Cannot read property \'then\' of undefined');
         }
@@ -213,12 +213,12 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        runner = configure({
+        api = configure({
           plugins: [testPlugin]
         });
 
         try {
-          await runner.run({ task: noError });
+          await api.run({ task: noError });
         } catch ({ error }) {
           expect(error).toEqual(undefined);
         }
@@ -229,11 +229,11 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        runner = configure({
+        api = configure({
           plugins: [testPlugin]
         });
 
-        const result = await runner.run({ task: returnedValue });
+        const result = await api.run({ task: returnedValue });
 
         expect(result).toEqual('some-value');
         expect(stdout).toMatch('returned-value-task\n');
@@ -244,11 +244,11 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        runner = configure({
+        api = configure({
           plugins: [testPlugin]
         });
 
-        const result = await runner.run(
+        const result = await api.run(
           { task: returnedValue },
           { task: loggingValue }
         );
@@ -262,11 +262,11 @@ describe('haste', () => {
       const start = haste();
 
       return start(async (configure) => {
-        runner = configure({
+        api = configure({
           plugins: [testPlugin]
         });
 
-        const result = await runner.run({ task: loggingOptions, options: { value: 'some-value' } });
+        const result = await api.run({ task: loggingOptions, options: { value: 'some-value' } });
 
         expect(result).toEqual('some-value');
         expect(stdout).toEqual(['logging-options-task\n', '{ value: \'some-value\' }\n'].join(''));
@@ -276,11 +276,11 @@ describe('haste', () => {
     it('should run a task with metadata object and pass it to plugins', () => {
       const start = haste();
       return start(async (configure) => {
-        runner = configure({
+        api = configure({
           plugins: [testPlugin]
         });
 
-        const result = await runner.run({ task: successful, metadata: { title: 'awesome-task' } });
+        const result = await api.run({ task: successful, metadata: { title: 'awesome-task' } });
         expect(result).toEqual(undefined);
 
         const firstRunPhase = runPhase.mock.calls[0][0];
@@ -291,21 +291,21 @@ describe('haste', () => {
     it('should pass persistent property when configured in preset', async () => {
       const start = haste();
 
-      const { persistent } = await start(async (configure) => {
-        runner = configure({ persistent: true });
+      const runner = await start(async (configure) => {
+        api = configure({ persistent: true });
       });
 
-      expect(persistent).toBe(true);
+      expect(runner.persistent).toBe(true);
     });
 
     it('should pass idle property that is true when initial run is done on persistent mode', async () => {
       const start = haste();
 
-      const { idle } = await start(async (configure) => {
-        runner = configure({ persistent: true });
+      const runner = await start(async (configure) => {
+        api = configure({ persistent: true });
       });
 
-      expect(idle).toBe(true);
+      expect(runner.idle).toBe(true);
     });
   });
 
@@ -314,11 +314,11 @@ describe('haste', () => {
       const start = haste(path.join(__dirname, '/fixtures'));
 
       return start(async (configure) => {
-        runner = configure({
+        api = configure({
           plugins: [testPlugin]
         });
 
-        const result = await runner.run({ task: './successful-task' });
+        const result = await api.run({ task: './successful-task' });
 
         expect(result).toEqual(undefined);
         expect(stdout).toMatch('successful-task\n');
@@ -329,11 +329,11 @@ describe('haste', () => {
       const start = haste(path.join(__dirname, '/fixtures'));
 
       return start(async (configure) => {
-        runner = configure({
+        api = configure({
           plugins: [testPlugin]
         });
 
-        const result = await runner.run({ task: 'haste-task-successful' });
+        const result = await api.run({ task: 'haste-task-successful' });
 
         expect(result).toEqual(undefined);
         expect(stdout).toMatch('successful-task\n');
@@ -344,11 +344,11 @@ describe('haste', () => {
       const start = haste(path.join(__dirname, '/fixtures'));
 
       return start(async (configure) => {
-        runner = configure({
+        api = configure({
           plugins: [testPlugin]
         });
 
-        const result = await runner.run({ task: 'successful' });
+        const result = await api.run({ task: 'successful' });
 
         expect(result).toEqual(undefined);
         expect(stdout).toEqual('successful-task\n');
@@ -357,7 +357,7 @@ describe('haste', () => {
   });
 
   describe('function notation', () => {
-    it('should return a task object which can be inserted into runner.run() calls', async () => {
+    it('should return a task object which can be inserted into api.run() calls', async () => {
       const start = haste();
 
       return start(async (configure) => {
