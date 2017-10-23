@@ -1,9 +1,11 @@
 const fs = require('fs');
 const path = require('path');
+const { run } = require('haste-test-utils');
 const webpack = require('../src');
 const config = require('./fixtures/webpack.config');
 
 const configPath = require.resolve('./fixtures/webpack.config');
+const callbackPath = require.resolve('./fixtures/callback');
 
 describe('haste-webpack', () => {
   it('should bundle with webpack', async () => {
@@ -27,5 +29,17 @@ describe('haste-webpack', () => {
       .catch((error) => {
         expect(error.message).toMatch(/Invalid configuration object/);
       });
+  });
+
+  it('should support passing callback that accepts webpack err and stats', async () => {
+    const { command, kill } = run(require.resolve('../src'));
+    const { task, stdout } = command({ configPath, callbackPath });
+
+    try {
+      await task();
+      expect(stdout()).toMatch('1 module');
+    } finally {
+      kill();
+    }
   });
 });
