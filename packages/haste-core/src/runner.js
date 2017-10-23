@@ -15,6 +15,7 @@ module.exports = class Runner extends Tapable {
 
     this.context = context;
     this.workers = {};
+    this.idle = false;
 
     process.on('exit', () => this.close());
   }

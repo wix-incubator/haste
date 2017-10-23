@@ -38,8 +38,12 @@ module.exports = context => (action, params = []) => {
 
   return action(configure, ...params)
     .then(() => {
+      if (runner.persistent) {
+        runner.idle = true;
+      }
+
       runner.applyPlugins('finish-success');
-      return { persistent: runner.persistent };
+      return runner;
     })
     .catch((error) => {
       runner.applyPlugins('finish-failure', error);

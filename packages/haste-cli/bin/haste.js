@@ -51,8 +51,8 @@ explorer.load(context)
     }
 
     return run(command, [argv, result.config])
-      .then(({ persistent }) => {
-        if (!persistent) {
+      .then((runner) => {
+        if (!runner.persistent) {
           process.exit(0);
         }
       })
