@@ -8,7 +8,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Bug Fixes
  - do not exit on run failure when persistent flag is configured
- - haste-task-logger log 'start'/'finish' messages only on initial run
 
 ### Added
  - runner has an 'idle' state when configured to be persistent and finished the initial runrun
