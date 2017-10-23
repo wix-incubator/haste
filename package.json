@@ -5,7 +5,7 @@
     "lint": "eslint .",
     "test:coverage": "jest --coverage && codecov",
     "test:watch": "jest --watch",
-    "test": "jest",
+    "test": "jest --coverage",
     "build": "npm run bootstrap && npm run lint"
   },
   "devDependencies": {
