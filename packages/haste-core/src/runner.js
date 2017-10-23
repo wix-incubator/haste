@@ -15,7 +15,6 @@ module.exports = class Runner extends Tapable {
 
     this.context = context;
     this.workers = {};
-    this.done = false;
 
     process.on('exit', () => this.close());
   }
@@ -65,7 +64,7 @@ module.exports = class Runner extends Tapable {
       .catch((error) => {
         runPhase.applyPlugins('failed-run', error);
 
-        if (!this.persistent || !this.done) {
+        if (!this.persistent) {
           throw new WorkerError(error);
         }
       });

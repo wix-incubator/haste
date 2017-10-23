@@ -38,9 +38,7 @@ module.exports = context => (action, params = []) => {
 
   return action(configure, ...params)
     .then(() => {
-      runner.done = true;
       runner.applyPlugins('finish-success');
-
       return { persistent: runner.persistent };
     })
     .catch((error) => {

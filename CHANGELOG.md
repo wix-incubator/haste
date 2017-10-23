@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Bug Fixes
+ - do not exit on run failure when persistent flag is configured
+
 ## 0.1.3 - 2017-10-23
 
 ### Added

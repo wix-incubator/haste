@@ -75,6 +75,19 @@ describe('haste', () => {
       });
     });
 
+    it('should run an unsuccessful task with persistent=true and not reject', async () => {
+      const start = haste();
+
+      return start(async (configure) => {
+        runner = configure({
+          persistent: true,
+          plugins: [testPlugin]
+        });
+
+        return runner.run({ task: unsuccessful });
+      });
+    });
+
     it('should run a sequence of two successful tasks and resolve', async () => {
       expect.assertions(2);
 
