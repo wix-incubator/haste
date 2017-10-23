@@ -54,11 +54,34 @@ describe('haste-write', () => {
 
     return task([file])
       .then(() => {
-        const mapContent = fs
+        const content = fs
           .readFileSync(path.join(target, `${file.filename}.map`))
           .toString();
 
-        expect(mapContent).toEqual(JSON.stringify(file.map));
+        expect(content).toEqual(JSON.stringify(file.map));
+      });
+  });
+
+  it('should link to source maps from source files', async () => {
+    const target = tempy.directory();
+
+    const file = {
+      filename: 'test.js',
+      content: 'const a = 5;',
+      map: {
+        hello: 'world'
+      },
+    };
+
+    const task = write({ target });
+
+    return task([file])
+      .then(() => {
+        const content = fs
+          .readFileSync(path.join(target, file.filename))
+          .toString();
+
+        expect(content).toMatch(`//# sourceMappingURL=${file.filename}`);
       });
   });
 });
