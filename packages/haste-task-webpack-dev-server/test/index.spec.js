@@ -1,10 +1,25 @@
-const r2 = require('r2');
+const fs = require('fs');
+const http = require('http');
 const { run } = require('haste-test-utils');
 
 const configPath = require.resolve('./fixtures/webpack.config');
 const { command: webpackDevServer, kill } = run(require.resolve('../src'));
 
-const fileContent = 'console.log(\'hello world\');';
+const fileContent = fs.readFileSync(require.resolve('./fixtures/entry')).toString();
+
+const request = url => new Promise((resolve, reject) => {
+  const req = http.get(url, (res) => {
+    let data = '';
+
+    res.on('data', (chunk) => {
+      data += chunk;
+    });
+
+    res.on('end', () => resolve({ data, res }));
+  });
+
+  req.on('error', reject);
+});
 
 describe('haste-webpack-dev-server', () => {
   afterEach(kill);
@@ -14,8 +29,8 @@ describe('haste-webpack-dev-server', () => {
 
     return task()
       .then(async () => {
-        const { text } = await r2('http://127.0.0.1:9200/bundle.js');
-        expect(await text).toContain(fileContent);
+        const { data } = await request('http://127.0.0.1:9200/bundle.js');
+        expect(data).toMatch(fileContent);
       });
   });
 
@@ -31,8 +46,8 @@ describe('haste-webpack-dev-server', () => {
 
     return task()
       .then(async () => {
-        const { text } = await r2(`http://${hostname}:${port}/bundle.js`);
-        expect(await text).toContain(fileContent);
+        const { data } = await request(`http://${hostname}:${port}/bundle.js`);
+        expect(data).toMatch(fileContent);
       });
   });
 
@@ -41,8 +56,8 @@ describe('haste-webpack-dev-server', () => {
 
     return task()
       .then(async () => {
-        const { response } = await r2('http://127.0.0.1:9200/404.js');
-        expect((await response).status).toEqual(404);
+        const { res } = await request('http://127.0.0.1:9200/404.js');
+        expect(res.statusCode).toEqual(404);
       });
   });
 
