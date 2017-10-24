@@ -3,6 +3,7 @@ const http = require('http');
 const { run } = require('haste-test-utils');
 
 const configPath = require.resolve('./fixtures/webpack.config');
+const decoratorPath = require.resolve('./fixtures/decorator');
 const { command: webpackDevServer, kill } = run(require.resolve('../src'));
 
 const fileContent = fs.readFileSync(require.resolve('./fixtures/entry')).toString();
@@ -71,6 +72,16 @@ describe('haste-webpack-dev-server', () => {
     return task()
       .catch((error) => {
         expect(error.message).toMatch(/Invalid configuration object/);
+      });
+  });
+
+  it('should support passing a decorator that accepts the express app', () => {
+    const { task } = webpackDevServer({ configPath, decoratorPath });
+
+    return task()
+      .then(async () => {
+        const { data } = await request('http://127.0.0.1:9200/foo');
+        expect(data).toMatch('bar');
       });
   });
 });
