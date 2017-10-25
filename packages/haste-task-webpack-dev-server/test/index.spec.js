@@ -22,6 +22,8 @@ const request = url => new Promise((resolve, reject) => {
   req.on('error', reject);
 });
 
+jest.setTimeout(20000);
+
 describe('haste-webpack-dev-server', () => {
   afterEach(kill);
 
