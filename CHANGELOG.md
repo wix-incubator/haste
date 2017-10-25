@@ -6,11 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 0.1.4 - 2017-10-25
+
 ### Bug Fixes
+ - handle a case where a task is rejected with undefined
  - do not exit on run failure when persistent flag is configured
 
 ### Added
- - runner has an 'idle' state when configured to be persistent and finished the initial runrun
+ - **haste-task-webpack-dev-server:** support passing decorator that accepts express instance
+ - **haste-task-webpack:** support passing callback that accepts webpack err and stats
+ - **haste-task-write:** write source maps for javascript files
+ - runner has an 'idle' state when configured to be persistent and finished the initial run
 
 ## 0.1.3 - 2017-10-23
 
