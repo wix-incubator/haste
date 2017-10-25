@@ -30,7 +30,9 @@ describe('haste-webpack-dev-server', () => {
 
     return task()
       .then(async () => {
+        console.log('task finished running');
         const { data } = await request('http://127.0.0.1:9200/bundle.js');
+        console.log('request returned', data);
         expect(data).toMatch(fileContent);
       });
   });
