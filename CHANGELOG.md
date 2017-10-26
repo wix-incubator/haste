@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 0.1.5 - 2017-10-26
+
+### Bug Fixes
+- haste-core: run tasks with an empty options object by default
+- haste-task-read: should read only files and not directories
+- haste-task-webpack-dev-server: support passing a callback that accepts the webpack compiler
+
 ## 0.1.4 - 2017-10-25
 
 ### Bug Fixes
@@ -28,7 +35,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Bug Fixes
  - remove specific changes logging in babel, sass and less tasks
- - pass a default options object in task haste utils
+ - pass a default options object in haste-test-utils
  - function notation now doesn't transform file system pathes
  - haste-cli now log only non worker errors
 
