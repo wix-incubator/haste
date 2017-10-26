@@ -4,6 +4,8 @@ const { run } = require('haste-test-utils');
 
 const configPath = require.resolve('./fixtures/webpack.config');
 const decoratorPath = require.resolve('./fixtures/decorator');
+const callbackPath = require.resolve('./fixtures/callback');
+
 const { command: webpackDevServer, kill } = run(require.resolve('../src'));
 
 const fileContent = fs.readFileSync(require.resolve('./fixtures/entry')).toString();
@@ -84,6 +86,16 @@ describe('haste-webpack-dev-server', () => {
       .then(async () => {
         const { data } = await request('http://127.0.0.1:9200/foo');
         expect(data).toMatch('bar');
+      });
+  });
+
+  it('should support passing a callback that accepts the webpack compiler', () => {
+    const { task, stdout } = webpackDevServer({ configPath, callbackPath });
+
+    return task()
+      .then(async () => {
+        await request('http://127.0.0.1:9200/bundle.js');
+        expect(stdout()).toMatch('1 module');
       });
   });
 });
