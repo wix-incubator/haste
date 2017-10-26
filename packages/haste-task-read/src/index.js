@@ -6,7 +6,7 @@ const readFile = file => new Promise((resolve, reject) => {
 });
 
 module.exports = ({ pattern }) => async () => {
-  const files = await globby(pattern);
+  const files = await globby(pattern, { nodir: true });
 
   return Promise.all(
     files.map((filename) => {
