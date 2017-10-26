@@ -4,7 +4,7 @@ function parseError(error) {
   }, {});
 }
 
-process.on('message', ({ options, input, id }) => {
+process.on('message', ({ options = {}, input, id }) => {
   const handleError = (error) => {
     if (error instanceof Error) {
       error = parseError(error); // eslint-disable-line no-param-reassign
