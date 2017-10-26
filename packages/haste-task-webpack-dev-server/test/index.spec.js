@@ -94,7 +94,7 @@ describe('haste-webpack-dev-server', () => {
 
     return task()
       .then(async () => {
-        await request('http://127.0.0.1:9200/foo');
+        await request('http://127.0.0.1:9200/bundle.js');
         expect(stdout()).toMatch('1 module');
       });
   });
