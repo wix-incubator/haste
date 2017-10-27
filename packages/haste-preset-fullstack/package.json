@@ -7,6 +7,7 @@
     "haste-plugin-dashboard": "^0.1.3",
     "haste-plugin-loader": "^0.1.3",
     "haste-plugin-logger": "^0.1.3",
+    "haste-plugin-stats": "^0.1.5",
     "haste-task-babel": "^0.1.4",
     "haste-task-clean": "^0.1.0",
     "haste-task-copy": "^0.0.2",
