@@ -1,64 +1,135 @@
 # Changelog
-All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
-and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+## 0.1.5 (October 26, 2017)
 
-## [Unreleased]
+#### :bug: Bug Fix
 
-## 0.1.5 - 2017-10-26
+* `haste-core`
 
-### Bug Fixes
-- haste-core: run tasks with an empty options object by default
-- haste-task-read: should read only files and not directories
-- haste-task-webpack-dev-server: support passing a callback that accepts the webpack compiler
+  * [#99](https://github.com/wix/haste/pull/99) Run tasks with an empty options object by default
 
-## 0.1.4 - 2017-10-25
+* `haste-task-read`
 
-### Bug Fixes
- - handle a case where a task is rejected with undefined
- - do not exit on run failure when persistent flag is configured
+  * [#98](https://github.com/wix/haste/pull/98) Read only files and not directories
 
-### Added
- - **haste-task-webpack-dev-server:** support passing decorator that accepts express instance
- - **haste-task-webpack:** support passing callback that accepts webpack err and stats
- - **haste-task-write:** write source maps for javascript files
- - runner has an 'idle' state when configured to be persistent and finished the initial run
+* `haste-task-webpack-dev-server`
 
-## 0.1.3 - 2017-10-23
+  * [#100](https://github.com/wix/haste/pull/100) Support passing a callback that accepts the webpack compiler
 
-### Added
- - 'requireFiles' option for haste-task-mocha
- - 'base' option for haste-task-write
- - metadata object for plugins usage
- - haste-plugin-logger now logs start and finish on runs instead of tasks
+## 0.1.4 (October 25, 2017)
 
-### Bug Fixes
- - remove specific changes logging in babel, sass and less tasks
- - pass a default options object in haste-test-utils
- - function notation now doesn't transform file system pathes
- - haste-cli now log only non worker errors
+#### :bug: Bug Fix
 
-### Refactor
- - stdout handling on tests
+* `haste-core`
 
-## 0.1.2 - 2017-10-18
+  * [#88](https://github.com/wix/haste/pull/88) Do not exit on run failure when persistent flag is configured
 
-### Added
- - haste-task-stylelint
- - haste-task-less
- - travis ci
- - code coverage
- - runner.close() function
- - haste-task-protractor
+  * Handle a case where a task is rejected with undefined
 
-### Bug Fixes
- - pass process.env to child processes
+#### :nail_care: Enhancement
 
-## 0.1.1 - 2017-10-12
+* `haste-task-webpack-dev-server`
 
-### Bug Fixes
- - correct file path to haste bin
+  * [#96](https://github.com/wix/haste/pull/96) Support passing decorator that accepts express instance
 
-## 0.1.0 - 2017-10-12
- - initial release (see commit history for changes in previous versions of haste)
+* `haste-task-webpack`
+
+  * [#93](https://github.com/wix/haste/pull/93) Support passing callback that accepts webpack err and stats
+
+* `haste-task-write`
+
+  * [#92](https://github.com/wix/haste/pull/92) Write source maps for javascript files
+
+* `haste-core`
+
+  * [#89](https://github.com/wix/haste/pull/89) Runner has an 'idle' state when configured to be persistent and finished the initial run
+
+## 0.1.3 (October 23, 2017)
+
+#### :bug: Bug Fix
+
+* `haste-task-babel`, `haste-task-sass`, `haste-task-less`
+
+  * Remove specific changes logging in babel, sass and less tasks
+
+* `haste-test-utils`
+
+  * [#83](https://github.com/wix/haste/pull/83) Pass a default options object in haste-test-utils
+
+* `haste-core`
+
+  * [#84](https://github.com/wix/haste/pull/84) Function notation doesn't transform file system pathes
+
+* `haste-cli`
+
+  * [#87](https://github.com/wix/haste/pull/87) Log only non worker errors
+
+#### :nail_care: Enhancement
+
+* `haste-task-mocha`
+
+  * [#83](https://github.com/wix/haste/pull/83) `requireFiles` option for haste-task-mocha
+
+* `haste-task-write`
+
+  * [#85](https://github.com/wix/haste/pull/85) `base` option for haste-task-write
+
+* `haste-core`
+
+  * [#84](https://github.com/wix/haste/pull/84) Metadata object for plugins usage
+
+* `haste-plugin-logger`
+
+  * [#86](https://github.com/wix/haste/pull/86) Log start and finish on runs instead of tasks
+
+#### :house: Internal
+
+* `haste-core`
+
+  * [#84](https://github.com/wix/haste/pull/84) Refactor stdout handling on tests
+
+## 0.1.2 (October 18, 2017)
+
+#### :bug: Bug Fix
+
+* `haste-core`
+
+  * [994913](https://github.com/wix/haste/commit/99491386b503cf2a64ed0904e889c81dcba0698f) Pass the runner's process.env to it's child processes
+
+#### :nail_care: Enhancement
+
+* `haste-core`
+
+  * [#76](https://github.com/wix/haste/pull/76) `runner.close()` function to close down the runner and all it's processes
+
+* `haste-task-stylelint`
+
+  * [#72](https://github.com/wix/haste/pull/72) Has been created and can be used
+
+* `haste-task-less`
+
+  * [#71](https://github.com/wix/haste/pull/71) Has been created and can be used
+
+* `haste-task-protractor`
+
+  * [#77](https://github.com/wix/haste/pull/77) Has been created and can be used
+
+#### :house: Internal
+
+* `haste`
+
+  * [#75](https://github.com/wix/haste/pull/75) Code coverage integration with [codecov](https://codecov.io/)
+
+  * Travis CI configuration
+
+## 0.1.1 (October 12, 2017)
+
+#### :bug: Bug Fix
+
+* `haste`
+
+  * Correct file path to haste bin from `package.json`
+
+## 0.1.0 (October 12, 2017)
+
+  * Initial public release (see commit history for changes in previous versions of haste)
