@@ -1,0 +1,9 @@
+{
+  "name": "haste-plugin-stats",
+  "version": "0.1.5",
+  "main": "./src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "mkdirp": "^0.5.1"
+  }
+}
