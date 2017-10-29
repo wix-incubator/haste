@@ -4,6 +4,7 @@ const yargs = require('yargs');
 const resolveFrom = require('resolve-from');
 const cosmiconfig = require('cosmiconfig');
 const haste = require('haste-core');
+const get = require('lodash/get');
 
 process.on('unhandledRejection', (err) => {
   throw err;
@@ -24,6 +25,12 @@ const { argv } = yargs
     }
   })
   .command('*')
+  .option('p', {
+    alias: 'preset',
+    demandOption: false,
+    describe: 'the name of the preset node module (haste-preset-[name])',
+    type: 'string'
+  })
   .demandCommand(1, 'You must specify a command for Haste to run.\nUSAGE:  haste <command>')
   .version()
   .recommendCommands()
@@ -33,24 +40,23 @@ const [cmd] = argv._;
 
 explorer.load(context)
   .then((result) => {
-    if (!result) {
-      throw new Error('Can\'t find .hasterc or a "haste" field under package.json');
+    const config = get(result, 'config');
+    const presetName = argv.preset || get(config, 'preset');
+
+    if (!presetName) {
+      throw new Error('you must pass a preset through cli option \'--preset\', .hasterc, or package.json configs');
     }
 
-    if (!result.config.preset) {
-      throw new Error('"preset" is a mandatory field');
-    }
-
-    const presetPath = resolveFrom(context, result.config.preset);
+    const presetPath = resolveFrom(context, presetName);
     const run = haste(presetPath);
     const preset = require(presetPath);
     const command = preset[cmd];
 
     if (!command) {
-      throw new Error(`${result.config.preset} doesn't support command ${cmd}`);
+      throw new Error(`${presetName} doesn't support command ${cmd}`);
     }
 
-    return run(command, [argv, result.config])
+    return run(command, [argv, config])
       .then((runner) => {
         if (!runner.persistent) {
           process.exit(0);

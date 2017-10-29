@@ -10,6 +10,7 @@
   "dependencies": {
     "cosmiconfig": "^2.2.2",
     "haste-core": "^0.1.5",
+    "lodash": "^4.17.4",
     "resolve-from": "~3.0.0",
     "yargs": "^8.0.2"
   },
