@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.6 (October 29, 2017)
+
+#### :nail_care: Enhancement
+
+* `haste-task-eslint`
+
+  * [#103](https://github.com/wix/haste/pull/103) Move eslint to be a peer dependency
+
 ## 0.1.5 (October 26, 2017)
 
 #### :bug: Bug Fix
@@ -11,6 +19,8 @@
 * `haste-task-read`
 
   * [#98](https://github.com/wix/haste/pull/98) Read only files and not directories
+
+#### :nail_care: Enhancement
 
 * `haste-task-webpack-dev-server`
 
