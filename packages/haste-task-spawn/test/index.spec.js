@@ -3,7 +3,7 @@ const retry = require('retry-promise').default;
 
 const { command: server, kill } = run(require.resolve('../src'));
 
-describe('haste-server', () => {
+describe('haste-spawn', () => {
   afterEach(kill);
 
   it('should spawn a new node script', () => {
