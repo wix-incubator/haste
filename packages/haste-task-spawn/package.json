@@ -1,5 +1,5 @@
 {
-  "name": "haste-task-server",
+  "name": "haste-task-spawn",
   "version": "0.1.3",
   "main": "./src/index.js",
   "license": "MIT",

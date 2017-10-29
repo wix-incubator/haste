@@ -14,7 +14,7 @@
     "haste-task-mocha": "^0.1.3",
     "haste-task-read": "^0.1.5",
     "haste-task-sass": "^0.1.3",
-    "haste-task-server": "^0.1.3",
+    "haste-task-spawn": "^0.1.3",
     "haste-task-webpack": "^0.1.4",
     "haste-task-webpack-dev-server": "^0.1.5",
     "haste-task-write": "^0.1.4"
