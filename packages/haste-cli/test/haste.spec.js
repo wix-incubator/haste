@@ -10,25 +10,30 @@ function run({ command, presetPath }) {
 }
 
 describe('haste-cli', () => {
-  it('should throw if no config is found', async () => {
-    expect.assertions(2);
+  it('should run with the preset that supllied as an --preset command line argument', async () => {
+    const result = await execa(process.execPath, [HASTE_BIN, 'build', '--preset', 'haste-preset-basic'], {
+      cwd: path.join(__dirname, './fixtures/cli-configured'),
+    });
 
-    try {
-      await run({ presetPath: './fixtures/no-config', command: 'build' });
-    } catch (error) {
-      expect(error.code).toEqual(1);
-      expect(error.message).toMatch(/Can't find .hasterc or a "haste" field under package.json/);
-    }
+    expect(result.stdout).toMatch(/running build.../);
   });
 
-  it('should throw if no "preset" field is found in config', async () => {
+  it('should run with the preset that supllied as an -p command line argument', async () => {
+    const result = await execa(process.execPath, [HASTE_BIN, 'build', '-p', 'haste-preset-basic'], {
+      cwd: path.join(__dirname, './fixtures/cli-configured'),
+    });
+
+    expect(result.stdout).toMatch(/running build.../);
+  });
+
+  it('should throw if no "preset" field is found in command/config', async () => {
     expect.assertions(2);
 
     try {
       await run({ presetPath: './fixtures/no-preset-field', command: 'build' });
     } catch (error) {
       expect(error.code).toEqual(1);
-      expect(error.message).toMatch(/"preset" is a mandatory field/);
+      expect(error.message).toMatch(/you must pass a preset/);
     }
   });
 
