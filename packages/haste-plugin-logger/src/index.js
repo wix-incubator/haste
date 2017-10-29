@@ -3,8 +3,12 @@ const { format, delta, generateRunTitle } = require('./utils');
 
 module.exports = class LoggerPlugin {
   apply(runner) {
+    const keys = ['stdout', 'stderr'];
+
+    keys.forEach(key => process[key].setMaxListeners(100));
+
     runner.plugin('start-worker', (worker) => {
-      ['stdout', 'stderr'].forEach(name => worker.child[name].pipe(process[name]));
+      keys.forEach(key => worker.child[key].pipe(process[key]));
     });
 
     runner.plugin('start-run', (runPhase) => {
