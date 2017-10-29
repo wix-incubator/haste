@@ -50,7 +50,7 @@ explorer.load(context)
       throw new Error(`${result.config.preset} doesn't support command ${cmd}`);
     }
 
-    return run(command, [argv, result.config])
+    return run(command, [argv, result.config], cmd)
       .then((runner) => {
         if (!runner.persistent) {
           process.exit(0);

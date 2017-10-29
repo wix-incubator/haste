@@ -1,10 +1,12 @@
 const LoaderPlugin = require('haste-plugin-loader');
+const StatsPlugin = require('haste-plugin-stats');
 const paths = require('../../config/paths');
 
 module.exports = async (configure) => {
   const { run, tasks } = configure({
     plugins: [
       new LoaderPlugin({ oneLinerTasks: false }),
+      new StatsPlugin()
     ],
   });
 

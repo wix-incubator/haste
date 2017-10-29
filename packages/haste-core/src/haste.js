@@ -19,14 +19,14 @@ const tasks = new Proxy({}, {
   }
 });
 
-module.exports = context => (action, params = []) => {
+module.exports = context => (action, params = [], name) => {
   const runner = new Runner(context);
 
   const configure = ({ plugins = [], persistent = false } = {}) => {
     runner.persistent = persistent;
 
     runner.apply(...plugins);
-    runner.applyPlugins('start');
+    runner.applyPlugins('start', { params, name });
 
     return {
       tasks,
