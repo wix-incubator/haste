@@ -10,7 +10,7 @@ function run({ command, presetPath }) {
 }
 
 describe('haste-cli', () => {
-  it('should run with the preset that supllied as an --preset command line argument', async () => {
+  it('should run the preset passed from a --preset option', async () => {
     const result = await execa(process.execPath, [HASTE_BIN, 'build', '--preset', 'haste-preset-basic'], {
       cwd: path.join(__dirname, './fixtures/cli-configured'),
     });
@@ -18,7 +18,7 @@ describe('haste-cli', () => {
     expect(result.stdout).toMatch(/running build.../);
   });
 
-  it('should run with the preset that supllied as an -p command line argument', async () => {
+  it('should run the preset passed from a -p option', async () => {
     const result = await execa(process.execPath, [HASTE_BIN, 'build', '-p', 'haste-preset-basic'], {
       cwd: path.join(__dirname, './fixtures/cli-configured'),
     });
@@ -26,7 +26,7 @@ describe('haste-cli', () => {
     expect(result.stdout).toMatch(/running build.../);
   });
 
-  it('should throw if no "preset" field is found in command/config', async () => {
+  it('should throw if no "preset" was configured (via cli/config)', async () => {
     expect.assertions(2);
 
     try {
