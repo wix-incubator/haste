@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.1.7 (October 30, 2017)
+
+#### :nail_care: Enhancement
+
+* `haste-task-express`
+
+  * [#108](https://github.com/wix/haste/pull/108) Has been created and can be used
+
+* `haste-cli`
+
+  * [#107](https://github.com/wix/haste/pull/107) Add an option to supply preset through cli option --preset/-p
+
+* `haste-plugin-logger`
+
+  * [#106](https://github.com/wix/haste/pull/106) Max listeners on stdout and stderr is set to 100 for cases with more than 10 workers
+
+* `haste-task-server`
+
+  * [#105](https://github.com/wix/haste/pull/105) Has been renamed to `haste-task-spawn`
+
 ## 0.1.6 (October 29, 2017)
 
 #### :nail_care: Enhancement
