@@ -1,5 +1,9 @@
-const path = require('path');
 const Mocha = require('mocha');
+
+const clearRequireCache = () => {
+  Object.keys(require.cache)
+    .forEach(key => delete require.cache[key]);
+};
 
 module.exports = ({ requireFiles = [], ...options }) => async (files) => {
   const mochaRunner = new Mocha(options);
@@ -12,9 +16,7 @@ module.exports = ({ requireFiles = [], ...options }) => async (files) => {
 
   return new Promise((resolve, reject) => {
     mochaRunner.run((errCount) => {
-      files.forEach(({ filename }) => {
-        delete require.cache[path.resolve(filename)];
-      });
+      clearRequireCache();
 
       if (errCount > 0) {
         return reject();
