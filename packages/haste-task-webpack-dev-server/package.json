@@ -1,0 +1,14 @@
+{
+  "name": "haste-task-webpack-dev-server",
+  "version": "0.1.5",
+  "main": "./src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.5",
+    "webpack": "^3.5.5",
+    "webpack-dev-middleware": "^1.12.0"
+  },
+  "devDependencies": {
+    "haste-test-utils": "^0.1.3"
+  }
+}
