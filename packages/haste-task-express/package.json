@@ -1,0 +1,12 @@
+{
+  "name": "haste-task-express",
+  "version": "0.1.5",
+  "main": "./src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.5"
+  },
+  "devDependencies": {
+    "haste-test-utils": "^0.1.3"
+  }
+}
