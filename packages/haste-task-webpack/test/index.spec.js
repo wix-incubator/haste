@@ -52,7 +52,7 @@ describe('haste-webpack', () => {
 
     return task()
       .catch((error) => {
-        expect(error).toMatch('Module parse failed');
+        expect(error).toMatch('Module not found');
       });
   });
 });
