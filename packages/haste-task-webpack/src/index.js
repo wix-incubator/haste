@@ -13,6 +13,14 @@ module.exports = ({ configPath, callbackPath }) => () => {
         return reject(err);
       }
 
+      if (stats.hasErrors()) {
+        const errorMessage = stats.toJson().errors.reduce((message, error) => {
+          return message + error.toString();
+        }, '');
+
+        return reject(errorMessage);
+      }
+
       return resolve(stats.toJson());
     });
   });
