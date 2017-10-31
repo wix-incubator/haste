@@ -22,7 +22,7 @@ describe('haste-webpack', () => {
     expect.assertions(1);
 
     const task = webpack({
-      configPath: require.resolve('./fixtures/webpack.invalid'),
+      configPath: require.resolve('./fixtures/webpack.config.invalid'),
     });
 
     return task()
@@ -41,5 +41,18 @@ describe('haste-webpack', () => {
     } finally {
       kill();
     }
+  });
+
+  it('should reject if there are compilation erros', async () => {
+    expect.assertions(1);
+
+    const task = webpack({
+      configPath: require.resolve('./fixtures/webpack.config.error'),
+    });
+
+    return task()
+      .catch((error) => {
+        expect(error).toMatch('Module not found');
+      });
   });
 });
