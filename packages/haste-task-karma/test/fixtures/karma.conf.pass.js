@@ -7,8 +7,8 @@ module.exports = (config) => {
     browsers: ['PhantomJS'],
     singleRun: true,
     plugins: [
-      require('karma-jasmine'),
-      require('karma-phantomjs-launcher'),
+      require('karma-jasmine'), // eslint-disable-line import/no-extraneous-dependencies
+      require('karma-phantomjs-launcher'), // eslint-disable-line import/no-extraneous-dependencies
     ],
   });
 };
