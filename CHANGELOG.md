@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.1.8 (November 1, 2017)
+
+#### :bug: Bug Fix
+
+* `haste-task-mocha`
+
+  * [#109](https://github.com/wix/haste/pull/109) Clear require cache after every mocha run
+
+* `haste-task-webpack`
+
+  * [#110](https://github.com/wix/haste/pull/110) Reject if webpack fails with compilation errors
+
+#### :nail_care: Enhancement
+
+* `haste-task-jasmine`
+
+  * [#111](https://github.com/wix/haste/pull/111) Has been created and can be used
+
+* `haste-task-karma`
+
+  * [#112](https://github.com/wix/haste/pull/112) Has been created and can be used
+
 ## 0.1.7 (October 30, 2017)
 
 #### :nail_care: Enhancement
