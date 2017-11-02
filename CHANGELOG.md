@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.1.9 (November 2, 2017)
+
+#### :bug: Bug Fix
+
+* `haste-test-utils`
+
+  * [#115](https://github.com/wix/haste/pull/115) Support running a task multiple times
+
+* `haste-task-mocha`
+
+  * [#115](https://github.com/wix/haste/pull/115) Do not remove require cache of node_module between runs
+
+#### :house: Internal
+
+* `haste`
+
+  * [#115](https://github.com/wix/haste/pull/115) Add coverage folder to `.eslintignore`
+
 ## 0.1.8 (November 1, 2017)
 
 #### :bug: Bug Fix
