@@ -27,7 +27,5 @@ Haste is a tool that helps you automate common tasks in your development workflo
 ## Contributing
 Please open issues and open pull requests with your ideas. For more information about contributing, see our [Contribution Guidelines](CONTRIBUTING.md).
 
-[Good First Task](https://github.com/wix/haste/labels/Good%20First%20Task) is a great starting point for PRs.
-
 ## License
 The MIT License
