@@ -1,10 +1,12 @@
 const { fork } = require('child_process');
+const uuid = require('uuid/v4');
 
 const WORKER_BIN = require.resolve('./worker-bin');
 const WORKER_OPTIONS = { silent: true, env: Object.assign({ FORCE_COLOR: true }, process.env) };
 
 module.exports.run = (modulePath) => {
   const workers = {};
+  const callbacks = {};
 
   const command = (options) => {
     let stdout = '';
@@ -13,10 +15,8 @@ module.exports.run = (modulePath) => {
 
     workers[child.pid] = child;
 
-    const promise = new Promise((resolve, reject) => {
-      child.on('message', ({ result, error }) => {
-        error ? reject(error) : resolve(result);
-      });
+    child.on('message', ({ result, error, id }) => {
+      error ? callbacks[id].reject(error) : callbacks[id].resolve(result);
     });
 
     child.stdout.on('data', (buffer) => {
@@ -28,8 +28,11 @@ module.exports.run = (modulePath) => {
     return {
       stdout: () => stdout,
       task: (input) => {
-        child.send({ options, input });
-        return promise;
+        return new Promise((resolve, reject) => {
+          const id = uuid();
+          callbacks[id] = { resolve, reject };
+          child.send({ options, input, id });
+        });
       },
     };
   };
