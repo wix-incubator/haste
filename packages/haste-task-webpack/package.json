@@ -1,13 +1,13 @@
 {
   "name": "haste-task-webpack",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {
     "webpack": "^3.5.5"
   },
   "devDependencies": {
-    "haste-test-utils": "^0.1.3",
+    "haste-test-utils": "^0.1.9",
     "tempy": "^0.2.1"
   }
 }
