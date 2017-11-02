@@ -60,4 +60,32 @@ describe('haste-mocha', () => {
         expect(stdout()).toMatch(/setup/);
       });
   });
+
+  it('clean require cache between runs', async () => {
+    const { task, stdout } = mocha();
+
+    const file = {
+      filename: require.resolve('./fixtures/pass'),
+    };
+
+    await task([file]);
+    expect(stdout()).toMatch('1 passing');
+
+    await task([file]);
+    expect(stdout()).not.toMatch('0 passing');
+  });
+
+  it('not clean require cache between runs for modules in node_modules', async () => {
+    const { task, stdout } = mocha();
+
+    const file = {
+      filename: require.resolve('./fixtures/require-module'),
+    };
+
+    await task([file]);
+    expect(stdout()).toMatch('hey there');
+
+    await task([file]);
+    expect(stdout().match(/hey there/gi).length).toEqual(1);
+  });
 });
