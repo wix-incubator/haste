@@ -15,8 +15,10 @@ module.exports.run = (modulePath) => {
 
     workers[child.pid] = child;
 
-    child.on('message', ({ result, error, id }) => {
-      error ? callbacks[id].reject(error) : callbacks[id].resolve(result);
+    child.on('message', ({ id, result, error, type }) => {
+      type === 'failure' ?
+        callbacks[id].reject(error) :
+        callbacks[id].resolve(result);
     });
 
     child.stdout.on('data', (buffer) => {
