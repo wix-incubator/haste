@@ -10,6 +10,7 @@ module.exports.run = (modulePath) => {
 
   const command = (options) => {
     let stdout = '';
+    let stderr = '';
 
     const child = fork(WORKER_BIN, [modulePath], WORKER_OPTIONS);
 
@@ -25,10 +26,15 @@ module.exports.run = (modulePath) => {
       stdout += buffer.toString();
     });
 
+    child.stderr.on('data', (buffer) => {
+      stderr += buffer.toString();
+    });
+
     process.on('SIGTERM', () => child.kill('SIGTERM'));
 
     return {
       stdout: () => stdout,
+      stderr: () => stderr,
       task: (input) => {
         return new Promise((resolve, reject) => {
           const id = uuid();
