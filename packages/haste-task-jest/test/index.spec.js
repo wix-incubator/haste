@@ -3,6 +3,8 @@ const { run } = require('haste-test-utils');
 
 const { command, kill } = run(require.resolve('../src'));
 
+jest.setTimeout(20000);
+
 describe('haste-jest', () => {
   afterEach(kill);
 
