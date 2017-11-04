@@ -24,6 +24,7 @@
     "testEnvironment": "node",
     "testPathIgnorePatterns": [
       "/node_modules/",
+      "/fixtures/",
       "/packages/some-project/"
     ],
     "testMatch": [
