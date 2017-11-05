@@ -1,0 +1,9 @@
+{
+  "name": "haste-task-tslint",
+  "version": "0.1.6",
+  "main": "./src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "tslint": "^5.8.0"
+  }
+}

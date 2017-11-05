@@ -1,0 +1,9 @@
+{
+    "rules": {
+        "no-console": {
+            "options": [
+                "error"
+            ]
+        }
+    }
+}
