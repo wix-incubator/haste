@@ -1,6 +1,6 @@
 const { Linter, Configuration, findFormatter } = require('tslint');
 
-module.exports = ({ options = {}, configurationFilePath = null } = {}) => async (files) => {
+module.exports = ({ options = { formatter: 'prose' }, configurationFilePath = null } = {}) => async (files) => {
   const linter = new Linter(options);
 
   const results = await Promise.all(

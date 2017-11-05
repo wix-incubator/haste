@@ -8,7 +8,6 @@ const pathToConfiguration = require.resolve('./fixtures/tslint.json');
 describe('haste-tslint', () => {
   it('should resolve for valid files', () => {
     const task = tslint({
-      options: { formatter: 'prose' },
       configurationFilePath: pathToConfiguration,
     });
 
@@ -24,7 +23,6 @@ describe('haste-tslint', () => {
     expect.assertions(1);
 
     const task = tslint({
-      options: { formatter: 'prose' },
       configurationFilePath: pathToConfiguration,
     });
 
@@ -43,7 +41,6 @@ describe('haste-tslint', () => {
     expect.assertions(1);
 
     const task = tslint({
-      options: { formatter: 'prose' },
       configurationFilePath: 'no-file',
     });
 
@@ -55,6 +52,26 @@ describe('haste-tslint', () => {
     return task([file])
       .catch((error) => {
         expect(error.message).toMatch('Could not find config file');
+      });
+  });
+
+
+  it('should pass configuration to the linter', () => {
+    expect.assertions(1);
+
+    const task = tslint({
+      options: { formatter: 'verbose' },
+      configurationFilePath: pathToConfiguration,
+    });
+
+    const file = {
+      filename: pathToInvalidFile,
+      content: fs.readFileSync(pathToInvalidFile, 'utf-8'),
+    };
+
+    return task([file])
+      .catch((error) => {
+        expect(error).toMatch('ERROR: (no-console)');
       });
   });
 });
