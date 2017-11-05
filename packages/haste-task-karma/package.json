@@ -1,13 +1,13 @@
 {
   "name": "haste-task-karma",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {
     "karma": "^1.7.1"
   },
   "devDependencies": {
-    "haste-test-utils": "^0.1.9",
+    "haste-test-utils": "^0.1.10",
     "jasmine-core": "^2.8.0",
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.4"
