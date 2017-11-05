@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.1.10 (November 5, 2017)
+
+#### :bug: Bug Fix
+* `haste-test-utils`
+  * [#116](https://github.com/wix/haste/pull/116) Log an error if a worker fails
+* `haste-task-protractor`
+  * [#120](https://github.com/wix/haste/pull/120) Increase test timeout to 30s to prevent flakyness
+
+#### :nail_care: Enhancement
+* `haste-test-utils`
+  * [#117](https://github.com/wix/haste/pull/117) Support checking for stderr of a process
+* `haste-task-jest`
+  * [#117](https://github.com/wix/haste/pull/117) Basic integration with Jest
+* `haste-task-tslint`
+  * [#117](https://github.com/wix/haste/pull/117) Basic integration with TSLint
+
+#### :house: Internal
+* `haste`
+  * [#117](https://github.com/wix/haste/pull/117) Add 'fixtures' to Jest's `testIgnorePatterns`
+  * [#118](https://github.com/wix/haste/pull/118) Remove redundant spaces from changelog
+
 ## 0.1.9 (November 2, 2017)
 
 #### :bug: Bug Fix
