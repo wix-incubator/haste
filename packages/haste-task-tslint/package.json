@@ -5,5 +5,8 @@
   "license": "MIT",
   "dependencies": {
     "tslint": "^5.8.0"
+  },
+  "devDependencies": {
+    "typescript": "^2.6.1"
   }
 }
