@@ -1,16 +1,20 @@
 const fs = require('fs');
 const tslint = require('../src');
 
-const validFilename = require.resolve('./fixtures/valid.ts');
-const invalidFilename = require.resolve('./fixtures/invalid.ts');
+const pathToValidFile = require.resolve('./fixtures/valid.ts');
+const pathToInvalidFile = require.resolve('./fixtures/invalid.ts');
+const pathToConfiguration = require.resolve('./fixtures/tslint.json');
 
 describe('haste-tslint', () => {
   it('should resolve for valid files', () => {
-    const task = tslint();
+    const task = tslint({
+      options: { formatter: 'prose' },
+      configurationFilePath: pathToConfiguration,
+    });
 
     const file = {
-      filename: validFilename,
-      content: fs.readFileSync(validFilename, 'utf-8'),
+      filename: pathToValidFile,
+      content: fs.readFileSync(pathToValidFile, 'utf-8'),
     };
 
     return task([file]);
@@ -19,16 +23,38 @@ describe('haste-tslint', () => {
   it('should reject for valid files', () => {
     expect.assertions(1);
 
-    const task = tslint();
+    const task = tslint({
+      options: { formatter: 'prose' },
+      configurationFilePath: pathToConfiguration,
+    });
 
     const file = {
-      filename: invalidFilename,
-      content: fs.readFileSync(invalidFilename, 'utf-8'),
+      filename: pathToInvalidFile,
+      content: fs.readFileSync(pathToInvalidFile, 'utf-8'),
     };
 
     return task([file])
       .catch((error) => {
         expect(error).toMatch('Calls to \'console.error\' are not allowed');
+      });
+  });
+
+  it('should reject if a tsconfig.json could not be found', () => {
+    expect.assertions(1);
+
+    const task = tslint({
+      options: { formatter: 'prose' },
+      configurationFilePath: 'no-file',
+    });
+
+    const file = {
+      filename: pathToValidFile,
+      content: fs.readFileSync(pathToValidFile, 'utf-8'),
+    };
+
+    return task([file])
+      .catch((error) => {
+        expect(error.message).toMatch('Could not find config file');
       });
   });
 });
