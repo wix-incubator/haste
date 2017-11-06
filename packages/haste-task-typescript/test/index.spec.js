@@ -6,7 +6,8 @@ const { run } = require('haste-test-utils');
 const { command: typescript, kill } = run(require.resolve('../src'));
 
 const configPath = require.resolve('./fixtures/tsconfig.json');
-const transpiledFile = fs.readFileSync(require.resolve('./expected/valid.transpiled'), 'utf-8');
+const transpiledFixture = fs.readFileSync(require.resolve('./expected/valid.transpiled'), 'utf-8');
+const sourcemapFixture = fs.readFileSync(require.resolve('./expected/valid.js.map'), 'utf-8');
 
 describe('haste-task-typescript', () => {
   afterEach(kill);
@@ -27,8 +28,28 @@ describe('haste-task-typescript', () => {
     const { task, stdout } = typescript({ project: projectDir });
 
     await task();
-    expect(fs.readFileSync(outFile, 'utf-8')).toEqual(transpiledFile);
+
+    const outFileContent = fs.readFileSync(outFile, 'utf-8');
+
+    expect(outFileContent).toEqual(transpiledFixture);
     expect(stdout()).toMatch('');
+  });
+
+  it('should generate sourcemaps when the sourceMap options is passed', async () => {
+    fs.copySync(require.resolve('./fixtures/valid.ts'), path.join(projectDir, 'src/valid.ts'));
+    const outFile = path.join(outDir, 'valid.js');
+    const sourceMapFile = path.join(outDir, 'valid.js.map');
+
+    const { task } = typescript({ project: projectDir, sourceMap: true });
+
+    await task();
+
+    const outFileContent = fs.readFileSync(outFile, 'utf-8');
+    const sourceMapContent = fs.readFileSync(sourceMapFile, 'utf-8');
+
+    expect(outFileContent).toMatch(transpiledFixture);
+    expect(outFileContent).toMatch('//# sourceMappingURL=valid.js.map');
+    expect(sourcemapFixture).toMatch(sourceMapContent);
   });
 
   it('should reject if typescript fails with errors', async () => {
@@ -54,7 +75,7 @@ describe('haste-task-typescript', () => {
 
       await task();
       expect(stdout()).toMatch('Compilation complete. Watching for file changes.');
-      expect(fs.readFileSync(outFile, 'utf-8')).toEqual(transpiledFile);
+      expect(fs.readFileSync(outFile, 'utf-8')).toEqual(transpiledFixture);
     });
 
     it('should resolve despite typescript failure', async () => {
