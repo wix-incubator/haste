@@ -1,31 +1,27 @@
-const { spawn } = require('child_process');
 const dargs = require('dargs');
+const { spawn } = require('child_process');
+const { hasErrorMessage, hasCompletionMessage, colorPrint } = require('./utils');
 
-const typescriptCompletionRegex = /Compilation complete/;
-const typescriptErrorRegex = /error TS\d+:/;
 const defaultOptions = { project: './' };
 
 module.exports = (options = {}) =>
   async () => {
     const tscBin = require.resolve('typescript/bin/tsc');
-    const args = dargs(
-      Object.assign(defaultOptions, options),
-      { useEquals: false, allowCamelCase: true }
-    );
+    const optionsWithDefaults = Object.assign(defaultOptions, options);
+    const args = dargs(optionsWithDefaults, { useEquals: false, allowCamelCase: true });
 
     return new Promise((resolve, reject) => {
       const tscWorker = spawn(tscBin, args);
-      process.on('exit', () => tscWorker.kill('SIGTERM'));
 
-      tscWorker.stdout.pipe(process.stdout);
+      process.on('exit', () => tscWorker.kill('SIGTERM'));
 
       tscWorker.stdout.on('data', (buffer) => {
         const lines = buffer.toString().split('\n');
-        const hasErrors = lines.some(line => typescriptErrorRegex.test(line));
-        const hasCompletionMessage = lines.some(line => typescriptCompletionRegex.test(line));
+
+        lines.forEach(colorPrint);
 
         if (options.watch) {
-          if (hasCompletionMessage || hasErrors) {
+          if (hasCompletionMessage(lines) || hasErrorMessage(lines)) {
             resolve();
           }
         }
