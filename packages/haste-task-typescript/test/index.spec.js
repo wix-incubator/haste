@@ -19,7 +19,7 @@ describe('haste-task-typescript', () => {
     fs.copySync(configPath, path.join(projectDir, 'tsconfig.json'));
   });
 
-  it('should transpile with typescript and resolve', async () => {
+  it.only('should transpile with typescript and resolve', async () => {
     fs.copySync(require.resolve('./fixtures/valid.ts'), path.join(projectDir, 'src/valid.ts'));
     const outFile = path.join(outDir, 'valid.js');
 
