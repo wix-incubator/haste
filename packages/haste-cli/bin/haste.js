@@ -28,7 +28,7 @@ const { argv } = yargs
   .option('p', {
     alias: 'preset',
     demandOption: false,
-    describe: 'the name of the preset node module (haste-preset-[name])',
+    describe: 'The full name of the preset node module ([haste-preset-name]) or an absolute path to a preset',
     type: 'string'
   })
   .demandCommand(1, 'You must specify a command for Haste to run.\nUSAGE:  haste <command>')
