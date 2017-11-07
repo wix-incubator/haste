@@ -3,7 +3,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "lint": "eslint .",
-    "test:coverage": "jest -t typescript",
+    "test:coverage": "jest --coverage && codecov",
     "test:watch": "jest --watch",
     "test": "jest",
     "build": "npm run bootstrap && npm run lint"

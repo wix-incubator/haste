@@ -8,6 +8,8 @@ const configPath = require.resolve('./fixtures/tsconfig.json');
 const transpiledFixture = fs.readFileSync(require.resolve('./expected/valid.transpiled'), 'utf-8');
 const sourcemapFixture = fs.readFileSync(require.resolve('./expected/valid.js.map'), 'utf-8');
 
+jest.setTimeout(30000);
+
 describe('haste-task-typescript', () => {
   afterEach(kill);
   let projectDir;
