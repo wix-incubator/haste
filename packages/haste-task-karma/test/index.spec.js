@@ -2,7 +2,7 @@ const { run } = require('haste-test-utils');
 
 const { command: karma, kill } = run(require.resolve('../src'));
 
-jest.setTimeout(10000);
+jest.setTimeout(30000);
 
 describe('haste-karma', () => {
   afterEach(kill);
