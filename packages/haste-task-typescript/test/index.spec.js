@@ -69,7 +69,7 @@ describe('haste-task-typescript', () => {
   });
 
   describe('watch', () => {
-    it('should resolve after transpiling has done', async () => {
+    it('should resolve after typescript has succeed', async () => {
       fs.copySync(require.resolve('./fixtures/valid.ts'), path.join(projectDir, 'src/valid.ts'));
       const outFile = path.join(outDir, 'valid.js');
 
@@ -82,7 +82,7 @@ describe('haste-task-typescript', () => {
       expect(fs.readFileSync(outFile, 'utf-8')).toEqual(transpiledFixture);
     });
 
-    it('should resolve despite typescript failure', async () => {
+    it('should resolve despite typescript has failed', async () => {
       fs.copySync(require.resolve('./fixtures/invalid.ts'), path.join(projectDir, 'src/invalid.ts'));
 
       const { task, stderr } = typescript({ project: projectDir, watch: true });
