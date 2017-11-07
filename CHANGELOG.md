@@ -1,7 +1,11 @@
 # Changelog
 
-## 0.1.10 (November 5, 2017)
+## 0.1.11 (November 7, 2017)
+#### :nail_care: Enhancement
+* `haste-task-typescript`
+  * [#121](https://github.com/wix/haste/pull/121) Basic integration with Typescript
 
+## 0.1.10 (November 5, 2017)
 #### :bug: Bug Fix
 * `haste-test-utils`
   * [#116](https://github.com/wix/haste/pull/116) Log an error if a worker fails
