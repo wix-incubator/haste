@@ -1,4 +1,8 @@
 # Changelog
+## 0.1.12 (November 8, 2017)
+#### :nail_care: Enhancement
+* `haste-task-webpack`
+  * [#127](https://github.com/wix/haste/pull/127) Support configPath resolving into a function
 
 ## 0.1.11 (November 7, 2017)
 #### :nail_care: Enhancement
