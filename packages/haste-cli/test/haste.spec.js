@@ -26,6 +26,14 @@ describe('haste-cli', () => {
     expect(result.stdout).toMatch(/running build.../);
   });
 
+  it('should normalize preset name', async () => {
+    const result = await execa(process.execPath, [HASTE_BIN, 'build', '--preset', 'basic'], {
+      cwd: path.join(__dirname, './fixtures/cli-configured'),
+    });
+
+    expect(result.stdout).toMatch(/running build.../);
+  });
+
   it('should throw if no "preset" was configured (via cli/config)', async () => {
     expect.assertions(2);
 
@@ -44,7 +52,7 @@ describe('haste-cli', () => {
       await run({ presetPath: './fixtures/preset-not-found', command: 'build' });
     } catch (error) {
       expect(error.code).toEqual(1);
-      expect(error.message).toMatch(/Cannot find module 'some-preset'/);
+      expect(error.message).toMatch(/Cannot find module 'haste-preset-some-preset'/);
     }
   });
 

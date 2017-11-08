@@ -1,13 +1,13 @@
 const path = require('path');
 const resolveFrom = require('resolve-from');
 
-const HASTE_PLUGIN_PREFIX_REGEX = /^(?!@|[^/]+\/|haste-task-)/;
+const HASTE_TASK_PREFIX_REGEX = /^(?!@|[^/]+\/|haste-task-)/;
 
 module.exports.flatten = list => list.reduce((sub, elm) => sub.concat(elm), []);
 
 const standardizeTaskName = module.exports.standardizeTaskName = (name) => {
   // example -> haste-task-example
-  return name.replace(HASTE_PLUGIN_PREFIX_REGEX, 'haste-task-');
+  return name.replace(HASTE_TASK_PREFIX_REGEX, 'haste-task-');
 };
 
 module.exports.resolveTaskName = (taskName, runContext) => {
