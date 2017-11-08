@@ -1,8 +1,12 @@
 const webpack = require('webpack');
 
-module.exports = ({ configPath, callbackPath }) => () => {
+module.exports = ({ configPath, callbackPath, configParams = {} }) => () => {
   return new Promise((resolve, reject) => {
-    const config = require(configPath);
+    let config = require(configPath);
+
+    if (typeof config === 'function') {
+      config = config(configParams);
+    }
 
     webpack(config).run((err, stats) => {
       if (callbackPath) {
