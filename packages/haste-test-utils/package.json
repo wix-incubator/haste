@@ -5,5 +5,8 @@
   "license": "MIT",
   "dependencies": {
     "uuid": "^3.1.0"
+  },
+  "devDependencies": {
+    "fs-extra": "^4.0.2"
   }
 }

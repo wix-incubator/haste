@@ -1,10 +1,15 @@
-const { fork } = require('child_process');
+const path = require('path');
+const fs = require('fs-extra');
 const uuid = require('uuid/v4');
+const { fork } = require('child_process');
 
 const WORKER_BIN = require.resolve('./worker-bin');
-const WORKER_OPTIONS = { silent: true, env: Object.assign({ FORCE_COLOR: true }, process.env) };
+const WORKER_DEFAULT_OPTIONS = {
+  silent: true,
+  env: Object.assign({ FORCE_COLOR: true }, process.env)
+};
 
-module.exports.run = (modulePath) => {
+module.exports.run = (modulePath, workerOptions = {}) => {
   const workers = {};
   const callbacks = {};
 
@@ -12,7 +17,14 @@ module.exports.run = (modulePath) => {
     let stdout = '';
     let stderr = '';
 
-    const child = fork(WORKER_BIN, [modulePath], WORKER_OPTIONS);
+    const child = fork(
+      WORKER_BIN,
+      [modulePath],
+      {
+        ...WORKER_DEFAULT_OPTIONS,
+        ...workerOptions,
+      }
+    );
 
     workers[child.pid] = child;
 
@@ -53,5 +65,19 @@ module.exports.run = (modulePath) => {
       });
   };
 
-  return { command, kill };
+  const setup = (fsObject) => {
+    const cwd = workerOptions.cwd || process.cwd();
+
+    Object.keys(fsObject).forEach((filename) => {
+      fs.outputFileSync(path.join(cwd, filename), fsObject[filename]);
+    });
+
+    return new Proxy({}, {
+      get: (target, prop) => {
+        return fs.readFileSync(path.join(cwd, prop), 'utf8');
+      }
+    });
+  };
+
+  return { command, kill, setup };
 };
