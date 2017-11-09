@@ -13,6 +13,7 @@ describe('haste-read', () => {
     const expected = {
       filename,
       content: fs.readFileSync(filename, 'utf8'),
+      cwd: process.cwd(),
     };
 
     const result = await task();
@@ -27,6 +28,7 @@ describe('haste-read', () => {
     const expected = {
       filename,
       content: fs.readFileSync(filename, 'utf8'),
+      cwd: process.cwd(),
     };
 
     const result = await task();
@@ -41,6 +43,24 @@ describe('haste-read', () => {
     const expected = {
       filename: nestedFilename,
       content: fs.readFileSync(nestedFilename, 'utf8'),
+      cwd: process.cwd(),
+    };
+
+    const result = await task();
+
+    expect(result).toEqual([expected]);
+  });
+
+  it('should support passing a current working directory', async () => {
+    const pattern = '**.*';
+    const cwd = path.join(__dirname, 'fixtures');
+
+    const task = read({ pattern, options: { cwd } });
+
+    const expected = {
+      filename,
+      content: fs.readFileSync(filename, 'utf8'),
+      cwd,
     };
 
     const result = await task();
