@@ -1,10 +1,10 @@
 {
   "name": "haste-task-spawn",
-  "version": "0.1.10",
+  "version": "0.1.13",
   "main": "./src/index.js",
   "license": "MIT",
   "devDependencies": {
-    "haste-test-utils": "^0.1.10",
+    "haste-test-utils": "^0.1.13",
     "retry-promise": "^1.0.0"
   }
 }

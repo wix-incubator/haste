@@ -1,12 +1,12 @@
 {
   "name": "haste-task-jasmine",
-  "version": "0.1.10",
+  "version": "0.1.13",
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {
     "jasmine": "^2.8.0"
   },
   "devDependencies": {
-    "haste-test-utils": "^0.1.10"
+    "haste-test-utils": "^0.1.13"
   }
 }

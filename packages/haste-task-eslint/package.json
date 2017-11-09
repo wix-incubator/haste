@@ -1,6 +1,6 @@
 {
   "name": "haste-task-eslint",
-  "version": "0.1.6",
+  "version": "0.1.13",
   "main": "./src/index.js",
   "license": "MIT",
   "peerDependencies": {
@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "eslint": "^4.8.0",
-    "haste-test-utils": "~0.1.10",
+    "haste-test-utils": "^0.1.13",
     "tempy": "^0.2.1"
   }
 }
