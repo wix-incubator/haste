@@ -5,6 +5,7 @@ const resolveFrom = require('resolve-from');
 const cosmiconfig = require('cosmiconfig');
 const haste = require('haste-core');
 const get = require('lodash/get');
+const { standardizePresetName } = require('../src/utils');
 
 process.on('unhandledRejection', (err) => {
   throw err;
@@ -47,7 +48,7 @@ explorer.load(context)
       throw new Error('you must pass a preset through cli option \'--preset\', .hasterc, or package.json configs');
     }
 
-    const presetPath = resolveFrom(context, presetName);
+    const presetPath = resolveFrom(context, standardizePresetName(presetName));
     const run = haste(presetPath);
     const preset = require(presetPath);
     const command = preset[cmd];
