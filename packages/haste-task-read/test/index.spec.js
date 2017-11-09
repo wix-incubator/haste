@@ -58,7 +58,7 @@ describe('haste-read', () => {
     const task = read({ pattern, options: { cwd } });
 
     const expected = {
-      filename,
+      filename: 'file.txt',
       content: fs.readFileSync(filename, 'utf8'),
       cwd,
     };
