@@ -1,6 +1,6 @@
 {
   "name": "haste-cli",
-  "version": "0.1.13",
+  "version": "0.1.15",
   "main": "index.js",
   "author": "Ronen Amiel",
   "license": "MIT",
