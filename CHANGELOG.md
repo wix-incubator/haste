@@ -1,14 +1,17 @@
 # Changelog
 
+## 0.1.14 (November 10, 2017)
+
+#### :bug: Bug Fix
+* `haste-task-read`
+  * [#132](https://github.com/wix/haste/pull/132) Support passing an `options` option to be used by [globby](https://github.com/sindresorhus/globby)
+  * [#132](https://github.com/wix/haste/pull/132) Virtual filesystem now supports a cwd property, can be used by tasks to resolve the absolute file path
+
 ## 0.1.13 (November 9, 2017)
 
 #### :nail_care: Enhancement
 * `haste-cli`
   * [#129](https://github.com/wix/haste/pull/129) Standardize preset prefix name: a preset can be referenced without the `haste-preset-*` prefix
-
-* `haste-task-read`
-  * [#132](https://github.com/wix/haste/pull/132) Support passing an `options` option to be used by [globby](https://github.com/sindresorhus/globby)
-  * [#132](https://github.com/wix/haste/pull/132) Virtual filesystem now supports a cwd property, can be used by tasks to resolve the absolute file path
 
 * `haste-test-utils`
   * [#133](https://github.com/wix/haste/pull/133) Enable worker options and a setup function that creates files for the test
