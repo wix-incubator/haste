@@ -17,9 +17,10 @@ module.exports = ({ pattern, options: { cwd = process.cwd(), ...options } = {} }
 
   return Promise.all(
     files
-      .map(filename => path.isAbsolute(filename) ? filename : path.join(cwd, filename))
       .map((filename) => {
-        return readFile(filename)
+        const absoluteFilePath = path.isAbsolute(filename) ? filename : path.join(cwd, filename);
+
+        return readFile(absoluteFilePath)
           .then((content) => {
             return {
               content,
