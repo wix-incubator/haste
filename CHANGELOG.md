@@ -1,15 +1,35 @@
 # Changelog
+
+## 0.1.13 (November 9, 2017)
+
+#### :nail_care: Enhancement
+* `haste-cli`
+  * [#129](https://github.com/wix/haste/pull/129) Standardize preset prefix name: a preset can be referenced without the `haste-preset-*` prefix
+
+* `haste-task-read`
+  * [#132](https://github.com/wix/haste/pull/132) Support passing an `options` option to be used by [globby](https://github.com/sindresorhus/globby)
+  * [#132](https://github.com/wix/haste/pull/132) Virtual filesystem now supports a cwd property, can be used by tasks to resolve the absolute file path
+
+* `haste-test-utils`
+  * [#133](https://github.com/wix/haste/pull/133) Enable worker options and a setup function that creates files for the test
+
+* `haste-task-eslint`
+  * [#133](https://github.com/wix/haste/pull/133) Enable passing fix option that automatically fixes problems
+
 ## 0.1.12 (November 8, 2017)
+
 #### :nail_care: Enhancement
 * `haste-task-webpack`
   * [#127](https://github.com/wix/haste/pull/127) Support configPath resolving into a function
 
 ## 0.1.11 (November 7, 2017)
+
 #### :nail_care: Enhancement
 * `haste-task-typescript`
   * [#121](https://github.com/wix/haste/pull/121) Basic integration with Typescript
 
 ## 0.1.10 (November 5, 2017)
+
 #### :bug: Bug Fix
 * `haste-test-utils`
   * [#116](https://github.com/wix/haste/pull/116) Log an error if a worker fails
