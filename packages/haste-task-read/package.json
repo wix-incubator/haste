@@ -1,6 +1,6 @@
 {
   "name": "haste-task-read",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {

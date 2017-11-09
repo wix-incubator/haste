@@ -1,6 +1,6 @@
 {
   "name": "haste-preset-fullstack",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {
@@ -12,7 +12,7 @@
     "haste-task-copy": "^0.0.2",
     "haste-task-eslint": "^0.1.13",
     "haste-task-mocha": "^0.1.13",
-    "haste-task-read": "^0.1.13",
+    "haste-task-read": "^0.1.14",
     "haste-task-sass": "^0.1.3",
     "haste-task-spawn": "^0.1.13",
     "haste-task-webpack": "^0.1.13",
