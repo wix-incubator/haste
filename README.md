@@ -25,7 +25,7 @@ Haste is a tool that helps you automate common tasks in your development workflo
 - :rocket: **Simple, programmatic API:** leveraging ES2015's async await with a minimal API.
 
 ## Contributing
-Please open issues and open pull requests with your ideas. For more information about contributing, see our [Contribution Guidelines](CONTRIBUTING.md).
+Please open issues and pull requests with your ideas. For more information about contributing, see our [Contribution Guidelines](CONTRIBUTING.md).
 
 ## License
 The MIT License
