@@ -34,6 +34,16 @@ describe('haste-cli', () => {
     expect(result.stdout).toMatch(/running build.../);
   });
 
+  it('should not normalize preset name if it is an absolute path', async () => {
+    const absolutePresetPath = require.resolve('./fixtures/basic/node_modules/haste-preset-basic');
+
+    const result = await execa(process.execPath, [HASTE_BIN, 'build', '--preset', absolutePresetPath], {
+      cwd: path.join(__dirname, './fixtures/cli-configured'),
+    });
+
+    expect(result.stdout).toMatch(/running build.../);
+  });
+
   it('should throw if no "preset" was configured (via cli/config)', async () => {
     expect.assertions(2);
 
