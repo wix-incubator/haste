@@ -7,6 +7,8 @@
     "eslint": ">=1.6.0 <5.0.0"
   },
   "devDependencies": {
-    "eslint": "^4.8.0"
+    "eslint": "^4.8.0",
+    "haste-test-utils": "~0.1.10",
+    "tempy": "^0.2.1"
   }
 }
