@@ -14,7 +14,7 @@ Good pull requests, such as patches, improvements, and new features, are a fanta
 
 Please **ask first** if somebody else is already working on this or the core developers think your feature is in-scope for Haste. Generally always have a related issue with discussions for whatever you are including.
 
-## Folder structure
+## Folder Structure
 Haste is a monorepo, meaning it is divided into independent sub-packages.
 These packages can be found in the [`packages/`](https://github.com/wix/haste/tree/master/packages) directory. We're using [Lerna](https://github.com/lerna/lerna) for the repo management.
 
@@ -42,7 +42,7 @@ Prefix for every haste plugin.
 #### haste-task-**
 Prefix for every haste task.
 
-## local setup
+## Local Setup
 1. Clone the repo `git clone git@github.com:wix/haste.git`.
 2. Run `npm install && npm run bootstrap` in the root haste directory.
 
