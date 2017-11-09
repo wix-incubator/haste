@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.15 (November 10, 2017)
+
+#### :bug: Bug Fix
+* `haste-cli`
+  * [#135](https://github.com/wix/haste/pull/135) Don't normalize absolute preset names
+
 ## 0.1.14 (November 10, 2017)
 
 #### :nail_care: Enhancement
