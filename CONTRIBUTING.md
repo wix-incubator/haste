@@ -47,8 +47,10 @@ Prefix for every haste task.
 2. Run `npm install && npm run bootstrap` in the root haste directory.
 
 That's it, you're good to go.
-## development
-Use `npm test` to run the tests and `npm run lint` to run eslint. To run the tests on watch mode use `npm run test:watch`.
+
+* `npm test` - Run tests of all packages in parallel using [jest](https://facebook.github.io/jest/).
+* `npm run lint` - Run [eslint](https://eslint.org/) on all packages with the following [rules](https://github.com/wix/haste/blob/master/.eslintrc).
+* `npm run test:watch` Run the tests using interactive watch mode.
 
 ------------
 
