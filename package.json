@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap",
+    "bootstrap": "lerna bootstrap --hoist",
     "lint": "eslint .",
     "test:coverage": "jest --coverage --maxWorkers=2 && codecov",
     "test:watch": "jest --watch",
