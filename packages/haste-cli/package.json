@@ -11,7 +11,7 @@
     "cosmiconfig": "^2.2.2",
     "haste-core": "^0.1.13",
     "lodash": "^4.17.4",
-    "resolve-from": "~3.0.0",
+    "resolve-from": "^3.0.0",
     "yargs": "^8.0.2"
   },
   "devDependencies": {
