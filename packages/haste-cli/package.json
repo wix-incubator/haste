@@ -11,8 +11,7 @@
     "haste": "./bin/haste.js"
   },
   "dependencies": {
-    "cosmiconfig": "^2.2.2",
-    "haste-core": "^0.1.22",
+    "import-from": "^2.1.0",
     "lodash": "^4.17.4",
     "resolve-from": "^3.0.0",
     "yargs": "^8.0.2"

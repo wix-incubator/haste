@@ -1,19 +1,14 @@
 #!/usr/bin/env node
 
+const fs = require('fs');
 const yargs = require('yargs');
 const resolveFrom = require('resolve-from');
-const cosmiconfig = require('cosmiconfig');
-const haste = require('haste-core');
 const get = require('lodash/get');
-const { resolvePresetName } = require('../src/utils');
+const { resolvePresetName, loadConfig } = require('../src/utils');
 
-process.on('unhandledRejection', (err) => {
-  throw err;
+process.on('unhandledRejection', (error) => {
+  throw error;
 });
-
-const context = process.cwd();
-
-const explorer = cosmiconfig('haste');
 
 const { argv } = yargs
   .option('p', {
@@ -22,41 +17,51 @@ const { argv } = yargs
     describe: 'The full name of the preset node module ([haste-preset-name]) or an absolute path to a preset',
     type: 'string'
   })
-  .demandCommand(1, 'You must specify a command for Haste to run.\nUSAGE:  haste <command>')
   .version()
   .help();
 
-const [cmd] = argv._;
+const [command] = argv._;
 
-explorer.load(context)
-  .then((result) => {
-    const config = get(result, 'config');
-    const presetName = argv.preset || get(config, 'preset');
+if (!command) {
+  console.error('You must specify a command for Haste to run');
+  process.exit(1);
+}
 
-    if (!presetName) {
-      throw new Error('you must pass a preset through cli option \'--preset\', .hasterc, or package.json configs');
+const appDirectory = fs.realpathSync(process.cwd());
+
+const config = loadConfig(appDirectory);
+const presetName = argv.preset || get(config, 'preset');
+
+if (!presetName) {
+  console.error('You must pass a preset through cli option \'--preset\', .hasterc, or package.json configs');
+  process.exit(1);
+}
+
+const presetPath = resolveFrom.silent(appDirectory, resolvePresetName(presetName));
+
+if (!presetPath) {
+  console.error(`Unable to find ${presetPath}, please make sure it is installed`);
+  process.exit(1);
+}
+
+const preset = require(presetPath);
+const action = preset[command];
+
+if (!action) {
+  console.error(`${presetName} doesn't support command '${command}'`);
+  process.exit(1);
+}
+
+action({ context: presetPath })
+  .then(({ persistent }) => {
+    if (!persistent) {
+      process.exit(0);
+    }
+  })
+  .catch((error) => {
+    if (error.name !== 'WorkerError') {
+      console.error(error);
     }
 
-    const presetPath = resolveFrom(context, resolvePresetName(presetName));
-    const run = haste(presetPath);
-    const preset = require(presetPath);
-    const command = preset[cmd];
-
-    if (!command) {
-      throw new Error(`${presetName} doesn't support command ${cmd}`);
-    }
-
-    return run(command, [argv, config])
-      .then((runner) => {
-        if (!runner.persistent) {
-          process.exit(0);
-        }
-      })
-      .catch((error) => {
-        if (error.name !== 'WorkerError') {
-          console.log(error);
-        }
-
-        process.exit(1);
-      });
+    process.exit(1);
   });
