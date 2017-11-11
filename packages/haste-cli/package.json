@@ -1,7 +1,6 @@
 {
   "name": "haste-cli",
   "version": "0.1.22",
-  "main": "index.js",
   "author": "Ronen Amiel",
   "engines": {
     "node": ">=8"
