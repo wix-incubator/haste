@@ -16,16 +16,6 @@ const context = process.cwd();
 const explorer = cosmiconfig('haste');
 
 const { argv } = yargs
-  .command('start', 'Build a project in development mode')
-  .command('build', 'Compile the source directory to a bundled build')
-  .command('test [files..]', 'Run all suites from the test directory or provided files', {
-    watch: {
-      description: 'Watch source files for changes and re-run tests',
-      boolean: true,
-      default: false
-    }
-  })
-  .command('*')
   .option('p', {
     alias: 'preset',
     demandOption: false,
@@ -34,7 +24,6 @@ const { argv } = yargs
   })
   .demandCommand(1, 'You must specify a command for Haste to run.\nUSAGE:  haste <command>')
   .version()
-  .recommendCommands()
   .help();
 
 const [cmd] = argv._;
