@@ -27,11 +27,18 @@ module.exports = ({ config, reportersPath }) => async (files) => {
   });
 
   const result = new Promise((resolve, reject) => {
-    jasmineRunner.onComplete(passed => passed ? resolve() : reject());
+    jasmineRunner.onComplete((passed) => {
+      clearRequireCache();
+
+      if (passed) {
+        return resolve();
+      }
+
+      return reject();
+    });
   });
 
   jasmineRunner.execute();
 
-  return result
-    .then(clearRequireCache);
+  return result;
 };
