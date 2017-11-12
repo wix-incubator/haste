@@ -74,7 +74,7 @@ describe('haste-jasmine', () => {
     expect(stdout()).toMatch('1 spec, 0 failures');
   });
 
-  it('should clean require cache between runs', async () => {
+  it('should clean require cache after a successful run', async () => {
     const { task, stdout } = jasmine();
 
     const file = {
@@ -86,6 +86,32 @@ describe('haste-jasmine', () => {
 
     await task([file]);
     expect(stdout()).not.toMatch('No specs found');
+  });
+
+  it('should clean require cache after a failing run', async () => {
+    expect.assertions(2);
+
+    const { task, stdout } = jasmine();
+
+    const passing = {
+      filename: require.resolve('./fixtures/pass'),
+    };
+
+    const failing = {
+      filename: require.resolve('./fixtures/fail'),
+    };
+
+    try {
+      await task([failing]);
+    } catch (error) {
+      expect(stdout()).toMatch('1 spec, 1 failure');
+    }
+
+    try {
+      await task([failing, passing]);
+    } catch (error) {
+      expect(stdout()).toMatch('2 specs, 1 failure');
+    }
   });
 
   it('should not clean require cache between runs for modules in node_modules', async () => {
