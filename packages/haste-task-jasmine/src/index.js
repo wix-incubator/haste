@@ -3,6 +3,7 @@ const Jasmine = require('jasmine');
 
 const clearRequireCache = () => {
   Object.keys(require.cache)
+    .filter(key => !key.includes('node_modules'))
     .forEach(key => delete require.cache[key]);
 };
 
