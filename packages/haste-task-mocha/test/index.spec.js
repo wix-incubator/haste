@@ -61,7 +61,7 @@ describe('haste-mocha', () => {
       });
   });
 
-  it('clean require cache between runs', async () => {
+  it('should clean require cache between runs', async () => {
     const { task, stdout } = mocha();
 
     const file = {
@@ -75,7 +75,7 @@ describe('haste-mocha', () => {
     expect(stdout()).not.toMatch('0 passing');
   });
 
-  it('not clean require cache between runs for modules in node_modules', async () => {
+  it('should not clean require cache between runs for modules in node_modules', async () => {
     const { task, stdout } = mocha();
 
     const file = {
