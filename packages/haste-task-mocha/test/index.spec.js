@@ -61,7 +61,7 @@ describe('haste-mocha', () => {
       });
   });
 
-  it('should clean require cache between runs', async () => {
+  it('should clean require cache after a successful run', async () => {
     const { task, stdout } = mocha();
 
     const file = {
@@ -73,6 +73,33 @@ describe('haste-mocha', () => {
 
     await task([file]);
     expect(stdout()).not.toMatch('0 passing');
+  });
+
+  it('should clean require cache after a failing run', async () => {
+    expect.assertions(3);
+
+    const { task, stdout } = mocha();
+
+    const passing = {
+      filename: require.resolve('./fixtures/pass'),
+    };
+
+    const failing = {
+      filename: require.resolve('./fixtures/fail'),
+    };
+
+    try {
+      await task([failing]);
+    } catch (error) {
+      expect(stdout()).toMatch('1 failing');
+    }
+
+    try {
+      await task([failing, passing]);
+    } catch (error) {
+      expect(stdout()).toMatch('1 passing');
+      expect(stdout()).toMatch('1 failing');
+    }
   });
 
   it('should not clean require cache between runs for modules in node_modules', async () => {
