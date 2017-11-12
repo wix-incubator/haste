@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.16 (November 12, 2017)
+
+#### :nail_care: Enhancement
+* `haste-task-jasmine`
+  * [#138](https://github.com/wix/haste/pull/138) Check if a spec filename is not absolute and use file.cwd and construct an absolute filename
+  * [#138](https://github.com/wix/haste/pull/138) Don't remove modules within 'node_modules' folder from require cache between runs
+
 ## 0.1.15 (November 10, 2017)
 
 #### :bug: Bug Fix
