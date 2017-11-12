@@ -1,3 +1,4 @@
+const path = require('path');
 const Jasmine = require('jasmine');
 
 const clearRequireCache = () => {
@@ -20,8 +21,8 @@ module.exports = ({ config, reportersPath }) => async (files) => {
     });
   }
 
-  files.forEach(({ filename }) => {
-    jasmineRunner.addSpecFile(filename);
+  files.forEach(({ filename, cwd }) => {
+    jasmineRunner.addSpecFile(path.isAbsolute(filename) ? filename : path.join(cwd, filename));
   });
 
   const result = new Promise((resolve, reject) => {
