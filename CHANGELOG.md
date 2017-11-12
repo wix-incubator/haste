@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.17 (November 12, 2017)
+
+#### :bug: Bug Fix
+* `haste-task-jasmine`
+  * [#140](https://github.com/wix/haste/pull/140) Clean `require.cache` after a failing run
+
 ## 0.1.16 (November 12, 2017)
 
 #### :nail_care: Enhancement
