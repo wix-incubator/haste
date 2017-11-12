@@ -1,11 +1,11 @@
 {
   "name": "haste-plugin-dashboard",
-  "version": "0.1.3",
+  "version": "0.1.16",
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {
     "blessed": "~0.1.81",
     "chalk": "^2.3.0",
-    "haste-plugin-loader": "^0.1.3"
+    "haste-plugin-loader": "^0.1.16"
   }
 }
