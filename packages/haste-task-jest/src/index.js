@@ -1,11 +1,7 @@
 const { runCLI } = require('jest-cli');
 
-module.exports = ({ config, projects = [process.cwd()] }) => () => {
-  const argv = {
-    config: JSON.stringify(config),
-  };
-
-  return runCLI(argv, projects)
+module.exports = ({ argv, projects = [process.cwd()] }) => () => {
+  const result = runCLI(argv, projects)
     .then(({ results }) => {
       if (!results.success) {
         return Promise.reject(results);
@@ -13,4 +9,10 @@ module.exports = ({ config, projects = [process.cwd()] }) => () => {
 
       return results;
     });
+
+  if (argv.watch || argv.watchAll) {
+    return Promise.resolve();
+  }
+
+  return result;
 };
