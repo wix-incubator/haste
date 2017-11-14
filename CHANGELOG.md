@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.18 (November 14, 2017)
+
+#### :nail_care: Enhancement
+* `haste-task-webpack`
+  * [#142](https://github.com/wix/haste/pull/142) Move webpack to be a peerDependency
+
 ## 0.1.17 (November 12, 2017)
 
 #### :bug: Bug Fix
