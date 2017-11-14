@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 
-module.exports = options => () => {
+module.exports = (options) => {
   return new Promise((resolve, reject) => {
     const handler = (err, stats) => {
       if (options.callbackPath) {
