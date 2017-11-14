@@ -7,6 +7,7 @@
     "jest"
   ],
   "rules": {
+    "consistent-return": "off",
     "class-methods-use-this": "off",
     "no-console": "off",
     "no-confusing-arrow": "off",
