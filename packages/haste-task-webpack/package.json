@@ -3,11 +3,12 @@
   "version": "0.1.13",
   "main": "./src/index.js",
   "license": "MIT",
-  "dependencies": {
-    "webpack": "^3.5.5"
+  "peerDependencies": {
+    "webpack": "^3.1.0"
   },
   "devDependencies": {
     "haste-test-utils": "^0.1.13",
-    "tempy": "^0.2.1"
+    "tempy": "^0.2.1",
+    "webpack": "^3.8.1"
   }
 }
