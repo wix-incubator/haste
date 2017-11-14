@@ -4,6 +4,7 @@
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {
+    "dargs": "^5.1.0",
     "execa": "^0.8.0",
     "protractor": "^5.1.2"
   },
