@@ -42,3 +42,7 @@ process.on('message', ({ type, options }) => {
       throw new TypeError('Unexpected request from parent process');
   }
 });
+
+process.on('uncaughtException', (error) => {
+  handleError(error);
+});

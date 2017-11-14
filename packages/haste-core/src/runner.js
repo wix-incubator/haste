@@ -1,73 +1,29 @@
-const { fork } = require('child_process');
+const os = require('os');
 const Tapable = require('tapable');
-const { resolveTaskName } = require('./utils');
-const Task = require('./task');
-const Worker = require('./worker');
-const RunPhase = require('./run-phase');
-const WorkerError = require('./errors/worker-error');
-
-const WORKER_BIN = require.resolve('./worker-bin');
-const WORKER_OPTIONS = { silent: true, env: Object.assign({ FORCE_COLOR: true }, process.env) };
+const { Farm } = require('haste-worker-farm');
 
 module.exports = class Runner extends Tapable {
-  constructor(context) {
+  constructor() {
     super();
 
-    this.context = context;
-    this.workers = {};
-    this.idle = false;
-
-    process.on('exit', () => this.close());
+    this.farm = new Farm({ maxConcurrentCalls: os.cpus().length });
   }
 
-  close() {
-    Object.values(this.workers)
-      .forEach((worker) => {
-        worker.child.kill('SIGTERM');
-      });
-  }
+  define(action, { persistent = false } = {}) {
+    return async ({ context }) => {
+      const tasks = new Proxy({}, {
+        get: (target, name) => {
+          const pool = this.farm.createPool({ name, context });
 
-  resolveWorker(name) {
-    const modulePath = resolveTaskName(name, this.context);
-
-    if (this.workers[modulePath]) {
-      return this.workers[modulePath];
-    }
-
-    const child = fork(WORKER_BIN, [modulePath], WORKER_OPTIONS);
-    const worker = new Worker({ child, modulePath, name });
-
-    this.applyPlugins('start-worker', worker);
-
-    this.workers[modulePath] = worker;
-
-    return worker;
-  }
-
-  run(...taskDefs) {
-    const tasks = taskDefs
-      .map(({ task: name, options, metadata }) => {
-        const worker = this.resolveWorker(name);
-        const task = new Task({ options, worker, metadata });
-
-        return task;
-      });
-
-    const runPhase = new RunPhase({ tasks });
-
-    this.applyPlugins('start-run', runPhase);
-
-    return runPhase.run()
-      .then((results) => {
-        runPhase.applyPlugins('succeed-run', results);
-        return results;
-      })
-      .catch((error) => {
-        runPhase.applyPlugins('failed-run', error);
-
-        if (!this.persistent) {
-          throw new WorkerError(error);
+          return async (options) => {
+            return pool.call({ options });
+          };
         }
       });
+
+      const result = await action(tasks);
+
+      return { persistent, result };
+    };
   }
 };
