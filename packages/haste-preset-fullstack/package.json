@@ -4,6 +4,7 @@
   "main": "./src/index.js",
   "license": "MIT",
   "dependencies": {
+    "haste-core": "^0.1.22",
     "haste-plugin-dashboard": "^0.1.22",
     "haste-plugin-loader": "^0.1.22",
     "haste-plugin-logger": "^0.1.22",
