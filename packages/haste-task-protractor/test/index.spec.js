@@ -1,6 +1,10 @@
-const { run } = require('haste-test-utils');
+jest.mock('execa');
 
-const { command: protractor, kill } = run(require.resolve('../src'));
+const execa = require('execa');
+const { run } = require('haste-test-utils');
+const protractor = require('../src/index');
+
+const { command: protractorCommand, kill } = run(require.resolve('../src'));
 
 jest.setTimeout(30000);
 
@@ -9,7 +13,7 @@ describe('haste-protractor', () => {
 
   it('should run protractor with a passing test and resolve', async () => {
     const configPath = require.resolve('./fixtures/passing.conf.js');
-    const { task, stdout } = protractor({ configPath });
+    const { task, stdout } = protractorCommand({ configPath });
 
     return task()
       .then(() => {
@@ -21,7 +25,7 @@ describe('haste-protractor', () => {
     expect.assertions(1);
 
     const configPath = require.resolve('./fixtures/failing.conf.js');
-    const { task, stdout } = protractor({ configPath });
+    const { task, stdout } = protractorCommand({ configPath });
 
     return task()
       .catch(() => {
@@ -33,11 +37,20 @@ describe('haste-protractor', () => {
     expect.assertions(1);
 
     const configPath = 'missing.conf.js';
-    const { task, stdout } = protractor({ configPath });
+    const { task, stdout } = protractorCommand({ configPath });
 
     return task()
       .catch(() => {
         expect(stdout()).toMatch(/Error message: failed loading configuration file missing.conf.js/);
       });
+  });
+
+  it('should merge webdriver manager options with the default and transform to args', async () => {
+    const webdriverManagerOptions = { gecko: 'true', standalone: true, 'versions.chrome': 2.29 };
+
+    await protractor({ webdriverManagerOptions })();
+
+    const expectedArgs = ['update', '--standalone', '--gecko', 'true', '--versions.chrome', '2.29'];
+    expect(execa.mock.calls[0][1]).toEqual(expectedArgs);
   });
 });
