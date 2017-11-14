@@ -10,8 +10,8 @@ module.exports = class Farm {
     this.maxConcurrentCalls = maxConcurrentCalls;
   }
 
-  createPool({ name, context }) {
-    return new Pool({ farm: this, name, context });
+  createPool({ modulePath }) {
+    return new Pool({ farm: this, modulePath });
   }
 
   findIdleWorker({ pool }) {
@@ -32,22 +32,27 @@ module.exports = class Farm {
   }
 
   async processQueue() {
-    if (this.callQueue.length > 0) {
-      if (this.maxConcurrentCalls > this.activeWorkers) {
-        const { pool, options, resolve, reject } = this.callQueue.shift();
-        const worker = this.resolveWorker({ pool });
+    if (this.callQueue.length === 0) {
+      return null;
+    }
 
-        try {
-          this.activeWorkers += 1;
-          const result = await worker.send({ options });
-          resolve(result);
-        } catch (error) {
-          reject(error);
-        } finally {
-          this.activeWorkers -= 1;
-          this.processQueue();
-        }
-      }
+    if (this.maxConcurrentCalls <= this.activeWorkers) {
+      return null;
+    }
+
+    const { pool, options, resolve, reject } = this.callQueue.shift();
+    const worker = this.resolveWorker({ pool });
+
+    this.activeWorkers += 1;
+
+    try {
+      const result = await worker.send({ options });
+      resolve(result);
+    } catch (error) {
+      reject(error);
+    } finally {
+      this.activeWorkers -= 1;
+      this.processQueue();
     }
   }
 };

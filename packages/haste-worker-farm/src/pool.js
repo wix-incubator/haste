@@ -1,8 +1,7 @@
 module.exports = class Pool {
-  constructor({ farm, name, context }) {
+  constructor({ farm, modulePath }) {
     this.farm = farm;
-    this.name = name;
-    this.context = context;
+    this.modulePath = modulePath;
   }
 
   call({ options }) {
