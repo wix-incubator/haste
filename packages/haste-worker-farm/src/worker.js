@@ -1,5 +1,4 @@
 const { fork } = require('child_process');
-const { resolveTaskName } = require('./utils');
 const { PARENT_MESSAGE_OK, PARENT_MESSAGE_ERROR, CHILD_MESSAGE_CALL } = require('./constants');
 
 const WORKER_BIN = require.resolve('./worker-bin');
@@ -13,11 +12,9 @@ const WORKER_OPTIONS = {
 
 module.exports = class Worker {
   constructor({ pool }) {
-    const modulePath = resolveTaskName(pool.name, pool.context);
-
     this.pool = pool;
     this.busy = false;
-    this.child = fork(WORKER_BIN, [modulePath], WORKER_OPTIONS);
+    this.child = fork(WORKER_BIN, [pool.modulePath], WORKER_OPTIONS);
 
     this.child.on('message', (...args) => this.receive(...args));
   }

@@ -3,8 +3,5 @@
   "version": "0.1.15",
   "main": "src/index.js",
   "author": "Ronen Amiel",
-  "license": "MIT",
-  "dependencies": {
-    "resolve-from": "^4.0.0"
-  }
+  "license": "MIT"
 }

@@ -10,6 +10,7 @@
   "dependencies": {
     "haste-worker-farm": "^0.1.15",
     "chokidar": "^1.7.0",
+    "resolve-from": "^4.0.0",
     "tapable": "^0.2.8",
     "uuid": "^3.1.0"
   }
