@@ -1,15 +1,15 @@
 {
   "name": "haste-core",
   "version": "0.1.22",
-  "main": "src/haste.js",
+  "main": "src/index.js",
   "author": "Ronen Amiel",
   "engines": {
     "node": ">=8"
   },
   "license": "MIT",
   "dependencies": {
+    "haste-worker-farm": "^0.1.15",
     "chokidar": "^1.7.0",
-    "resolve-from": "^3.0.0",
     "tapable": "^0.2.8",
     "uuid": "^3.1.0"
   }
