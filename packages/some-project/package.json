@@ -5,8 +5,7 @@
   "main": "index.js",
   "license": "MIT",
   "haste": {
-    "preset": "haste-preset-fullstack",
-    "fast": true
+    "preset": "haste-preset-fullstack"
   },
   "dependencies": {
     "express": "^4.16.1",
