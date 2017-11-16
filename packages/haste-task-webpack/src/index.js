@@ -1,16 +1,10 @@
 const webpack = require('webpack');
 
-module.exports = ({ configPath, callbackPath, configParams = {} }) => () => {
+module.exports = options => () => {
   return new Promise((resolve, reject) => {
-    let config = require(configPath);
-
-    if (typeof config === 'function') {
-      config = config(configParams);
-    }
-
-    webpack(config).run((err, stats) => {
-      if (callbackPath) {
-        require(callbackPath)(err, stats);
+    const handler = (err, stats) => {
+      if (options.callbackPath) {
+        require(options.callbackPath)(err, stats);
       }
 
       if (err) {
@@ -26,6 +20,20 @@ module.exports = ({ configPath, callbackPath, configParams = {} }) => () => {
       }
 
       return resolve(stats.toJson());
-    });
+    };
+
+    let config = require(options.configPath);
+
+    if (typeof config === 'function') {
+      config = config(options.configParams);
+    }
+
+    const compiler = webpack(config);
+
+    if (options.watch) {
+      return compiler.watch(options.watchOptions, handler);
+    }
+
+    return compiler.run(handler);
   });
 };

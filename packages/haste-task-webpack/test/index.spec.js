@@ -4,6 +4,7 @@ const tempy = require('tempy');
 const { run } = require('haste-test-utils');
 const webpack = require('../src');
 const config = require('./fixtures/webpack.config');
+const retry = require('retry-promise').default;
 
 const configPath = require.resolve('./fixtures/webpack.config');
 const configFunctionPath = require.resolve('./fixtures/webpack.config.function');
@@ -45,7 +46,7 @@ describe('haste-webpack', () => {
       }
     });
 
-    it('should reject if there are compilation erros', async () => {
+    it('should reject if there are compilation errors', async () => {
       expect.assertions(1);
 
       const task = webpack({
@@ -76,6 +77,45 @@ describe('haste-webpack', () => {
 
       const bundlePath = path.join(configParams.output.path, configParams.output.filename);
       expect(fs.existsSync(bundlePath)).toEqual(true);
+    });
+  });
+
+  describe('when watch mode is used', () => {
+    it('should compile again when a change is detected', async () => {
+      const { command, kill } = run(require.resolve('../src'));
+
+      const entryFilename = path.join(tempy.directory(), 'entry.js');
+
+      fs.copyFileSync(require.resolve('./fixtures/entry.js'), entryFilename);
+
+      const configParams = {
+        entry: entryFilename,
+        output: {
+          path: tempy.directory(),
+          filename: 'bundle.js'
+        }
+      };
+
+      const bundlePath = path.join(configParams.output.path, configParams.output.filename);
+
+      const { task } = command({
+        watch: true,
+        configPath: configFunctionPath,
+        configParams
+      });
+
+      try {
+        await task();
+        expect(fs.readFileSync(bundlePath, 'utf-8')).toMatch('hello world');
+
+        fs.writeFileSync(entryFilename, 'foo bar');
+
+        await retry(async () =>
+          expect(fs.readFileSync(bundlePath, 'utf-8')).toMatch('foo bar')
+        );
+      } finally {
+        kill();
+      }
     });
   });
 });

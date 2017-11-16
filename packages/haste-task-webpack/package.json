@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "haste-test-utils": "^0.1.13",
+    "retry-promise": "1.0.0",
     "tempy": "^0.2.1",
     "webpack": "^3.8.1"
   }
