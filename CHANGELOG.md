@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.1.19 (November 16, 2017)
+
+#### :nail_care: Enhancement
+* `haste-task-copy`
+  * [#146](https://github.com/wix/haste/pull/146) Has been created and can be used
+* `haste-task-webpack`
+  * [#145](https://github.com/wix/haste/pull/145) Support a watch option that runs the compiler in watch mode
+* `haste-task-karma`
+  * [#144](https://github.com/wix/haste/pull/144) Support a watch option that runs karma in watch mode and resolves after the first run
+* `haste-task-protractor`
+  * [#143](https://github.com/wix/haste/pull/143) Accept `webdriverManagerOptions` as an object instead of an array
+
+#### :bug: Bug Fix
+* `haste-task-protractor`
+  * [#143](https://github.com/wix/haste/pull/143) Merge passed `webdriverManagerOptions` with default options correctly
+
 ## 0.1.18 (November 14, 2017)
 
 #### :nail_care: Enhancement
