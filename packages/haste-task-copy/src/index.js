@@ -23,7 +23,8 @@ module.exports = ({ cwd = process.cwd(), target }) => async (files) => {
   return Promise.all(
     files.map(async ({ filename }) => {
       const absoluteFilePath = path.join(cwd, filename);
-      const absoluteTargetFilePath = path.join(path.isAbsolute(target) ? '' : cwd, target, filename);
+      const absoluteTarget = path.isAbsolute(target) ? target : path.join(cwd, target);
+      const absoluteTargetFilePath = path.join(absoluteTarget, filename);
 
       await makeDir(path.dirname(absoluteTargetFilePath));
       await copyFile(absoluteFilePath, absoluteTargetFilePath);

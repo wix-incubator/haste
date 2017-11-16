@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const tempy = require('tempy');
-const copy = require('../src');
 const mkdirp = require('mkdirp');
+const copy = require('../src');
 
 describe('haste-copy', () => {
   let projectDir;
