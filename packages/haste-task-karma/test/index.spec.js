@@ -30,4 +30,15 @@ describe('haste-karma', () => {
         expect(stdout()).toMatch('Executed 1 of 1 (1 FAILED)');
       });
   });
+
+  it('should resolve after first run if watch options are passed', () => {
+    const { task, stdout } = karma({
+      configFile: require.resolve('./fixtures/karma.conf.watch.js')
+    });
+
+    return task()
+      .then(() => {
+        expect(stdout()).toMatch('Executed 1 of 1 SUCCESS');
+      });
+  });
 });
