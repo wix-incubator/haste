@@ -7,6 +7,7 @@
     "jest-cli": "^21.2.1"
   },
   "devDependencies": {
-    "haste-test-utils": "^0.1.13"
+    "haste-test-utils": "^0.1.13",
+    "retry-promise": "^1.0.0"
   }
 }
