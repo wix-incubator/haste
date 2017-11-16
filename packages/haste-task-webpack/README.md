@@ -34,6 +34,7 @@ module.exports = configParams => ({
   }
 });
 ```
+
 #### callbackPath
 
 Type: `string`
@@ -45,6 +46,7 @@ module.exports = (err, stats) => {
   console.log(stats.toString('minimal'));
 };
 ```
+
 #### configParams
 
 Type: `object`
@@ -69,5 +71,16 @@ module.exports = configParams => {
     }
   })
 };
-
 ```
+
+#### watch
+
+Type: `boolean`
+
+Whether or not to run Webpack in watch mode, defaults to false.
+
+#### watchOptions
+
+Type: `object`
+
+Watch options for webpack, see [webpack documentation](https://webpack.js.org/api/node/#watching) for the full list of available options.
