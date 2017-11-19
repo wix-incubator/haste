@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.20 (November 19, 2017)
+
+#### :bug: Bug Fix
+* `haste-task-copy`
+  * [#147](https://github.com/wix/haste/pull/147) use cwd of a file from the read task instead of it's own cwd option
+
 ## 0.1.19 (November 16, 2017)
 
 #### :nail_care: Enhancement
