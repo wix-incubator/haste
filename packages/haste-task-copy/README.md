@@ -20,4 +20,4 @@ A relative/absolute path which the files will be copied relatively to.
 
 Type: `String`
 
-An absolute path which the target and the source will be relative to, defaults to `process.cwd()`.
+An absolute path which the target will be relative to, defaults to `process.cwd()`.

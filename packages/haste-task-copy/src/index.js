@@ -21,8 +21,9 @@ const copyFile = (source, target) => new Promise((resolve, reject) => {
 
 module.exports = ({ cwd = process.cwd(), target }) => async (files) => {
   return Promise.all(
-    files.map(async ({ filename }) => {
-      const absoluteFilePath = path.join(cwd, filename);
+    files.map(async ({ filename, cwd: sourceCwd }) => {
+      const absoluteFilePath = path.isAbsolute(filename) ?
+        filename : path.join(sourceCwd, filename);
       const absoluteTarget = path.isAbsolute(target) ? target : path.join(cwd, target);
       const absoluteTargetFilePath = path.join(absoluteTarget, filename);
 
