@@ -1,27 +1,24 @@
-const { Linter, Configuration, findFormatter } = require('tslint');
+const { Linter, Configuration } = require('tslint');
 
-module.exports = ({ options = { formatter: 'prose' }, configurationFilePath = null } = {}) => async (files) => {
+function runLinter(options, configurationFilePath, files) {
   const linter = new Linter(options);
 
-  const results = await Promise.all(
-    files
-      .map(async ({ filename, content }) => {
-        const config = Configuration.findConfiguration(configurationFilePath, filename).results;
-        linter.lint(filename, content, config);
-        return linter.getResult();
-      })
-  );
+  files.forEach(({ filename, content }) => {
+    const config = Configuration.findConfiguration(configurationFilePath, filename).results;
+    linter.lint(filename, content, config);
+  });
 
-  const errorCount = results.reduce((acc, result) => acc + result.errorCount, 0);
+  return linter.getResult();
+}
 
-  if (errorCount) {
-    const FormatterConstructor = findFormatter(options.formatter);
-    const formatter = new FormatterConstructor();
+module.exports = ({ options = { formatter: 'prose' }, configurationFilePath = null } = {}) => (files) => {
+  try {
+    const { errorCount, output } = runLinter(options, configurationFilePath, files);
 
-    const failures = results.reduce((list, result) => list.concat(result.failures), []);
-
-    return Promise.reject(formatter.format(failures));
+    return errorCount > 0 ?
+      Promise.reject(output) :
+      Promise.resolve();
+  } catch (error) {
+    return Promise.reject(error);
   }
-
-  return Promise.resolve();
 };
