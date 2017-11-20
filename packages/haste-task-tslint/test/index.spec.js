@@ -37,7 +37,7 @@ describe('haste-tslint', () => {
       });
   });
 
-  it('should reject if a tsconfig.json could not be found', () => {
+  it('should reject if a tslint.json could not be found', () => {
     expect.assertions(1);
 
     const task = tslint({
@@ -54,7 +54,6 @@ describe('haste-tslint', () => {
         expect(error.message).toMatch('Could not find config file');
       });
   });
-
 
   it('should pass configuration to the linter', () => {
     expect.assertions(1);
