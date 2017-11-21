@@ -51,7 +51,7 @@ describe('haste', () => {
 
         const result = await api.run({ task: successful });
 
-        expect(result).toEqual(undefined);
+        expect(result.value).toEqual(undefined);
         expect(stdout).toMatch('successful-task\n');
       });
     });
@@ -103,7 +103,7 @@ describe('haste', () => {
           { task: successful }
         );
 
-        expect(result).toEqual(undefined);
+        expect(result.value).toEqual(undefined);
         expect(stdout).toMatch(['successful-task\n', 'successful-task\n'].join(''));
       });
     });
@@ -235,7 +235,7 @@ describe('haste', () => {
 
         const result = await api.run({ task: returnedValue });
 
-        expect(result).toEqual('some-value');
+        expect(result[0].value).toEqual('some-value');
         expect(stdout).toMatch('returned-value-task\n');
       });
     });
@@ -253,7 +253,8 @@ describe('haste', () => {
           { task: loggingValue }
         );
 
-        expect(result).toEqual('some-other-value');
+
+        expect(result[1].value).toEqual('some-other-value');
         expect(stdout).toEqual(['returned-value-task\n', 'logging-value-task\n', 'some-value\n'].join(''));
       });
     });
@@ -268,7 +269,7 @@ describe('haste', () => {
 
         const result = await api.run({ task: loggingOptions, options: { value: 'some-value' } });
 
-        expect(result).toEqual('some-value');
+        expect(result[0].value).toEqual('some-value');
         expect(stdout).toEqual(['logging-options-task\n', '{ value: \'some-value\' }\n'].join(''));
       });
     });
@@ -281,7 +282,7 @@ describe('haste', () => {
         });
 
         const result = await api.run({ task: successful, metadata: { title: 'awesome-task' } });
-        expect(result).toEqual(undefined);
+        expect(result.value).toEqual(undefined);
 
         const firstRunPhase = runPhase.mock.calls[0][0];
         expect(firstRunPhase.tasks[0].metadata).toEqual({ title: 'awesome-task' });
@@ -320,7 +321,7 @@ describe('haste', () => {
 
         const result = await api.run({ task: './successful-task' });
 
-        expect(result).toEqual(undefined);
+        expect(result.value).toEqual(undefined);
         expect(stdout).toMatch('successful-task\n');
       });
     });
@@ -335,7 +336,7 @@ describe('haste', () => {
 
         const result = await api.run({ task: 'haste-task-successful' });
 
-        expect(result).toEqual(undefined);
+        expect(result.value).toEqual(undefined);
         expect(stdout).toMatch('successful-task\n');
       });
     });
@@ -350,7 +351,7 @@ describe('haste', () => {
 
         const result = await api.run({ task: 'successful' });
 
-        expect(result).toEqual(undefined);
+        expect(result.value).toEqual(undefined);
         expect(stdout).toEqual('successful-task\n');
       });
     });
