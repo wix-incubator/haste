@@ -2,7 +2,7 @@ const { spawn } = require('child_process');
 
 let server;
 
-module.exports = ({ serverPath }) => async () => {
+module.exports = ({ serverPath }, { worker }) => {
   if (server) {
     server.kill('SIGTERM');
   }
@@ -11,6 +11,8 @@ module.exports = ({ serverPath }) => async () => {
     env: Object.assign({ NODE_ENV: 'development' }, process.env),
     stdio: 'inherit'
   });
+
+  worker.idle();
 };
 
 process.on('SIGTERM', () => {
