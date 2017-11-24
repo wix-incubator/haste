@@ -1,8 +1,21 @@
-function parseError(error) {
-  return Object.getOwnPropertyNames(error).reduce((obj, key) => {
-    return Object.assign(obj, { [key]: error[key] });
-  }, {});
-}
+let modulePath = null;
+
+process.on('message', ({ type, options }) => {
+  console.log(type, process.pid);
+
+  switch (type) {
+    case 'CHILD_MESSAGE_INITIALIZE':
+      modulePath = options.modulePath;
+      break;
+
+    case 'CHILD_MESSAGE_CALL':
+      execute({ options });
+      break;
+
+    default:
+      throw new TypeError('Unexpected request from parent process');
+  }
+});
 
 async function execute({ options }) {
   const worker = {
@@ -13,44 +26,30 @@ async function execute({ options }) {
       process.send({ type: 'PARENT_MESSAGE_COMPLETE', result });
     },
     error: (error) => {
-      if (error instanceof Error) {
-        error = parseError(error); // eslint-disable-line no-param-reassign
-      }
-
       if (error) {
         console.log(error.stack || error);
       }
 
-      process.send({ type: 'PARENT_MESSAGE_ERROR', error });
+      process.send({
+        type: 'PARENT_MESSAGE_ERROR',
+        error,
+      });
     },
   };
 
+  let result;
+
   try {
-    const result = require(process.argv[2])(options, { worker });
-
-    if (result instanceof Promise) {
-      result
-        .then(worker.complete)
-        .catch(worker.error);
-    }
+    result = require(modulePath)(options, { worker });
   } catch (error) {
+    return worker.error(error);
+  }
+
+  if (result instanceof Promise) {
+    result.then(worker.complete, worker.error);
+  }
+
+  process.on('uncaughtException', (error) => {
     worker.error(error);
-  }
+  });
 }
-
-process.on('message', ({ type, options }) => {
-  console.log(process.argv[2], process.pid);
-
-  switch (type) {
-    case 'CHILD_MESSAGE_CALL':
-      execute({ options });
-      break;
-
-    default:
-      throw new TypeError('Unexpected request from parent process');
-  }
-});
-
-process.on('uncaughtException', (error) => {
-  handleError(error);
-});

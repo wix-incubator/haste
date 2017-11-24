@@ -1,4 +1,5 @@
 const { fork } = require('child_process');
+const { parseError } = require('./worker-bin');
 
 const WORKER_BIN = require.resolve('./worker-bin');
 const WORKER_OPTIONS = {
@@ -13,20 +14,33 @@ module.exports = class Worker {
   constructor({ pool }) {
     this.pool = pool;
     this.busy = false;
-    this.child = fork(WORKER_BIN, [pool.modulePath], WORKER_OPTIONS);
+    this.promise = null;
+
+    this.initialize();
+  }
+
+  initialize() {
+    this.child = fork(WORKER_BIN, WORKER_OPTIONS);
 
     this.child.on('message', (...args) => this.receive(...args));
+
+    this.child.send({
+      type: 'CHILD_MESSAGE_INITIALIZE',
+      options: {
+        modulePath: this.pool.modulePath,
+      },
+    });
   }
 
   send({ options }) {
     if (this.busy) {
-      throw new Error('Worker is busy');
+      throw new Error('Unexpected request to a busy worker');
     }
 
     this.busy = true;
 
     return new Promise((resolve, reject) => {
-      this.lastCall = { resolve, reject };
+      this.promise = { resolve, reject };
       this.child.send({ type: 'CHILD_MESSAGE_CALL', options });
     });
   }
@@ -35,16 +49,16 @@ module.exports = class Worker {
     switch (type) {
       case 'PARENT_MESSAGE_COMPLETE':
         this.busy = false;
-        this.lastCall.resolve(result);
+        this.promise.resolve(result);
         break;
 
       case 'PARENT_MESSAGE_IDLE':
-        this.lastCall.resolve(result);
+        this.promise.resolve(result);
         break;
 
       case 'PARENT_MESSAGE_ERROR':
         this.busy = false;
-        this.lastCall.reject(error);
+        this.promise.reject(parseError(error));
         break;
 
       default:
