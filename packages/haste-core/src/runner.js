@@ -1,6 +1,6 @@
 const os = require('os');
 const Tapable = require('tapable');
-const { Farm } = require('haste-worker-farm');
+const { Farm, Pool } = require('haste-worker-farm');
 const { resolveTaskName } = require('./utils');
 
 module.exports = class Runner extends Tapable {
@@ -15,7 +15,7 @@ module.exports = class Runner extends Tapable {
       const tasks = new Proxy({}, {
         get: (target, name) => {
           const modulePath = resolveTaskName(name, context);
-          const pool = this.farm.createPool({ modulePath });
+          const pool = new Pool({ farm: this.farm, modulePath });
 
           return async (options) => {
             return pool.call({ options });

@@ -1,5 +1,5 @@
 const { fork } = require('child_process');
-const { parseError } = require('./worker-bin');
+const { parseError } = require('./utils');
 
 const WORKER_BIN = require.resolve('./worker-bin');
 const WORKER_OPTIONS = {
@@ -11,8 +11,8 @@ const WORKER_OPTIONS = {
 };
 
 module.exports = class Worker {
-  constructor({ pool }) {
-    this.pool = pool;
+  constructor({ modulePath }) {
+    this.modulePath = modulePath;
     this.busy = false;
     this.promise = null;
 
@@ -27,7 +27,7 @@ module.exports = class Worker {
     this.child.send({
       type: 'CHILD_MESSAGE_INITIALIZE',
       options: {
-        modulePath: this.pool.modulePath,
+        modulePath: this.modulePath,
       },
     });
   }

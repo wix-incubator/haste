@@ -1,57 +1,32 @@
-const Pool = require('./pool');
-const Worker = require('./worker');
-
 module.exports = class Farm {
   constructor({ maxConcurrentCalls }) {
-    this.workers = [];
-    this.callQueue = [];
-    this.activeWorkers = 0;
+    this.pendingCalls = [];
+    this.ongoingCalls = [];
 
     this.maxConcurrentCalls = maxConcurrentCalls;
   }
 
-  createPool({ modulePath }) {
-    return new Pool({ farm: this, modulePath });
-  }
-
-  findIdleWorker({ pool }) {
-    return this.workers
-      .filter(worker => worker.pool === pool)
-      .find(worker => worker.busy === false);
-  }
-
-  forkWorker({ pool }) {
-    const worker = new Worker({ pool });
-    this.workers.push(worker);
-
-    return worker;
-  }
-
-  resolveWorker({ pool }) {
-    return this.findIdleWorker({ pool }) || this.forkWorker({ pool });
+  request(call) {
+    this.pendingCalls.push(call);
+    this.processQueue();
   }
 
   async processQueue() {
-    if (this.callQueue.length === 0) {
+    if (this.pendingCalls.length === 0) {
       return null;
     }
 
-    if (this.maxConcurrentCalls <= this.activeWorkers) {
+    if (this.maxConcurrentCalls <= this.ongoingCalls.length) {
       return null;
     }
 
-    const { pool, options, resolve, reject } = this.callQueue.shift();
-    const worker = this.resolveWorker({ pool });
-
-    this.activeWorkers += 1;
+    const call = this.pendingCalls.shift();
+    this.ongoingCalls.push(call);
 
     try {
-      const result = await worker.send({ options });
-      resolve(result);
-    } catch (error) {
-      reject(error);
+      await call();
     } finally {
-      this.activeWorkers -= 1;
+      this.ongoingCalls.splice(this.ongoingCalls.indexOf(call), 1);
       this.processQueue();
     }
   }
