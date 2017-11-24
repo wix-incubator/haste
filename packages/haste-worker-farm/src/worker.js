@@ -1,5 +1,4 @@
 const { fork } = require('child_process');
-const { PARENT_MESSAGE_OK, PARENT_MESSAGE_ERROR, CHILD_MESSAGE_CALL } = require('./constants');
 
 const WORKER_BIN = require.resolve('./worker-bin');
 const WORKER_OPTIONS = {
@@ -28,19 +27,23 @@ module.exports = class Worker {
 
     return new Promise((resolve, reject) => {
       this.lastCall = { resolve, reject };
-      this.child.send({ type: CHILD_MESSAGE_CALL, options });
+      this.child.send({ type: 'CHILD_MESSAGE_CALL', options });
     });
   }
 
   receive({ type, result, error }) {
-    this.busy = false;
-
     switch (type) {
-      case PARENT_MESSAGE_OK:
+      case 'PARENT_MESSAGE_COMPLETE':
+        this.busy = false;
         this.lastCall.resolve(result);
         break;
 
-      case PARENT_MESSAGE_ERROR:
+      case 'PARENT_MESSAGE_IDLE':
+        this.lastCall.resolve(result);
+        break;
+
+      case 'PARENT_MESSAGE_ERROR':
+        this.busy = false;
         this.lastCall.reject(error);
         break;
 
