@@ -7,6 +7,7 @@
     "jest"
   ],
   "rules": {
+    "no-use-before-define": "off",
     "consistent-return": "off",
     "class-methods-use-this": "off",
     "no-console": "off",
