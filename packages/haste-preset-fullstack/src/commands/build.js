@@ -8,7 +8,10 @@ const { define } = create({
   ],
 });
 
-module.exports = define(async ({ webpack: webpackDev, webpack: webpackProd }) => {
+module.exports = define(async ({
+  webpack: webpackDev,
+  webpack: webpackProd,
+}) => {
   await webpackDev({ configPath: paths.config.webpack.production });
   await webpackProd({ configPath: paths.config.webpack.production });
 

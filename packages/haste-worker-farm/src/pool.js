@@ -19,16 +19,14 @@ module.exports = class Pool {
     return this.workers.find(worker => worker.busy === false);
   }
 
-  call({ options }) {
+  send({ options }) {
     return new Promise((resolve, reject) => {
-      const call = () => {
+      this.farm.request(() => {
         const worker = this.resolveWorker() || this.forkWorker();
 
         return worker.send({ options })
           .then(resolve, reject);
-      };
-
-      this.farm.request(call);
+      });
     });
   }
 };
