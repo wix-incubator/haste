@@ -2,6 +2,7 @@ const { fork } = require('child_process');
 const { parseError } = require('./utils');
 
 const WORKER_BIN = require.resolve('./worker-bin');
+
 const WORKER_OPTIONS = {
   silent: false,
   env: {
