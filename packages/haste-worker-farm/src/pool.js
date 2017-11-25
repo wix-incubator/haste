@@ -2,7 +2,8 @@ const mergeStream = require('merge-stream');
 const Worker = require('./worker');
 
 module.exports = class Pool {
-  constructor({ farm, modulePath }) {
+  constructor({ farm, modulePath, workerOptions }) {
+    this.workerOptions = workerOptions;
     this.workers = [];
 
     this.farm = farm;
@@ -13,7 +14,10 @@ module.exports = class Pool {
   }
 
   forkWorker() {
-    const worker = new Worker({ modulePath: this.modulePath });
+    const worker = new Worker({
+      modulePath: this.modulePath,
+      workerOptions: this.workerOptions
+    });
 
     this.stdout.add(worker.child.stdout);
     this.stderr.add(worker.child.stderr);

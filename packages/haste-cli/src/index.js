@@ -48,7 +48,10 @@ module.exports = async () => {
   }
 
   try {
-    const { persistent = false } = await action({ context: presetPath });
+    const { persistent = false } = await action({
+      context: presetPath,
+      workerOptions: { cwd: appDirectory }
+    });
 
     if (!persistent) {
       process.exit(0);
