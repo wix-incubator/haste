@@ -9,6 +9,8 @@
   "license": "MIT",
   "dependencies": {
     "fs-extra": "^4.0.2",
+    "haste-core": "^0.1.13",
+    "tempy": "^0.2.1",
     "uuid": "^3.1.0"
   }
 }
