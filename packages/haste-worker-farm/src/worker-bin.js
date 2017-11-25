@@ -1,4 +1,5 @@
 const fs = require('haste-service-fs');
+const serializeError = require('serialize-error');
 
 let modulePath = null;
 
@@ -28,12 +29,12 @@ const worker = {
   },
   error: (error) => {
     if (error) {
-      console.log(error.stack || error);
+      console.error(error.stack || error);
     }
 
     process.send({
       type: 'PARENT_MESSAGE_ERROR',
-      error,
+      error: serializeError(error),
     });
   },
 };
