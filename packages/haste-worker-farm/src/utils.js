@@ -1,5 +1,9 @@
-module.exports.parseError = (error) => {
-  return Object.getOwnPropertyNames(error).reduce((obj, key) => {
+const WorkerError = require('./errors/worker-error');
+
+module.exports.parseError = (errorObj) => {
+  const error = Object.getOwnPropertyNames(errorObj).reduce((obj, key) => {
     return Object.assign(obj, { [key]: error[key] });
-  }, new Error(error.message));
+  });
+
+  return new WorkerError(error);
 };

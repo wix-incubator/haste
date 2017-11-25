@@ -18,7 +18,12 @@ module.exports = class Runner extends Tapable {
           const pool = new Pool({ farm: this.farm, modulePath });
 
           return async (options) => {
-            return pool.call({ options });
+            return pool.call({ options })
+              .catch((error) => {
+                if (!persistent) {
+                  throw error;
+                }
+              });
           };
         }
       });
