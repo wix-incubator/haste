@@ -4,7 +4,7 @@ const { parseError } = require('./utils');
 const WORKER_BIN = require.resolve('./worker-bin');
 
 const WORKER_OPTIONS = {
-  silent: false,
+  silent: true,
   env: {
     FORCE_COLOR: true,
     ...process.env
