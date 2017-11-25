@@ -1,6 +1,6 @@
 const Runner = require('./runner');
 
-module.exports = ({ plugins = [] }) => {
+module.exports = ({ plugins = [] } = {}) => {
   const runner = new Runner();
 
   runner.apply(...plugins);
