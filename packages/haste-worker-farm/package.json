@@ -6,6 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "haste-service-fs": "0.1.14",
-    "merge-stream": "^1.0.1"
+    "merge-stream": "^1.0.1",
+    "serialize-error": "^2.1.0"
   }
 }

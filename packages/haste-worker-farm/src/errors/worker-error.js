@@ -4,6 +4,6 @@ module.exports = class extends Error {
 
     this.error = error;
     this.name = 'WorkerError';
-    this.message = error ? `Error in worker: ${error.stack}` : 'Unknown error in worker';
+    this.message = error ? `Error in worker: ${error.message}` : 'Unknown error in worker';
   }
 };
