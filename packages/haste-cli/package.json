@@ -15,6 +15,9 @@
     "resolve-from": "^3.0.0",
     "yargs": "^8.0.2"
   },
+  "peerDependencies": {
+    "haste-core": "^0.1.13"
+  },
   "devDependencies": {
     "execa": "^0.8.0"
   }
