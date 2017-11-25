@@ -5,6 +5,7 @@
   "author": "Ronen Amiel",
   "license": "MIT",
   "dependencies": {
-    "haste-service-fs": "0.1.14"
+    "haste-service-fs": "0.1.14",
+    "merge-stream": "^1.0.1"
   }
 }
