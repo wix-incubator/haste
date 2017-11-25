@@ -17,26 +17,26 @@ process.on('message', ({ type, options }) => {
   }
 });
 
+const worker = {
+  idle: (result) => {
+    process.send({ type: 'PARENT_MESSAGE_IDLE', result });
+  },
+  complete: (result) => {
+    process.send({ type: 'PARENT_MESSAGE_COMPLETE', result });
+  },
+  error: (error) => {
+    if (error) {
+      console.log(error.stack || error);
+    }
+
+    process.send({
+      type: 'PARENT_MESSAGE_ERROR',
+      error,
+    });
+  },
+};
+
 async function execute({ options }) {
-  const worker = {
-    idle: (result) => {
-      process.send({ type: 'PARENT_MESSAGE_IDLE', result });
-    },
-    complete: (result) => {
-      process.send({ type: 'PARENT_MESSAGE_COMPLETE', result });
-    },
-    error: (error) => {
-      if (error) {
-        console.log(error.stack || error);
-      }
-
-      process.send({
-        type: 'PARENT_MESSAGE_ERROR',
-        error,
-      });
-    },
-  };
-
   let result;
 
   try {
