@@ -1,0 +1,10 @@
+{
+  "name": "haste-service-fs",
+  "version": "0.1.14",
+  "main": "./src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "globby": "^6.1.0",
+    "mkdirp": "^0.5.1"
+  }
+}
