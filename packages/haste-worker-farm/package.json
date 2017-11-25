@@ -3,5 +3,8 @@
   "version": "0.1.15",
   "main": "src/index.js",
   "author": "Ronen Amiel",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "haste-service-fs": "0.1.14"
+  }
 }
