@@ -17,6 +17,8 @@ module.exports = class Runner extends Tapable {
           const modulePath = resolveTaskName(name, context);
           const pool = new Pool({ farm: this.farm, modulePath });
 
+          this.applyPlugins('create-pool', pool);
+
           return async (options) => {
             return pool.send({ options })
               .catch((error) => {
