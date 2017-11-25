@@ -1,66 +1,69 @@
-const babel = require('../src');
+const { setup } = require('haste-test-utils');
+
+const taskPath = require.resolve('../src');
 
 describe('haste-babel', () => {
-  it('should transpile with babel', () => {
-    const task = babel({ plugins: [require.resolve('babel-plugin-transform-es2015-block-scoping')] });
+  it('should transpile with babel', async () => {
+    const { run, files } = await setup({
+      'test.js': 'const a = 5;'
+    });
 
-    const file = {
-      filename: 'test.js',
-      content: 'const a = 5;',
-    };
-
-    const expected = {
-      filename: 'test.js',
-      content: 'var a = 5;',
-      map: null,
-    };
-
-    return task([file])
-      .then((result) => {
-        expect(result).toEqual([expected]);
+    await run(async ({ [taskPath]: babel }) => {
+      await babel({
+        pattern: '*.js',
+        target: 'dist',
+        plugins: [require.resolve('babel-plugin-transform-es2015-block-scoping')],
       });
+    });
+
+    expect(files['dist/test.js']).toEqual('var a = 5;');
   });
 
-  it('should generate source maps', () => {
-    const task = babel({ sourceMaps: true });
+  it('should generate source maps', async () => {
+    const { run, files } = await setup({
+      'test.js': 'const a = 5;'
+    });
 
-    const file = {
-      filename: 'test.js',
-      content: 'const a = 5;',
-    };
-
-    const expected = {
-      filename: 'test.js',
-      content: 'const a = 5;',
-      map: {
-        file: 'test.js',
-        mappings: 'AAAA,MAAMA,IAAI,CAAV',
-        names: ['a'],
-        sources: ['test.js'],
-        sourcesContent: ['const a = 5;'],
-        version: 3,
-      },
-    };
-
-    return task([file])
-      .then((result) => {
-        expect(result).toEqual([expected]);
+    await run(async ({ [taskPath]: babel }) => {
+      await babel({
+        pattern: '*.js',
+        target: 'dist',
+        plugins: [require.resolve('babel-plugin-transform-es2015-block-scoping')],
+        sourceMaps: true
       });
+    });
+
+    expect(files['dist/test.js']).toMatch('//# sourceMappingURL=test.js.map');
+
+    const map = {
+      file: 'test.js',
+      mappings: 'AAAA,IAAMA,IAAI,CAAV',
+      names: ['a'],
+      sources: ['test.js'],
+      sourcesContent: ['const a = 5;'],
+      version: 3,
+    };
+
+    expect(JSON.parse(files['dist/test.js.map'])).toEqual(map);
   });
 
-  it('should fail for invalid javascript', () => {
+  it('should fail for invalid javascript', async () => {
     expect.assertions(1);
 
-    const task = babel();
+    const { run } = await setup({
+      'test.js': 'invalid javascript'
+    });
 
-    const file = {
-      filename: 'test.js',
-      content: 'hello world',
-    };
-
-    return task([file])
-      .catch((error) => {
-        expect(error.message).toEqual('test.js: Unexpected token, expected ; (1:6)');
-      });
+    await run(async ({ [taskPath]: babel }) => {
+      try {
+        await babel({
+          pattern: '*.js',
+          target: 'dist',
+          plugins: [require.resolve('babel-plugin-transform-es2015-block-scoping')],
+        });
+      } catch (error) {
+        expect(error.message).toMatch('test.js: Unexpected token, expected ; (1:8)');
+      }
+    });
   });
 });
