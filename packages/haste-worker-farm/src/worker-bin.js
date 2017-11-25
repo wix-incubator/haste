@@ -1,3 +1,5 @@
+const fs = require('haste-service-fs');
+
 let modulePath = null;
 
 process.on('message', ({ type, options }) => {
@@ -40,7 +42,7 @@ async function execute({ options }) {
   let result;
 
   try {
-    result = require(modulePath)(options, { worker });
+    result = require(modulePath)(options, { worker, fs });
   } catch (error) {
     return worker.error(error);
   }
