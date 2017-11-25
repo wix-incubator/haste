@@ -12,7 +12,8 @@ const WORKER_OPTIONS = {
 };
 
 module.exports = class Worker {
-  constructor({ modulePath }) {
+  constructor({ workerOptions, modulePath }) {
+    this.workerOptions = workerOptions;
     this.modulePath = modulePath;
     this.busy = false;
     this.promise = null;
@@ -21,7 +22,7 @@ module.exports = class Worker {
   }
 
   initialize() {
-    this.child = fork(WORKER_BIN, WORKER_OPTIONS);
+    this.child = fork(WORKER_BIN, { ...WORKER_OPTIONS, ...this.workerOptions });
 
     this.child.on('message', (...args) => this.receive(...args));
 

@@ -11,11 +11,16 @@ module.exports = class Runner extends Tapable {
   }
 
   define(action, { persistent = false } = {}) {
-    return async ({ context }) => {
+    return async ({ context, workerOptions }) => {
       const tasks = new Proxy({}, {
         get: (target, name) => {
           const modulePath = resolveTaskName(name, context);
-          const pool = new Pool({ farm: this.farm, modulePath });
+
+          const pool = new Pool({
+            farm: this.farm,
+            modulePath,
+            workerOptions: { cwd: process.cwd(), ...workerOptions },
+          });
 
           this.applyPlugins('create-pool', pool);
 
