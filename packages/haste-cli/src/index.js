@@ -28,14 +28,14 @@ module.exports = async () => {
   const presetName = argv.preset || get(config, 'preset');
 
   if (!presetName) {
-    console.error('You must pass a preset through cli option \'--preset\', .hasterc, or package.json configs');
+    console.error('You must pass a preset through cli option "--preset", .hasterc, or package.json configs');
     process.exit(1);
   }
 
   const presetPath = resolveFrom.silent(appDirectory, resolvePresetName(presetName));
 
   if (!presetPath) {
-    console.error(`Unable to find ${presetPath}, please make sure it is installed`);
+    console.error(`Unable to find "${presetName}", please make sure it is installed`);
     process.exit(1);
   }
 
@@ -43,12 +43,12 @@ module.exports = async () => {
   const action = preset[command];
 
   if (!action) {
-    console.error(`${presetName} doesn't support command '${command}'`);
+    console.error(`${presetName} doesn't support command "${command}"`);
     process.exit(1);
   }
 
   try {
-    const { persistent } = await action({ context: presetPath });
+    const { persistent = false } = await action({ context: presetPath });
 
     if (!persistent) {
       process.exit(0);
