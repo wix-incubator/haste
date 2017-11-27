@@ -3,6 +3,10 @@ const Tapable = require('tapable');
 const { Farm, Pool } = require('haste-worker-farm');
 const { resolveTaskName } = require('./utils');
 
+const defaultWorkerOptions = {
+  cwd: process.cwd(),
+};
+
 module.exports = class Runner extends Tapable {
   constructor() {
     super();
@@ -19,7 +23,7 @@ module.exports = class Runner extends Tapable {
           const pool = new Pool({
             farm: this.farm,
             modulePath,
-            workerOptions: { cwd: process.cwd(), ...workerOptions },
+            workerOptions: { ...defaultWorkerOptions, ...workerOptions },
           });
 
           this.applyPlugins('create-pool', pool);
