@@ -15,6 +15,10 @@ process.on('message', ({ type, options }) => {
       execute({ options });
       break;
 
+    case 'CHILD_MESSAGE_KILL':
+      process.exit(0);
+      break;
+
     default:
       throw new TypeError('Unexpected request from parent process');
   }

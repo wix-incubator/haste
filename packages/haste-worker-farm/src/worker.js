@@ -67,4 +67,8 @@ module.exports = class Worker {
         throw new Error('Unexpected response from worker');
     }
   }
+
+  kill() {
+    this.child.send({ type: 'CHILD_MESSAGE_KILL' });
+  }
 };

@@ -3,11 +3,12 @@ const Worker = require('./worker');
 
 module.exports = class Pool {
   constructor({ farm, modulePath, workerOptions }) {
-    this.workerOptions = workerOptions;
     this.workers = [];
+    this.workerOptions = workerOptions;
 
     this.farm = farm;
     this.modulePath = modulePath;
+    this.ending = false;
 
     this.stdout = mergeStream();
     this.stderr = mergeStream();
@@ -31,7 +32,11 @@ module.exports = class Pool {
     return this.workers.find(worker => worker.busy === false);
   }
 
-  send({ options }) {
+  async send({ options }) {
+    if (this.ending) {
+      throw new Error('Farm has ended, no more calls can be done to it');
+    }
+
     return new Promise((resolve, reject) => {
       this.farm.request(() => {
         const worker = this.resolveWorker() || this.forkWorker();
@@ -40,5 +45,10 @@ module.exports = class Pool {
           .then(resolve, reject);
       });
     });
+  }
+
+  kill() {
+    this.ending = true;
+    this.workers.forEach(worker => worker.kill());
   }
 };
