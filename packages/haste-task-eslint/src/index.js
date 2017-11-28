@@ -1,9 +1,11 @@
 const { CLIEngine } = require('eslint');
 
-module.exports = (options = {}) => files => new Promise((resolve, reject) => {
+module.exports = ({ pattern, options = {} }, { fs }) => new Promise(async (resolve, reject) => {
+  const files = await fs.read({ pattern });
   const cli = new CLIEngine(options);
   const filePaths = files.map(({ filename }) => filename);
   const report = cli.executeOnFiles(filePaths);
+
   const formatter = cli.getFormatter();
   options.fix && CLIEngine.outputFixes(report);
 
