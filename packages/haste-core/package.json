@@ -11,6 +11,6 @@
     "chokidar": "^1.7.0",
     "haste-worker-farm": "^0.1.15",
     "resolve-from": "^4.0.0",
-    "tapable": "^0.2.8"
+    "tapable": "1.0.0-beta.3"
   }
 }
