@@ -5,13 +5,15 @@ module.exports = class TestPlugin {
   }
 
   apply(runner) {
-    runner.plugin('create-pool', (pool) => {
-      pool.stdout.on('data', (data) => {
-        this.stdout += data.toString();
-      });
+    runner.hooks.beforeExecution.tapPromise('track stdio', async (execution) => {
+      execution.hooks.createTask.tap('track task', (task) => {
+        task.pool.stdout.on('data', (data) => {
+          this.stdout += data.toString();
+        });
 
-      pool.stderr.on('data', (data) => {
-        this.stderr += data.toString();
+        task.pool.stderr.on('data', (data) => {
+          this.stderr += data.toString();
+        });
       });
     });
   }
