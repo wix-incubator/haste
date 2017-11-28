@@ -1,47 +1,35 @@
 const os = require('os');
-const Tapable = require('tapable');
-const { Farm, Pool } = require('haste-worker-farm');
-const { resolveTaskName } = require('./utils');
+const { AsyncSeriesHook } = require('tapable');
+const { Farm } = require('haste-worker-farm');
+const Execution = require('./execution');
 
-const defaultWorkerOptions = {
-  cwd: process.cwd(),
-};
-
-module.exports = class Runner extends Tapable {
+module.exports = class Runner {
   constructor() {
-    super();
-
     this.farm = new Farm({ maxConcurrentCalls: os.cpus().length });
+
+    this.hooks = {
+      beforeExecution: new AsyncSeriesHook(['execution']),
+    };
   }
 
   define(action, { persistent = false } = {}) {
     return async ({ context, workerOptions }) => {
-      const tasks = new Proxy({}, {
-        get: (target, name) => {
-          const modulePath = resolveTaskName(name, context);
-
-          const pool = new Pool({
-            farm: this.farm,
-            modulePath,
-            workerOptions: { ...defaultWorkerOptions, ...workerOptions },
-          });
-
-          this.applyPlugins('create-pool', pool);
-
-          return async (options) => {
-            return pool.send({ options })
-              .catch((error) => {
-                if (!persistent) {
-                  throw error;
-                }
-              });
-          };
-        }
+      const execution = new Execution({
+        action,
+        context,
+        persistent,
+        workerOptions,
+        farm: this.farm,
       });
 
-      const result = await action(tasks);
+      await this.hooks.beforeExecution.promise(execution);
 
-      return { persistent, result };
+      const result = await execution.execute();
+
+      return {
+        result,
+        persistent,
+      };
     };
   }
 };
