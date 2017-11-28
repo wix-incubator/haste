@@ -36,6 +36,10 @@ const worker = {
       console.error(error.stack || error);
     }
 
+    if (!(error instanceof Error)) {
+      error = new Error(error); // eslint-disable-line no-param-reassign
+    }
+
     process.send({
       type: 'PARENT_MESSAGE_ERROR',
       error: serializeError(error),
