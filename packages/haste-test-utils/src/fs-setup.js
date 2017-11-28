@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const tempy = require('tempy');
 
-module.exports = (fsObject) => {
+module.exports = (fsObject = {}) => {
   const cwd = tempy.directory();
 
   Object.keys(fsObject).forEach((filename) => {
