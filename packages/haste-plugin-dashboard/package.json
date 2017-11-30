@@ -2,6 +2,10 @@
   "name": "haste-plugin-dashboard",
   "version": "0.1.16",
   "main": "./src/index.js",
+  "author": "Ran Yitzhaki",
+  "engines": {
+		"node": ">=8"
+	},
   "license": "MIT",
   "dependencies": {
     "blessed": "~0.1.81",

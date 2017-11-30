@@ -2,6 +2,10 @@
   "name": "haste-task-copy",
   "version": "0.1.20",
   "main": "./src/index.js",
+  "author": "Ran Yitzhaki",
+  "engines": {
+		"node": ">=8"
+	},
   "license": "MIT",
   "dependencies": {
     "mkdirp": "^0.5.1"
