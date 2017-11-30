@@ -3,6 +3,10 @@
   "version": "0.1.19",
   "main": "./src/index.js",
   "license": "MIT",
+  "author": "Ronen Amiel",
+  "engines": {
+		"node": ">=8"
+	},
   "dependencies": {
     "karma": "^1.7.1"
   },

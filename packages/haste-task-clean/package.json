@@ -2,6 +2,10 @@
   "name": "haste-task-clean",
   "version": "0.1.0",
   "main": "./src/index.js",
+  "author": "Ran Yitzhaki",
+  "engines": {
+		"node": ">=8"
+	},
   "license": "MIT",
   "dependencies": {
     "rimraf": "^2.6.2"

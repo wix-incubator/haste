@@ -3,6 +3,9 @@
   "version": "0.1.16",
   "main": "index.js",
   "author": "Ronen Amiel",
+  "engines": {
+		"node": ">=8"
+	},
   "license": "MIT",
   "bin": {
     "haste": "./bin/haste.js"

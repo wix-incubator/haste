@@ -2,6 +2,10 @@
   "name": "haste-task-tslint",
   "version": "0.1.21",
   "main": "./src/index.js",
+  "author": "Ronen Amiel",
+  "engines": {
+		"node": ">=8"
+	},
   "license": "MIT",
   "dependencies": {
     "tslint": "^5.8.0"

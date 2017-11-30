@@ -2,6 +2,10 @@
   "name": "haste-task-protractor",
   "version": "0.1.19",
   "main": "./src/index.js",
+  "author": "Ronen Amiel",
+  "engines": {
+		"node": ">=8"
+	},
   "license": "MIT",
   "dependencies": {
     "dargs": "^5.1.0",
