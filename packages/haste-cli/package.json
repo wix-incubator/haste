@@ -4,8 +4,8 @@
   "main": "index.js",
   "author": "Ronen Amiel",
   "engines": {
-		"node": ">=8"
-	},
+    "node": ">=8"
+  },
   "license": "MIT",
   "bin": {
     "haste": "./bin/haste.js"

@@ -4,8 +4,8 @@
   "main": "./src/index.js",
   "author": "Ronen Amiel",
   "engines": {
-		"node": ">=8"
-	},
+    "node": ">=8"
+  },
   "license": "MIT",
   "dependencies": {
     "jest-cli": "^21.2.1"

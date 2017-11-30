@@ -5,8 +5,8 @@
   "license": "MIT",
   "author": "Ronen Amiel",
   "engines": {
-		"node": ">=8"
-	},
+    "node": ">=8"
+  },
   "dependencies": {
     "karma": "^1.7.1"
   },
