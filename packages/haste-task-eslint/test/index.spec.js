@@ -42,6 +42,6 @@ describe('haste-eslint', () => {
       });
     });
 
-    expect(files['fixable.js']).toBe('/foo {2}bar/');
+    expect(files['fixable.js'].content).toBe('/foo {2}bar/');
   });
 });

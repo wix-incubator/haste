@@ -23,7 +23,7 @@ describe('haste-less', () => {
 
     const expected = fromFixture('expected/test.css');
 
-    expect(files['dist/test.less']).toMatch(expected);
+    expect(files['dist/test.less'].content).toMatch(expected);
   });
 
   it('should fail for invalid less', async () => {
@@ -68,7 +68,7 @@ describe('haste-less', () => {
       ]
     };
 
-    expect(JSON.parse(files['dist/test.less.map'])).toEqual(map);
+    expect(JSON.parse(files['dist/test.less.map'].content)).toEqual(map);
   });
 
   it('should handle includePaths', async () => {
@@ -86,6 +86,6 @@ describe('haste-less', () => {
 
     const expected = fromFixture('expected/includePaths.css');
 
-    expect(files['dist/includePaths.less']).toMatch(expected);
+    expect(files['dist/includePaths.less'].content).toMatch(expected);
   });
 });

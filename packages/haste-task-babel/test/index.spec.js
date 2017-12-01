@@ -16,7 +16,7 @@ describe('haste-babel', () => {
       });
     });
 
-    expect(files['dist/test.js']).toEqual('var a = 5;');
+    expect(files['dist/test.js'].content).toEqual('var a = 5;');
   });
 
   it('should generate source maps', async () => {
@@ -33,7 +33,7 @@ describe('haste-babel', () => {
       });
     });
 
-    expect(files['dist/test.js']).toMatch('//# sourceMappingURL=test.js.map');
+    expect(files['dist/test.js'].content).toMatch('//# sourceMappingURL=test.js.map');
 
     const map = {
       file: 'test.js',
@@ -44,7 +44,7 @@ describe('haste-babel', () => {
       version: 3,
     };
 
-    expect(JSON.parse(files['dist/test.js.map'])).toEqual(map);
+    expect(JSON.parse(files['dist/test.js.map'].content)).toEqual(map);
   });
 
   it('should fail for invalid javascript', async () => {
