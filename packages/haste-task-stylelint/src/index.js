@@ -1,14 +1,14 @@
 const { lint } = require('stylelint');
 
-module.exports = options => async (files) => {
+module.exports = async ({ pattern, options }, { fs }) => {
+  const files = await fs.read({ pattern });
+
   const { output, errored } = await lint(Object.assign({
     files: files.map(({ filename }) => filename),
     formatter: 'string',
   }, options));
 
   if (errored) {
-    return Promise.reject(output);
+    throw output;
   }
-
-  return Promise.resolve();
 };
