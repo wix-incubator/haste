@@ -43,7 +43,11 @@ module.exports = async () => {
   const action = preset[command];
 
   if (!action) {
-    console.error(`${presetName} doesn't support command "${command}"`);
+    console.error(`Preset "${presetName}" doesn't support command "${command}"`);
+    console.error('');
+    console.error('Please try one of the following:');
+    Object.keys(preset).forEach(key => console.error(`  - ${key}`));
+
     process.exit(1);
   }
 
