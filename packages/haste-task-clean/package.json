@@ -11,6 +11,6 @@
     "rimraf": "^2.6.2"
   },
   "devDependencies": {
-    "temp-write": "^3.3.0"
+    "haste-test-utils": "^0.1.13"
   }
 }
