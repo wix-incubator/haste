@@ -4,8 +4,8 @@
   "main": "./src/index.js",
   "author": "Ran Yitzhaki",
   "engines": {
-		"node": ">=8"
-	},
+    "node": ">=8"
+  },
   "license": "MIT",
   "peerDependencies": {
     "eslint": ">=1.6.0 <5.0.0"

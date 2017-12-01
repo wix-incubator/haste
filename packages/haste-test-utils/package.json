@@ -4,8 +4,8 @@
   "main": "./src/index.js",
   "author": "Ran Yitzhaki",
   "engines": {
-		"node": ">=8"
-	},
+    "node": ">=8"
+  },
   "license": "MIT",
   "dependencies": {
     "fs-extra": "^4.0.2",
