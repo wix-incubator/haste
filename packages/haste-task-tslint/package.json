@@ -11,6 +11,7 @@
     "tslint": "^5.8.0"
   },
   "devDependencies": {
+    "haste-test-utils": "^0.1.13",
     "typescript": "^2.6.1"
   }
 }
