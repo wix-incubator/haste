@@ -11,6 +11,7 @@
     "mkdirp": "^0.5.1"
   },
   "devDependencies": {
+    "haste-test-utils": "^0.1.13",
     "tempy": "^0.2.1"
   }
 }

@@ -19,7 +19,9 @@ const copyFile = (source, target) => new Promise((resolve, reject) => {
   rd.pipe(wr);
 });
 
-module.exports = ({ cwd = process.cwd(), target }) => async (files) => {
+module.exports = async ({ pattern, target, cwd = process.cwd() }, { fs: fsService }) => {
+  const files = await fsService.read({ pattern });
+
   return Promise.all(
     files.map(async ({ filename, cwd: sourceCwd }) => {
       const absoluteFilePath = path.isAbsolute(filename) ?
