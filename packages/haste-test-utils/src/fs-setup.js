@@ -9,10 +9,30 @@ module.exports = (fsObject = {}) => {
     fs.outputFileSync(path.join(cwd, filename), fsObject[filename]);
   });
 
+  const createFileObject = (filename) => {
+    return new Proxy({}, {
+      get: (target, prop) => {
+        const fullPath = path.join(cwd, filename);
+
+        switch (prop) {
+          case 'content':
+            return fs.readFileSync(fullPath, 'utf8');
+
+          case 'exists':
+            return fs.existsSync(fullPath);
+
+          case 'path':
+            return fullPath;
+
+          default:
+            return undefined;
+        }
+      },
+    });
+  };
+
   const files = new Proxy({}, {
-    get: (target, prop) => {
-      return fs.readFileSync(path.join(cwd, prop), 'utf8');
-    }
+    get: (target, prop) => createFileObject(prop),
   });
 
   return {
