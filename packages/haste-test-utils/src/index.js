@@ -27,5 +27,5 @@ module.exports.setup = async (fsObject) => {
     }
   });
 
-  return { run, files, stdio };
+  return { run, files, stdio, cwd };
 };
