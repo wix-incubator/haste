@@ -18,7 +18,7 @@ describe.only('haste-service-fs', () => {
       expect(fs.existsSync(path.join(target, file.filename))).toEqual(true);
     });
 
-    it('should write source maps if they exist', async () => {
+    it('should write source map if it is an object', async () => {
       const target = tempy.directory();
 
       const file = {
@@ -31,11 +31,27 @@ describe.only('haste-service-fs', () => {
 
       await write({ target, ...file });
 
-      const content = fs
-        .readFileSync(path.join(target, `${file.filename}.map`))
-        .toString();
+      const sourcemapPath = path.join(target, `${file.filename}.map`);
+      const content = fs.readFileSync(sourcemapPath, 'utf8');
 
-      expect(content).toEqual(JSON.stringify(file.map));
+      expect(content).toEqual('{"hello":"world"}');
+    });
+
+    it('should write source map if it is a string', async () => {
+      const target = tempy.directory();
+
+      const file = {
+        filename: 'test.js',
+        content: 'const a = 5;',
+        map: '{"hello":"world"}',
+      };
+
+      await write({ target, ...file });
+
+      const sourcemapPath = path.join(target, `${file.filename}.map`);
+      const content = fs.readFileSync(sourcemapPath, 'utf8');
+
+      expect(content).toEqual(file.map);
     });
 
     it('should link to source maps from source files', async () => {
@@ -51,9 +67,7 @@ describe.only('haste-service-fs', () => {
 
       await write({ target, ...file });
 
-      const content = fs
-        .readFileSync(path.join(target, file.filename))
-        .toString();
+      const content = fs.readFileSync(path.join(target, file.filename), 'utf8');
 
       expect(content).toMatch(`//# sourceMappingURL=${file.filename}`);
     });
