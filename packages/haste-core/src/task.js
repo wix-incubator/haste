@@ -18,6 +18,10 @@ module.exports = class Task {
       workerOptions: { ...defaultWorkerOptions, ...workerOptions },
     });
 
+    process.on('exit', () => {
+      this.pool.kill();
+    });
+
     this.api = async (options) => {
       const run = {
         options,
