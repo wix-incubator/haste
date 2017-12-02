@@ -37,7 +37,7 @@ const worker = {
     }
 
     if (!(error instanceof Error)) {
-      error = new Error(error); // eslint-disable-line no-param-reassign
+      error = new Error(error);
     }
 
     process.send({

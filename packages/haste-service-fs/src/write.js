@@ -9,12 +9,12 @@ module.exports = ({ filename, content, map, target }) => {
     const mapFilename = `${outFilename}.map`;
 
     if (typeof map === 'object') {
-      map = JSON.stringify(map); // eslint-disable-line no-param-reassign
+      map = JSON.stringify(map);
     }
 
     promises.push(writeFile(mapFilename, map));
 
-    content += `\n//# sourceMappingURL=${path.basename(mapFilename)}`; // eslint-disable-line no-param-reassign
+    content += `\n//# sourceMappingURL=${path.basename(mapFilename)}`;
   }
 
   promises.push(
