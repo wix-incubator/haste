@@ -24,6 +24,9 @@ module.exports = (fsObject = {}) => {
           case 'path':
             return fullPath;
 
+          case 'write':
+            return content => fs.outputFileSync(fullPath, content);
+
           default:
             return undefined;
         }
