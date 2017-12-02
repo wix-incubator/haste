@@ -22,7 +22,7 @@ module.exports = async ({ pattern, target, options }, { fs }) => {
           target,
           filename,
           content: css.toString(),
-          map: map ? JSON.parse(map.toString()) : undefined,
+          map: map && map.toString(),
         });
       })
   );

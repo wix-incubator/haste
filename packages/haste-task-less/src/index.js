@@ -16,7 +16,7 @@ module.exports = async ({ pattern, target, options }, { fs }) => {
           target,
           filename,
           content: css,
-          map: map ? JSON.parse(map) : undefined,
+          map,
         });
       })
   );
