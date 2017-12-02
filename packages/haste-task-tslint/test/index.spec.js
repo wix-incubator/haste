@@ -7,10 +7,14 @@ const pathToInvalidFile = require.resolve('./fixtures/invalid.ts');
 const pathToConfiguration = require.resolve('./fixtures/tslint.json');
 
 describe('haste-tslint', () => {
-  it('should resolve for valid files', async () => {
-    const { run } = await setup();
+  let test;
 
-    await run(async ({ [taskPath]: tslint }) => {
+  afterEach(() => test.cleanup());
+
+  it('should resolve for valid files', async () => {
+    test = await setup();
+
+    await test.run(async ({ [taskPath]: tslint }) => {
       await tslint({
         pattern: pathToValidFile,
         configurationFilePath: pathToConfiguration,
@@ -21,9 +25,9 @@ describe('haste-tslint', () => {
   it('should reject for valid files', async () => {
     expect.assertions(1);
 
-    const { run } = await setup();
+    test = await setup();
 
-    await run(async ({ [taskPath]: tslint }) => {
+    await test.run(async ({ [taskPath]: tslint }) => {
       try {
         await tslint({
           pattern: pathToInvalidFile,
@@ -38,9 +42,9 @@ describe('haste-tslint', () => {
   it('should reject if a tslint.json could not be found', async () => {
     expect.assertions(1);
 
-    const { run } = await setup();
+    test = await setup();
 
-    await run(async ({ [taskPath]: tslint }) => {
+    await test.run(async ({ [taskPath]: tslint }) => {
       try {
         await tslint({
           pattern: pathToValidFile,
@@ -55,9 +59,9 @@ describe('haste-tslint', () => {
   it('should pass configuration to the linter', async () => {
     expect.assertions(1);
 
-    const { run } = await setup();
+    test = await setup();
 
-    await run(async ({ [taskPath]: tslint }) => {
+    await test.run(async ({ [taskPath]: tslint }) => {
       try {
         await tslint({
           pattern: pathToInvalidFile,
