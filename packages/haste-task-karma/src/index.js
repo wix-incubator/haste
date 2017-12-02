@@ -1,12 +1,12 @@
 const { Server } = require('karma');
 
-module.exports = config => async () => {
+module.exports = async (config) => {
   return new Promise((resolve, reject) => {
     const server = new Server(config, (exitCode) => {
       if (exitCode === 0) {
         resolve();
       } else {
-        reject();
+        reject(new Error(`Karma failed with code ${exitCode}`));
       }
 
       process.exit(exitCode);
@@ -19,7 +19,7 @@ module.exports = config => async () => {
         return resolve();
       }
 
-      return reject();
+      return reject(new Error(`Karma failed with code ${exitCode}`));
     });
 
     server.start();
