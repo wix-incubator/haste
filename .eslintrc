@@ -16,6 +16,7 @@
     "no-confusing-arrow": "off",
     "no-console": "off",
     "no-multi-assign": "off",
+    "no-param-reassign": "off",
     "no-return-assign": "off",
     "no-underscore-dangle": "off",
     "no-unused-expressions": "off",
