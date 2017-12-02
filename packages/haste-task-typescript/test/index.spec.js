@@ -1,98 +1,97 @@
-const fs = require('fs-extra');
+const fs = require('fs');
 const path = require('path');
-const tempy = require('tempy');
-const { run } = require('haste-test-utils');
+const { setup } = require('haste-test-utils');
 const { redColor, greenColor } = require('./utils');
 
-const { command: typescript, kill } = run(require.resolve('../src'));
-const configPath = require.resolve('./fixtures/tsconfig.json');
-const transpiledFixture = fs.readFileSync(require.resolve('./expected/valid.transpiled'), 'utf-8');
-const sourcemapFixture = fs.readFileSync(require.resolve('./expected/valid.js.map'), 'utf-8');
+const taskPath = require.resolve('../src');
 
-jest.setTimeout(30000);
+const fromFixture = (filename) => {
+  return fs.readFileSync(path.join(__dirname, filename), 'utf8');
+};
+
+const transpiledFixture = fromFixture('./expected/valid.transpiled.js');
+const sourcemapFixture = fromFixture('./expected/valid.js.map').trim();
 
 describe('haste-task-typescript', () => {
-  afterEach(kill);
-  let projectDir;
-  let outDir;
-  const copyToProject = (from, to) => fs.copySync(require.resolve(from), path.join(projectDir, to));
+  let test;
 
-  beforeEach(() => {
-    projectDir = tempy.directory();
-    outDir = path.join(projectDir, 'dist');
-    fs.copySync(configPath, path.join(projectDir, 'tsconfig.json'));
-  });
+  afterEach(() => test.cleanup());
 
   it('should transpile with typescript and resolve', async () => {
-    copyToProject('./fixtures/valid.ts', 'src/valid.ts');
+    test = await setup({
+      'tsconfig.json': fromFixture('./fixtures/tsconfig.json'),
+      'src/valid.ts': fromFixture('./fixtures/valid.ts'),
+    });
 
-    const outFile = path.join(outDir, 'valid.js');
+    await test.run(async ({ [taskPath]: typescript }) => {
+      await typescript({ project: test.cwd });
+    });
 
-    const { task } = typescript({ project: projectDir });
-
-    await task();
-
-    const outFileContent = fs.readFileSync(outFile, 'utf-8');
-
-    expect(outFileContent).toEqual(transpiledFixture);
+    expect(test.files['dist/valid.js'].content).toEqual(transpiledFixture);
   });
 
   it('should generate sourcemaps when the sourceMap options is passed', async () => {
-    copyToProject('./fixtures/valid.ts', 'src/valid.ts');
-    const outFile = path.join(outDir, 'valid.js');
-    const sourceMapFile = path.join(outDir, 'valid.js.map');
+    test = await setup({
+      'tsconfig.json': fromFixture('./fixtures/tsconfig.json'),
+      'src/valid.ts': fromFixture('./fixtures/valid.ts'),
+    });
 
-    const { task } = typescript({ project: projectDir, sourceMap: true });
+    await test.run(async ({ [taskPath]: typescript }) => {
+      await typescript({ project: test.cwd, sourceMap: true });
+    });
 
-    await task();
-
-    const outFileContent = fs.readFileSync(outFile, 'utf-8');
-    const sourceMapContent = fs.readFileSync(sourceMapFile, 'utf-8');
-
-    expect(outFileContent).toMatch(transpiledFixture);
-    expect(outFileContent).toMatch('//# sourceMappingURL=valid.js.map');
-    expect(sourcemapFixture).toMatch(sourceMapContent);
+    expect(test.files['dist/valid.js'].content).toMatch(transpiledFixture);
+    expect(test.files['dist/valid.js'].content).toMatch('//# sourceMappingURL=valid.js.map');
+    expect(test.files['dist/valid.js.map'].content).toMatch(sourcemapFixture);
   });
 
   it('should reject if typescript fails with errors', async () => {
     expect.assertions(3);
 
-    copyToProject('./fixtures/invalid.ts', 'src/invalid.ts');
+    test = await setup({
+      'tsconfig.json': fromFixture('./fixtures/tsconfig.json'),
+      'src/invalid.ts': fromFixture('./fixtures/invalid.ts'),
+    });
 
-    const { task, stderr } = typescript({ project: projectDir });
-
-    try {
-      await task();
-    } catch (error) {
-      expect(stderr()).toMatch('error TS2304: Cannot find name');
-      expect(stderr()).toMatch(redColor);
-      expect(error).toBe(undefined);
-    }
+    await test.run(async ({ [taskPath]: typescript }) => {
+      try {
+        await typescript({ project: test.cwd, sourceMap: true });
+      } catch (error) {
+        expect(test.stdio.stderr).toMatch('error TS2304: Cannot find name');
+        expect(test.stdio.stderr).toMatch(redColor);
+        expect(error.message).toMatch('tsc exited with code 2');
+      }
+    });
   });
 
   describe('watch', () => {
     it('should resolve after typescript has succeed', async () => {
-      copyToProject('./fixtures/valid.ts', 'src/valid.ts');
-      const outFile = path.join(outDir, 'valid.js');
+      test = await setup({
+        'tsconfig.json': fromFixture('./fixtures/tsconfig.json'),
+        'src/valid.ts': fromFixture('./fixtures/valid.ts'),
+      });
 
-      const { task, stdout } = typescript({ project: projectDir, watch: true });
+      await test.run(async ({ [taskPath]: typescript }) => {
+        await typescript({ project: test.cwd, watch: true });
+      });
 
-      await task();
-
-      expect(stdout()).toMatch('Compilation complete. Watching for file changes.');
-      expect(stdout()).toMatch(greenColor);
-      expect(fs.readFileSync(outFile, 'utf-8')).toEqual(transpiledFixture);
+      expect(test.stdio.stdout).toMatch('Compilation complete. Watching for file changes.');
+      expect(test.stdio.stdout).toMatch(greenColor);
+      expect(test.files['dist/valid.js'].content).toEqual(transpiledFixture);
     });
 
     it('should resolve despite typescript has failed', async () => {
-      copyToProject('./fixtures/invalid.ts', 'src/invalid.ts');
+      test = await setup({
+        'tsconfig.json': fromFixture('./fixtures/tsconfig.json'),
+        'src/invalid.ts': fromFixture('./fixtures/invalid.ts'),
+      });
 
-      const { task, stderr } = typescript({ project: projectDir, watch: true });
+      await test.run(async ({ [taskPath]: typescript }) => {
+        await typescript({ project: test.cwd, watch: true });
+      });
 
-      await task();
-
-      expect(stderr()).toMatch('error TS2304: Cannot find name');
-      expect(stderr()).toMatch(redColor);
+      expect(test.stdio.stderr).toMatch('error TS2304: Cannot find name');
+      expect(test.stdio.stderr).toMatch(redColor);
     });
   });
 });
