@@ -18,16 +18,24 @@ module.exports = class Task {
       workerOptions: { ...defaultWorkerOptions, ...workerOptions },
     });
 
-    const run = async (options) => {
-      const newOptions = await this.hooks.before.promise(options);
+    this.api = async (options) => {
+      const run = {
+        options,
+        hooks: {
+          success: new AsyncSeriesWaterfallHook(['options']),
+          failure: new AsyncSeriesWaterfallHook(['options']),
+        },
+      };
+
+      await this.hooks.before.promise(run);
 
       try {
-        const result = await this.pool.send({ options: newOptions });
-        const newResult = await this.hooks.success.promise(result);
+        const result = await this.pool.send({ options });
+        const newResult = await run.hooks.success.promise(result);
 
         return newResult;
       } catch (error) {
-        const newError = await this.hooks.failure.promise(error);
+        const newError = await run.hooks.failure.promise(error);
 
         if (!this.persistent) {
           throw newError;
@@ -35,12 +43,8 @@ module.exports = class Task {
       }
     };
 
-    this.api = run;
-
     this.hooks = {
       before: new AsyncSeriesWaterfallHook(['options']),
-      success: new AsyncSeriesWaterfallHook(['result']),
-      failure: new AsyncSeriesWaterfallHook(['error']),
     };
   }
 };
