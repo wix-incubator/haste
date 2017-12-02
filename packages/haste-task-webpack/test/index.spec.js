@@ -1,121 +1,133 @@
 const fs = require('fs');
 const path = require('path');
-const tempy = require('tempy');
-const { run } = require('haste-test-utils');
-const webpack = require('../src');
-const config = require('./fixtures/webpack.config');
 const retry = require('retry-promise').default;
+const { setup } = require('haste-test-utils');
 
-const configPath = require.resolve('./fixtures/webpack.config');
-const configFunctionPath = require.resolve('./fixtures/webpack.config.function');
-const callbackPath = require.resolve('./fixtures/callback');
+const taskPath = require.resolve('../src');
 
-describe('haste-webpack', () => {
+const fromFixture = (filename) => {
+  return fs.readFileSync(path.join(__dirname, filename), 'utf8');
+};
+
+describe('haste-task-webpack', () => {
+  let test;
+
+  afterEach(() => test.cleanup());
+
   describe('when configPath is a path to an object', () => {
     it('should bundle with webpack', async () => {
-      const task = webpack({ configPath });
+      test = await setup({
+        'entry.js': fromFixture('./fixtures/entry.js'),
+        'webpack.config.js': fromFixture('./fixtures/webpack.config.js')
+      });
 
-      await task();
+      await test.run(async ({ [taskPath]: webpack }) => {
+        await webpack({ configPath: test.files['webpack.config.js'].path });
+      });
 
-      const bundlePath = path.join(config.output.path, config.output.filename);
-      expect(fs.existsSync(bundlePath)).toEqual(true);
+      expect(test.files['bundle.js'].exists).toBe(true);
     });
 
     it('should reject if webpack fails', async () => {
       expect.assertions(1);
 
-      const task = webpack({
-        configPath: require.resolve('./fixtures/webpack.config.invalid'),
+      test = await setup({
+        'entry.js': fromFixture('./fixtures/entry.js'),
+        'webpack.config.invalid.js': fromFixture('./fixtures/webpack.config.invalid.js')
       });
-      try {
-        await task();
-      } catch (error) {
-        expect(error.message).toMatch(/Invalid configuration object/);
-      }
+
+      await test.run(async ({ [taskPath]: webpack }) => {
+        try {
+          await webpack({ configPath: test.files['webpack.config.invalid.js'].path });
+        } catch (error) {
+          expect(error.message).toMatch('Invalid configuration object');
+        }
+      });
     });
 
     it('should support passing callback that accepts webpack err and stats', async () => {
-      const { command, kill } = run(require.resolve('../src'));
-      const { task, stdout } = command({ configPath, callbackPath });
+      test = await setup({
+        'entry.js': fromFixture('./fixtures/entry.js'),
+        'webpack.config.js': fromFixture('./fixtures/webpack.config.js')
+      });
 
-      try {
-        await task();
-        expect(stdout()).toMatch('1 module');
-      } finally {
-        kill();
-      }
+      await test.run(async ({ [taskPath]: webpack }) => {
+        await webpack({
+          configPath: test.files['webpack.config.js'].path,
+          callbackPath: require.resolve('./fixtures/callback')
+        });
+      });
+
+      expect(test.files['bundle.js'].exists).toBe(true);
+      expect(test.stdio.stdout).toMatch('1 module');
     });
 
     it('should reject if there are compilation errors', async () => {
       expect.assertions(1);
 
-      const task = webpack({
-        configPath: require.resolve('./fixtures/webpack.config.error'),
+      test = await setup({
+        'invalid-javascript.js': fromFixture('./fixtures/invalid-javascript.js'),
+        'webpack.config.error.js': fromFixture('./fixtures/webpack.config.error.js')
       });
 
-      try {
-        await task();
-      } catch (error) {
-        expect(error).toMatch('Module not found');
-      }
+      await test.run(async ({ [taskPath]: webpack }) => {
+        try {
+          await webpack({ configPath: test.files['webpack.config.error.js'].path });
+        } catch (error) {
+          expect(error.message).toMatch('Module not found');
+        }
+      });
     });
   });
 
   describe('when configPath is a path to a function', () => {
     it('should pass parameters argument to the function', async () => {
+      test = await setup({
+        'entry.js': fromFixture('./fixtures/entry.js'),
+        'webpack.config.js': fromFixture('./fixtures/webpack.config.js'),
+        'webpack.config.function.js': fromFixture('./fixtures/webpack.config.function.js')
+      });
+
       const configParams = {
-        entry: require.resolve('./fixtures/entry.js'),
+        entry: test.files['entry.js'].path,
         output: {
-          path: tempy.directory(),
+          path: test.cwd,
           filename: 'bundle.js'
         }
       };
 
-      const task = webpack({ configPath: configFunctionPath, configParams });
+      await test.run(async ({ [taskPath]: webpack }) => {
+        await webpack({
+          configPath: test.files['webpack.config.function.js'].path,
+          configParams
+        });
+      });
 
-      await task();
-
-      const bundlePath = path.join(configParams.output.path, configParams.output.filename);
-      expect(fs.existsSync(bundlePath)).toEqual(true);
+      expect(test.files['bundle.js'].exists).toBe(true);
     });
   });
 
   describe('when watch mode is used', () => {
     it('should compile again when a change is detected', async () => {
-      const { command, kill } = run(require.resolve('../src'));
-
-      const entryFilename = path.join(tempy.directory(), 'entry.js');
-
-      fs.copyFileSync(require.resolve('./fixtures/entry.js'), entryFilename);
-
-      const configParams = {
-        entry: entryFilename,
-        output: {
-          path: tempy.directory(),
-          filename: 'bundle.js'
-        }
-      };
-
-      const bundlePath = path.join(configParams.output.path, configParams.output.filename);
-
-      const { task } = command({
-        watch: true,
-        configPath: configFunctionPath,
-        configParams
+      test = await setup({
+        'entry.js': fromFixture('./fixtures/entry.js'),
+        'webpack.config.js': fromFixture('./fixtures/webpack.config.js'),
       });
 
-      try {
-        await task();
-        expect(fs.readFileSync(bundlePath, 'utf-8')).toMatch('hello world');
+      await test.run(async ({ [taskPath]: webpack }) => {
+        await webpack({
+          configPath: test.files['webpack.config.js'].path,
+          watch: true,
+        });
+      });
 
-        fs.writeFileSync(entryFilename, 'foo bar');
+      expect(test.files['bundle.js'].content).toMatch('hello world');
 
-        await retry(async () =>
-          expect(fs.readFileSync(bundlePath, 'utf-8')).toMatch('foo bar')
-        );
-      } finally {
-        kill();
-      }
+      await test.files['entry.js'].write(fromFixture('./fixtures/modified-entry.js'));
+
+      await retry(async () => {
+        expect(test.files['bundle.js'].content).toMatch('foo bar');
+      });
     });
   });
 });

@@ -1,9 +1,7 @@
-const tempy = require('tempy');
-
 module.exports = {
-  entry: require.resolve('./invalid-javascript.js'),
+  entry: './invalid-javascript.js',
   output: {
-    path: tempy.directory(),
+    path: __dirname,
     filename: 'bundle.js',
   }
 };
