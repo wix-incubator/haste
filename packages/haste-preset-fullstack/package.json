@@ -10,7 +10,7 @@
     "haste-plugin-logger": "^0.1.22",
     "haste-task-babel": "^0.1.22",
     "haste-task-clean": "^0.1.22",
-    "haste-task-copy": "^0.0.2",
+    "haste-task-copy": "^0.1.22",
     "haste-task-eslint": "^0.1.22",
     "haste-task-mocha": "^0.1.22",
     "haste-task-read": "^0.1.22",
