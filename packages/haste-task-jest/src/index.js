@@ -1,16 +1,15 @@
 const { runCLI } = require('jest-cli');
 
-module.exports = ({ config, projects = [process.cwd()] }) => () => {
+module.exports = async ({ config, projects = [process.cwd()] }) => {
   const argv = {
     config: JSON.stringify(config),
   };
 
-  return runCLI(argv, projects)
-    .then(({ results }) => {
-      if (!results.success) {
-        return Promise.reject(results);
-      }
+  const { results } = await runCLI(argv, projects);
 
-      return results;
-    });
+  if (!results.success) {
+    throw new Error(`Jest failed with ${results.numFailedTests} failing tests`);
+  }
+
+  return results;
 };
