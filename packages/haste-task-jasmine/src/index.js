@@ -7,7 +7,7 @@ const clearRequireCache = () => {
     .forEach(key => delete require.cache[key]);
 };
 
-module.exports = ({ config, reportersPath }) => async (files) => {
+module.exports = async ({ pattern, config, reportersPath }, { fs }) => {
   const jasmineRunner = new Jasmine();
 
   if (config) {
@@ -21,6 +21,8 @@ module.exports = ({ config, reportersPath }) => async (files) => {
       jasmineRunner.addReporter(repoter);
     });
   }
+
+  const files = await fs.read({ pattern });
 
   files.forEach(({ filename, cwd }) => {
     jasmineRunner.addSpecFile(path.isAbsolute(filename) ? filename : path.join(cwd, filename));
