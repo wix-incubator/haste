@@ -3,10 +3,14 @@ const { setup } = require('haste-test-utils');
 const taskPath = require.resolve('../src');
 
 describe('haste-eslint', () => {
-  it('should pass for valid files', async () => {
-    const { run } = await setup();
+  let test;
 
-    await run(async ({ [taskPath]: eslint }) => {
+  afterEach(() => test.cleanup());
+
+  it('should pass for valid files', async () => {
+    test = await setup();
+
+    await test.run(async ({ [taskPath]: eslint }) => {
       await eslint({
         pattern: require.resolve('./fixtures/valid.js'),
       });
@@ -16,9 +20,9 @@ describe('haste-eslint', () => {
   it('should fail for invalid files', async () => {
     expect.assertions(1);
 
-    const { run } = await setup();
+    test = await setup();
 
-    await run(async ({ [taskPath]: eslint }) => {
+    await test.run(async ({ [taskPath]: eslint }) => {
       try {
         await eslint({
           pattern: require.resolve('./fixtures/valid.js'),
@@ -31,17 +35,17 @@ describe('haste-eslint', () => {
   });
 
   it('should output fixes in case a "fix" option is passed', async () => {
-    const { run, files } = await setup({
+    test = await setup({
       'fixable.js': '/foo  bar/',
     });
 
-    await run(async ({ [taskPath]: eslint }) => {
+    await test.run(async ({ [taskPath]: eslint }) => {
       await eslint({
         pattern: '*.js',
         options: { fix: true, rules: { 'no-regex-spaces': 'error' } },
       });
     });
 
-    expect(files['fixable.js'].content).toBe('/foo {2}bar/');
+    expect(test.files['fixable.js'].content).toBe('/foo {2}bar/');
   });
 });

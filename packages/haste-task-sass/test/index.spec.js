@@ -9,12 +9,16 @@ const fromFixture = (filename) => {
 };
 
 describe('haste-sass', () => {
+  let test;
+
+  afterEach(() => test.cleanup());
+
   it('should transpile scss to css', async () => {
-    const { run, files } = await setup({
+    test = await setup({
       'test.scss': fromFixture('fixtures/test.scss'),
     });
 
-    await run(async ({ [taskPath]: sass }) => {
+    await test.run(async ({ [taskPath]: sass }) => {
       await sass({
         pattern: '*.scss',
         target: 'dist',
@@ -23,17 +27,17 @@ describe('haste-sass', () => {
 
     const expected = fromFixture('expected/test.css');
 
-    expect(files['dist/test.scss'].content).toMatch(expected);
+    expect(test.files['dist/test.scss'].content).toMatch(expected);
   });
 
   it('should fail for invalid scss', async () => {
     expect.assertions(1);
 
-    const { run } = await setup({
+    test = await setup({
       'invalid.scss': fromFixture('fixtures/invalid.scss'),
     });
 
-    await run(async ({ [taskPath]: sass }) => {
+    await test.run(async ({ [taskPath]: sass }) => {
       try {
         await sass({
           pattern: '*.scss',
@@ -46,11 +50,11 @@ describe('haste-sass', () => {
   });
 
   it('should handle includePaths', async () => {
-    const { run, files } = await setup({
+    test = await setup({
       'includePaths.scss': fromFixture('fixtures/includePaths.scss'),
     });
 
-    await run(async ({ [taskPath]: sass }) => {
+    await test.run(async ({ [taskPath]: sass }) => {
       await sass({
         pattern: '*.scss',
         target: 'dist',
@@ -60,30 +64,30 @@ describe('haste-sass', () => {
 
     const expected = fromFixture('expected/includePaths.css');
 
-    expect(files['dist/includePaths.scss'].content).toMatch(expected);
+    expect(test.files['dist/includePaths.scss'].content).toMatch(expected);
   });
 
   it('should ignore underscore partial files', async () => {
-    const { run, files } = await setup({
+    test = await setup({
       '_partial.scss': fromFixture('fixtures/test.scss'),
     });
 
-    await run(async ({ [taskPath]: sass }) => {
+    await test.run(async ({ [taskPath]: sass }) => {
       await sass({
         pattern: '*.scss',
         target: 'dist',
       });
     });
 
-    expect(files['dist/_partial.scss'].exists).toEqual(false);
+    expect(test.files['dist/_partial.scss'].exists).toEqual(false);
   });
 
   it('should generate source maps', async () => {
-    const { run, files } = await setup({
+    test = await setup({
       'test.scss': fromFixture('fixtures/test.scss'),
     });
 
-    await run(async ({ [taskPath]: sass }) => {
+    await test.run(async ({ [taskPath]: sass }) => {
       await sass({
         pattern: '*.scss',
         target: 'dist',
@@ -101,16 +105,16 @@ describe('haste-sass', () => {
       mappings: 'AAGA,AAAA,mBAAmB,CAAC;EACnB,YAAY,EAJN,OAAO;EAKb,KAAK,EACJ,OAAiB,GAClB;;AAED,AAAA,OAAO,CAAC;EACP,OAAO,EAAE,GAAW;EACpB,MAAM,EAAE,GAAW;EACnB,YAAY,EAZN,OAAO,GAab'
     };
 
-    expect(files['dist/test.scss'].content).toMatch('/*# sourceMappingURL=test.scss.map');
-    expect(JSON.parse(files['dist/test.scss.map'].content)).toEqual(map);
+    expect(test.files['dist/test.scss'].content).toMatch('/*# sourceMappingURL=test.scss.map');
+    expect(JSON.parse(test.files['dist/test.scss.map'].content)).toEqual(map);
   });
 
   it('should support precision option', async () => {
-    const { run, files } = await setup({
+    test = await setup({
       'precision.scss': fromFixture('fixtures/precision.scss'),
     });
 
-    await run(async ({ [taskPath]: sass }) => {
+    await test.run(async ({ [taskPath]: sass }) => {
       await sass({
         pattern: '*.scss',
         target: 'dist',
@@ -118,6 +122,6 @@ describe('haste-sass', () => {
       });
     });
 
-    expect(files['dist/precision.scss'].content).toMatch('1.343');
+    expect(test.files['dist/precision.scss'].content).toMatch('1.343');
   });
 });

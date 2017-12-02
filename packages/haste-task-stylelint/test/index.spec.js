@@ -11,10 +11,14 @@ const options = {
 };
 
 describe('haste-stylelint', () => {
-  it('should pass for valid css files', async () => {
-    const { run } = await setup();
+  let test;
 
-    await run(async ({ [taskPath]: stylelint }) => {
+  afterEach(() => test.cleanup());
+
+  it('should pass for valid css files', async () => {
+    test = await setup();
+
+    await test.run(async ({ [taskPath]: stylelint }) => {
       await stylelint({
         pattern: require.resolve('./fixtures/valid.css'),
         options,
@@ -25,9 +29,9 @@ describe('haste-stylelint', () => {
   it('should fail for files that fail validation', async () => {
     expect.assertions(1);
 
-    const { run } = await setup();
+    test = await setup();
 
-    await run(async ({ [taskPath]: stylelint }) => {
+    await test.run(async ({ [taskPath]: stylelint }) => {
       try {
         await stylelint({
           pattern: require.resolve('./fixtures/invalid.css'),
@@ -40,9 +44,9 @@ describe('haste-stylelint', () => {
   });
 
   it('should pass for valid scss files', async () => {
-    const { run } = await setup();
+    test = await setup();
 
-    await run(async ({ [taskPath]: stylelint }) => {
+    await test.run(async ({ [taskPath]: stylelint }) => {
       await stylelint({
         pattern: require.resolve('./fixtures/valid.scss'),
         options,
@@ -51,9 +55,9 @@ describe('haste-stylelint', () => {
   });
 
   it('should pass for valid less files', async () => {
-    const { run } = await setup();
+    test = await setup();
 
-    await run(async ({ [taskPath]: stylelint }) => {
+    await test.run(async ({ [taskPath]: stylelint }) => {
       await stylelint({
         pattern: require.resolve('./fixtures/valid.less'),
         options,

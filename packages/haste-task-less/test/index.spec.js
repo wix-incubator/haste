@@ -9,12 +9,16 @@ const fromFixture = (filename) => {
 };
 
 describe('haste-less', () => {
+  let test;
+
+  afterEach(() => test.cleanup());
+
   it('should transpile less to css', async () => {
-    const { run, files } = await setup({
+    test = await setup({
       'test.less': fromFixture('fixtures/test.less'),
     });
 
-    await run(async ({ [taskPath]: less }) => {
+    await test.run(async ({ [taskPath]: less }) => {
       await less({
         pattern: '*.less',
         target: 'dist',
@@ -23,17 +27,17 @@ describe('haste-less', () => {
 
     const expected = fromFixture('expected/test.css');
 
-    expect(files['dist/test.less'].content).toMatch(expected);
+    expect(test.files['dist/test.less'].content).toMatch(expected);
   });
 
   it('should fail for invalid less', async () => {
     expect.assertions(1);
 
-    const { run } = await setup({
+    test = await setup({
       'invalid.less': fromFixture('fixtures/invalid.less'),
     });
 
-    await run(async ({ [taskPath]: less }) => {
+    await test.run(async ({ [taskPath]: less }) => {
       try {
         await less({
           pattern: '*.less',
@@ -46,11 +50,11 @@ describe('haste-less', () => {
   });
 
   it('should generate source maps', async () => {
-    const { run, files } = await setup({
+    test = await setup({
       'test.less': fromFixture('fixtures/test.less'),
     });
 
-    await run(async ({ [taskPath]: less }) => {
+    await test.run(async ({ [taskPath]: less }) => {
       await less({
         pattern: '*.less',
         target: 'dist',
@@ -68,15 +72,15 @@ describe('haste-less', () => {
       ]
     };
 
-    expect(JSON.parse(files['dist/test.less.map'].content)).toEqual(map);
+    expect(JSON.parse(test.files['dist/test.less.map'].content)).toEqual(map);
   });
 
   it('should handle includePaths', async () => {
-    const { run, files } = await setup({
+    test = await setup({
       'includePaths.less': fromFixture('fixtures/includePaths.less'),
     });
 
-    await run(async ({ [taskPath]: less }) => {
+    await test.run(async ({ [taskPath]: less }) => {
       await less({
         pattern: '*.less',
         target: 'dist',
@@ -86,6 +90,6 @@ describe('haste-less', () => {
 
     const expected = fromFixture('expected/includePaths.css');
 
-    expect(files['dist/includePaths.less'].content).toMatch(expected);
+    expect(test.files['dist/includePaths.less'].content).toMatch(expected);
   });
 });
