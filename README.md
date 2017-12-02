@@ -13,19 +13,23 @@
   <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
 </p>
 
-## Introduction
-Haste is a tool that helps you automate common tasks in your development workflow. Prioritizing performance, extendability and user experience.
-
-![Dashboard screenshot](images/dashboard.png)
-
 ## Summary
+
 - :zap: **Blazing fast performance:** running tasks in parallel using multiple processes.
 - :electric_plug: **Highly modular plugin system:** making it possible to change almost anything.
 - :video_game: **Intuitive user experience:** managing output to allow the creation of loaders and dashboards.
 - :rocket: **Simple, programmatic API:** leveraging ES2015's async await with a minimal API.
 
+## Introduction
+
+Haste is a tool for creating fast and elegant build processes: By running CPU heavy tasks on separate processes, Haste can fully utilize your machine's resources. This isolation also enables full control on how the output is managed and plugins can extend the core functionality to create visually rich user interfaces.
+
+![Dashboard screenshot](images/dashboard.png)
+
 ## Contributing
+
 Please open issues and pull requests with your ideas. For more information about contributing, see our [Contribution Guidelines](CONTRIBUTING.md).
 
 ## License
+
 The MIT License
