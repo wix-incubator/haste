@@ -6,10 +6,12 @@ const clearRequireCache = () => {
     .forEach(key => delete require.cache[key]);
 };
 
-module.exports = ({ requireFiles = [], ...options }) => async (files) => {
+module.exports = async ({ pattern, requireFiles = [], ...options }, { fs }) => {
   const mochaRunner = new Mocha(options);
 
   requireFiles.forEach(file => require(file));
+
+  const files = await fs.read({ pattern });
 
   files.forEach(({ filename }) => {
     mochaRunner.addFile(filename);
@@ -20,7 +22,7 @@ module.exports = ({ requireFiles = [], ...options }) => async (files) => {
       clearRequireCache();
 
       if (errCount > 0) {
-        return reject();
+        return reject(new Error(`Mocha failed with ${errCount} failing tests`));
       }
 
       return resolve();
