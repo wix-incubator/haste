@@ -1,118 +1,130 @@
-const { run } = require('haste-test-utils');
+const { setup } = require('haste-test-utils');
 
-const { command: mocha, kill } = run(require.resolve('../src'));
+const taskPath = require.resolve('../src');
+
+const passing = require.resolve('./fixtures/pass');
+const failing = require.resolve('./fixtures/fail');
+const requireFile = require.resolve('./fixtures/setup');
+const requireModule = require.resolve('./fixtures/require-module');
 
 describe('haste-mocha', () => {
-  afterEach(kill);
+  let test;
 
-  it('should run a passing test and resolve', () => {
-    const { task, stdout } = mocha();
+  afterEach(() => test.cleanup());
 
-    const file = {
-      filename: require.resolve('./fixtures/pass'),
-    };
+  it('should run a passing test and resolve', async () => {
+    test = await setup();
 
-    return task([file])
-      .then(() => {
-        expect(stdout()).toMatch(/1 passing/);
+    await test.run(async ({ [taskPath]: mocha }) => {
+      await mocha({
+        pattern: passing,
       });
-  });
-
-  it('should run a failing test and reject', () => {
-    expect.assertions(1);
-
-    const { task, stdout } = mocha();
-
-    const file = {
-      filename: require.resolve('./fixtures/fail'),
-    };
-
-    return task([file])
-      .catch(() => {
-        expect(stdout()).toMatch(/1 failing/);
-      });
-  });
-
-  it('should pass configuration to mocha runner', () => {
-    const { task, stdout } = mocha({ reporter: 'landing' });
-
-    const file = {
-      filename: require.resolve('./fixtures/pass'),
-    };
-
-    return task([file])
-      .then(() => {
-        expect(stdout()).toMatch(/✈/);
-      });
-  });
-
-  it('should support requiring files before mocha starts running', () => {
-    const { task, stdout } = mocha({
-      requireFiles: [require.resolve('./fixtures/setup')]
     });
 
-    const file = {
-      filename: require.resolve('./fixtures/pass'),
-    };
+    expect(test.stdio.stdout).toMatch('1 passing');
+  });
 
-    return task([file])
-      .then(() => {
-        expect(stdout()).toMatch(/setup/);
+  it('should run a failing test and reject', async () => {
+    expect.assertions(2);
+
+    test = await setup();
+
+    await test.run(async ({ [taskPath]: mocha }) => {
+      try {
+        await mocha({
+          pattern: failing,
+        });
+      } catch (error) {
+        expect(error.message).toMatch('Mocha failed with 1 failing tests');
+        expect(test.stdio.stdout).toMatch('1 failing');
+      }
+    });
+  });
+
+  it('should pass configuration to mocha runner', async () => {
+    test = await setup();
+
+    await test.run(async ({ [taskPath]: mocha }) => {
+      await mocha({
+        pattern: passing,
+        reporter: 'landing',
       });
+    });
+
+    expect(test.stdio.stdout).toMatch('✈');
+  });
+
+  it('should support requiring files before mocha starts running', async () => {
+    test = await setup();
+
+    await test.run(async ({ [taskPath]: mocha }) => {
+      await mocha({
+        pattern: passing,
+        requireFiles: [requireFile],
+      });
+    });
+
+    expect(test.stdio.stdout).toMatch('setup');
   });
 
   it('should clean require cache after a successful run', async () => {
-    const { task, stdout } = mocha();
+    test = await setup();
 
-    const file = {
-      filename: require.resolve('./fixtures/pass'),
-    };
+    await test.run(async ({ [taskPath]: mocha }) => {
+      await mocha({
+        pattern: passing,
+      });
 
-    await task([file]);
-    expect(stdout()).toMatch('1 passing');
+      expect(test.stdio.stdout).toMatch('1 passing');
 
-    await task([file]);
-    expect(stdout()).not.toMatch('0 passing');
+      await mocha({
+        pattern: passing,
+      });
+
+      expect(test.stdio.stdout).not.toMatch('0 passing');
+    });
   });
 
   it('should clean require cache after a failing run', async () => {
     expect.assertions(3);
 
-    const { task, stdout } = mocha();
+    test = await setup();
 
-    const passing = {
-      filename: require.resolve('./fixtures/pass'),
-    };
+    await test.run(async ({ [taskPath]: mocha }) => {
+      try {
+        await mocha({
+          pattern: failing,
+        });
+      } catch (error) {
+        expect(test.stdio.stdout).toMatch('1 failing');
+      }
 
-    const failing = {
-      filename: require.resolve('./fixtures/fail'),
-    };
-
-    try {
-      await task([failing]);
-    } catch (error) {
-      expect(stdout()).toMatch('1 failing');
-    }
-
-    try {
-      await task([failing, passing]);
-    } catch (error) {
-      expect(stdout()).toMatch('1 passing');
-      expect(stdout()).toMatch('1 failing');
-    }
+      try {
+        await mocha({
+          pattern: [failing, passing],
+        });
+      } catch (error) {
+        expect(test.stdio.stdout).toMatch('1 passing');
+        expect(test.stdio.stdout).toMatch('1 failing');
+      }
+    });
   });
 
   it('should not clean require cache between runs for modules in node_modules', async () => {
-    const { task, stdout } = mocha();
+    test = await setup();
 
-    const file = {
-      filename: require.resolve('./fixtures/require-module'),
-    };
+    await test.run(async ({ [taskPath]: mocha }) => {
+      await mocha({
+        pattern: requireModule,
+      });
 
-    await task([file]);
-    expect(stdout()).toMatch('hey there');
+      expect(test.stdio.stdout).toMatch('hey there');
 
-    await task([file]);
-    expect(stdout().match(/hey there/gi).length).toEqual(1);
+      await mocha({
+        pattern: requireModule,
+      });
+
+      expect(test.stdio.stdout.match(/hey there/gi).length).toEqual(1);
+    });
   });
 });
