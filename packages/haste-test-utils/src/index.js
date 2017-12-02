@@ -11,6 +11,8 @@ module.exports.setup = async (fsObject) => {
     await define(action)({ workerOptions: { cwd } });
   };
 
+  const cleanup = () => testPlugin.cleanup();
+
   const stdio = new Proxy({}, {
     get: (target, prop) => {
       switch (prop) {
@@ -27,5 +29,5 @@ module.exports.setup = async (fsObject) => {
     }
   });
 
-  return { run, files, stdio, cwd };
+  return { run, files, stdio, cwd, cleanup };
 };
