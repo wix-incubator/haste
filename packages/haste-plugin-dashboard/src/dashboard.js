@@ -23,6 +23,10 @@ module.exports = class Dashboard {
 
   getLogger(panelKey) {
     return (log) => {
+      if (!Object.keys(this.panels).includes(panelKey)) {
+        return;
+      }
+
       return this.panels[panelKey].log(log);
     };
   }
