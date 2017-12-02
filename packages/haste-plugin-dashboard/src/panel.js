@@ -37,7 +37,7 @@ module.exports = class Panel {
       alwaysScroll: true,
       scrollbar: {
         ch: ' ',
-        inverse: true
+        inverse: true,
       },
       keys: true,
       vi: true,
@@ -49,13 +49,13 @@ module.exports = class Panel {
       left: this.left,
       top: this.top,
       border: {
-        type: 'line'
+        type: 'line',
       },
       style: {
         border: {
-          fg: 'white'
-        }
-      }
+          fg: 'white',
+        },
+      },
     });
 
     box.key('C-l', () => {

@@ -10,7 +10,7 @@ module.exports = async () => {
       alias: 'preset',
       demandOption: false,
       describe: 'The full name of the preset node module ([haste-preset-name]) or an absolute path to a preset',
-      type: 'string'
+      type: 'string',
     })
     .version()
     .help();
@@ -54,7 +54,7 @@ module.exports = async () => {
   try {
     const { persistent = false } = await action({
       context: presetPath,
-      workerOptions: { cwd: appDirectory }
+      workerOptions: { cwd: appDirectory },
     });
 
     if (!persistent) {

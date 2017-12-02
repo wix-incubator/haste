@@ -24,7 +24,7 @@ describe('haste-jest', () => {
     await test.run(async ({ [taskPath]: jest }) => {
       await jest({
         config,
-        projects
+        projects,
       });
     });
 
@@ -46,7 +46,7 @@ describe('haste-jest', () => {
       try {
         await jest({
           config,
-          projects
+          projects,
         });
       } catch (error) {
         expect(error.message).toMatch('Jest failed with 1 failing tests');
@@ -68,7 +68,7 @@ describe('haste-jest', () => {
       try {
         await jest({
           config,
-          projects
+          projects,
         });
       } catch (error) {
         expect(test.stdio.stdout).toMatch('No tests found');

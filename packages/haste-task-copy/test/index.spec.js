@@ -11,7 +11,7 @@ describe('haste-copy', () => {
 
   it('should copy files into target directory using absolute target path', async () => {
     test = await setup({
-      'test.txt': 'hello world'
+      'test.txt': 'hello world',
     });
 
     await test.run(async ({ [taskPath]: copy }) => {
@@ -26,7 +26,7 @@ describe('haste-copy', () => {
 
   it('should copy files into target directory using relative target path', async () => {
     test = await setup({
-      'test.txt': 'hello world'
+      'test.txt': 'hello world',
     });
 
     await test.run(async ({ [taskPath]: copy }) => {
@@ -44,7 +44,7 @@ describe('haste-copy', () => {
     const content = fs.readFileSync(filepath, 'utf8');
 
     test = await setup({
-      'logo.png': content
+      'logo.png': content,
     });
 
     await test.run(async ({ [taskPath]: copy }) => {
@@ -59,7 +59,7 @@ describe('haste-copy', () => {
 
   it('should copy a file and create the directory structure if it does not exist', async () => {
     test = await setup({
-      'folder/structure/test.txt': 'hello world'
+      'folder/structure/test.txt': 'hello world',
     });
 
     await test.run(async ({ [taskPath]: copy }) => {

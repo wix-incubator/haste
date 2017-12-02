@@ -99,10 +99,10 @@ describe('haste-sass', () => {
       version: 3,
       file: 'test.scss',
       sources: [
-        'test.scss'
+        'test.scss',
       ],
       names: [],
-      mappings: 'AAGA,AAAA,mBAAmB,CAAC;EACnB,YAAY,EAJN,OAAO;EAKb,KAAK,EACJ,OAAiB,GAClB;;AAED,AAAA,OAAO,CAAC;EACP,OAAO,EAAE,GAAW;EACpB,MAAM,EAAE,GAAW;EACnB,YAAY,EAZN,OAAO,GAab'
+      mappings: 'AAGA,AAAA,mBAAmB,CAAC;EACnB,YAAY,EAJN,OAAO;EAKb,KAAK,EACJ,OAAiB,GAClB;;AAED,AAAA,OAAO,CAAC;EACP,OAAO,EAAE,GAAW;EACpB,MAAM,EAAE,GAAW;EACnB,YAAY,EAZN,OAAO,GAab',
     };
 
     expect(test.files['dist/test.scss'].content).toMatch('/*# sourceMappingURL=test.scss.map');

@@ -27,7 +27,7 @@ module.exports = async (options = {}) => {
     });
 
     tscWorker.on('exit', code => code === 0 ?
-      resolve() : reject(new Error(`tsc exited with code ${code}`))
+      resolve() : reject(new Error(`tsc exited with code ${code}`)),
     );
   });
 };

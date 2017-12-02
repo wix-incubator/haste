@@ -68,8 +68,8 @@ describe('haste-less', () => {
       names: [],
       mappings: 'AAGA;EACC,qBAAA;EACA,cAAA;;AAID;EACC,YAAA;EACA,WAAA;EACA,qBAAA',
       sourcesContent: [
-        fromFixture('fixtures/test.less')
-      ]
+        fromFixture('fixtures/test.less'),
+      ],
     };
 
     expect(JSON.parse(test.files['dist/test.less.map'].content)).toEqual(map);

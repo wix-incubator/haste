@@ -24,6 +24,6 @@ module.exports = async ({ pattern, options: { cwd = process.cwd(), ...options } 
               cwd,
             };
           });
-      })
+      }),
   );
 };

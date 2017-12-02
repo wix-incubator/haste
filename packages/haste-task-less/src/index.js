@@ -18,6 +18,6 @@ module.exports = async ({ pattern, target, options }, { fs }) => {
           content: css,
           map,
         });
-      })
+      }),
   );
 };

@@ -25,7 +25,7 @@ describe.only('haste-service-fs', () => {
         filename: 'test.js',
         content: 'const a = 5;',
         map: {
-          hello: 'world'
+          hello: 'world',
         },
       };
 
@@ -61,7 +61,7 @@ describe.only('haste-service-fs', () => {
         filename: 'test.js',
         content: 'const a = 5;',
         map: {
-          hello: 'world'
+          hello: 'world',
         },
       };
 

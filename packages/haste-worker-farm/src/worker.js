@@ -7,8 +7,8 @@ const WORKER_OPTIONS = {
   silent: true,
   env: {
     FORCE_COLOR: true,
-    ...process.env
-  }
+    ...process.env,
+  },
 };
 
 module.exports = class Worker {

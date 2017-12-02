@@ -5,6 +5,6 @@ module.exports = {
   entry: paths.entry,
   output: {
     path: path.resolve(paths.appDirectory, paths.build),
-    filename: 'statics/js/[name].js'
-  }
+    filename: 'statics/js/[name].js',
+  },
 };

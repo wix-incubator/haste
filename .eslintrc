@@ -8,7 +8,6 @@
   ],
   "rules": {
     "arrow-body-style": "off",
-    "comma-dangle": "off",
     "consistent-return": "off",
     "class-methods-use-this": "off",
     "global-require": "off",

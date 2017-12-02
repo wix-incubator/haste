@@ -46,7 +46,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         api = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         const result = await api.run({ task: successful });
@@ -63,7 +63,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         api = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         try {
@@ -81,7 +81,7 @@ describe('haste', () => {
       return start(async (configure) => {
         api = configure({
           persistent: true,
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         return api.run({ task: unsuccessful });
@@ -95,12 +95,12 @@ describe('haste', () => {
 
       return start(async (configure) => {
         api = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         const result = await api.run(
           { task: successful },
-          { task: successful }
+          { task: successful },
         );
 
         expect(result).toEqual(undefined);
@@ -115,13 +115,13 @@ describe('haste', () => {
 
       return start(async (configure) => {
         api = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         try {
           await api.run(
             { task: successful },
-            { task: unsuccessful }
+            { task: unsuccessful },
           );
         } catch ({ error }) {
           expect(error).toEqual('some-error');
@@ -137,13 +137,13 @@ describe('haste', () => {
 
       return start(async (configure) => {
         api = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         try {
           await api.run(
             { task: unsuccessful },
-            { task: successful }
+            { task: successful },
           );
         } catch ({ error }) {
           expect(error).toEqual('some-error');
@@ -159,7 +159,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         api = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         try {
@@ -178,7 +178,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         api = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         try {
@@ -196,7 +196,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         api = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         try {
@@ -214,7 +214,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         api = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         try {
@@ -230,7 +230,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         api = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         const result = await api.run({ task: returnedValue });
@@ -245,12 +245,12 @@ describe('haste', () => {
 
       return start(async (configure) => {
         api = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         const result = await api.run(
           { task: returnedValue },
-          { task: loggingValue }
+          { task: loggingValue },
         );
 
         expect(result).toEqual('some-other-value');
@@ -263,7 +263,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         api = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         const result = await api.run({ task: loggingOptions, options: { value: 'some-value' } });
@@ -277,7 +277,7 @@ describe('haste', () => {
       const start = haste();
       return start(async (configure) => {
         api = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         const result = await api.run({ task: successful, metadata: { title: 'awesome-task' } });
@@ -315,7 +315,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         api = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         const result = await api.run({ task: './successful-task' });
@@ -330,7 +330,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         api = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         const result = await api.run({ task: 'haste-task-successful' });
@@ -345,7 +345,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         api = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         const result = await api.run({ task: 'successful' });
@@ -362,7 +362,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         const { tasks } = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         const options = { value: 'some-value' };
@@ -377,7 +377,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         const { tasks } = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         const options = { value: 'some-value' };
@@ -394,7 +394,7 @@ describe('haste', () => {
 
       return start(async (configure) => {
         const { tasks } = configure({
-          plugins: [testPlugin]
+          plugins: [testPlugin],
         });
 
         const options = { value: 'some-value' };

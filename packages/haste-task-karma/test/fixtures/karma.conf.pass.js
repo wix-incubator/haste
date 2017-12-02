@@ -2,7 +2,7 @@ module.exports = (config) => {
   config.set({
     frameworks: ['jasmine'],
     files: [
-      require.resolve('./specs/pass')
+      require.resolve('./specs/pass'),
     ],
     browsers: ['PhantomJS'],
     singleRun: true,

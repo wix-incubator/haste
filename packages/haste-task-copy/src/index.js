@@ -3,7 +3,7 @@ const path = require('path');
 const mkdirp = require('mkdirp');
 
 const makeDir = name => new Promise((resolve, reject) =>
-  mkdirp(name, err => err ? reject(err) : resolve())
+  mkdirp(name, err => err ? reject(err) : resolve()),
 );
 
 const copyFile = (source, target) => new Promise((resolve, reject) => {
@@ -31,6 +31,6 @@ module.exports = async ({ pattern, target, cwd = process.cwd() }, { fs: fsServic
 
       await makeDir(path.dirname(absoluteTargetFilePath));
       await copyFile(absoluteFilePath, absoluteTargetFilePath);
-    })
+    }),
   );
 };
