@@ -1,33 +1,28 @@
 const logUpdate = require('log-update');
-const RunPhaseLoader = require('./run-phase-loader');
+const TaskLoader = require('./task-loader');
 const { delta } = require('../utils');
 const chalk = require('chalk');
 
 module.exports = class SequenceLoader {
-  constructor({ oneLinerTasks, frameRate }) {
+  constructor({ frameRate = 100 }) {
     this.startTime = new Date();
-    this.runs = [];
+    this.tasks = [];
     this.interval;
-    this.oneLinerTasks = oneLinerTasks;
-    this.frameRate = frameRate || 100;
+    this.frameRate = frameRate;
     this.watch = false;
   }
 
-  startRun(name, tasksLength) {
-    const runPhaseLoader = new RunPhaseLoader(name, tasksLength);
-    this.watch ? this.runs = [runPhaseLoader] : this.runs.push(runPhaseLoader);
-    return runPhaseLoader;
+  startTask(name, tasksLength) {
+    const taskLoader = new TaskLoader(name, tasksLength);
+    this.watch ? this.tasks = [taskLoader] : this.tasks.push(taskLoader);
+    return taskLoader;
   }
 
   renderFrame() {
-    const getRunError = run => this.watch ? `\n\n${run.getError()}` : '';
+    // const getRunError = run => this.watch ? `\n\n${run.getError()}` : '';
 
-    return this.runs.map((run) => {
-      const tasksContent = this.oneLinerTasks ?
-        run.getCurrentRunningTask() :
-        run.getTasksContent();
-
-      return run.getContent() + tasksContent + getRunError(run);
+    return this.tasks.map((task) => {
+      return task.getContent();
     }).join('\n');
   }
 
@@ -48,19 +43,19 @@ module.exports = class SequenceLoader {
     const currentFrame = this.renderFrame();
     logUpdate(`${currentFrame}\n${this.generateDoneMessage()}`);
     clearInterval(this.interval);
-    this.runs = [];
+    this.tasks = [];
   }
 
-  stopAllRuns() {
-    this.runs.forEach(run => run.stop());
+  stopAllTasks() {
+    this.tasks.forEach(task => task.stop());
   }
 
   exitOnError(error) {
-    this.stopAllRuns();
+    this.stopAllTasks();
     const currentFrame = this.renderFrame();
     logUpdate(`${currentFrame}\n`);
     clearInterval(this.interval);
-    this.runs = [];
+    this.tasks = [];
     if (error) {
       console.log(error.stack || error);
     }
@@ -69,7 +64,7 @@ module.exports = class SequenceLoader {
   exitAndClear() {
     logUpdate();
     clearInterval(this.interval);
-    this.runs = [];
+    this.tasks = [];
   }
 
   watchMode() {
