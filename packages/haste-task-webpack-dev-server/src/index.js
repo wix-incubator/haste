@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const express = require('express');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 
-module.exports = ({ configPath, callbackPath, decoratorPath, port = 9200, hostname = 'localhost' }) => () => {
+module.exports = async ({ configPath, callbackPath, decoratorPath, port = 9200, hostname = 'localhost' }) => {
   return new Promise((resolve) => {
     const app = express();
     const config = require(configPath);
