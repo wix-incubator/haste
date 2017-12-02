@@ -13,21 +13,20 @@ module.exports = class LoggerPlugin {
         task.pool.stdout.pipe(process.stdout);
         task.pool.stderr.pipe(process.stderr);
 
-        let start;
+        task.hooks.before.tap('log start', (run) => {
+          const start = new Date();
 
-        task.hooks.before.tap('log start', () => {
-          start = new Date();
           console.log(`[${format(start)}] ${chalk.black.bgGreen('Starting')} '${task.name}'...`);
-        });
 
-        task.hooks.success.tap('log success', () => {
-          const [end, time] = delta(start);
-          console.log(`[${format(end)}] ${chalk.black.bgCyan('Finished')} '${task.name}' after ${time} ms`);
-        });
+          run.hooks.success.tap('log success', () => {
+            const [end, time] = delta(start);
+            console.log(`[${format(end)}] ${chalk.black.bgCyan('Finished')} '${task.name}' after ${time} ms`);
+          });
 
-        task.hooks.failure.tap('log failure', () => {
-          const [end, time] = delta(start);
-          console.log(`[${format(end)}] ${chalk.white.bgRed('Failed')} '${task.name}' after ${time} ms`);
+          run.hooks.failure.tap('log failure', () => {
+            const [end, time] = delta(start);
+            console.log(`[${format(end)}] ${chalk.white.bgRed('Failed')} '${task.name}' after ${time} ms`);
+          });
         });
       });
     });
