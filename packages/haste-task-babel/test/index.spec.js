@@ -3,12 +3,16 @@ const { setup } = require('haste-test-utils');
 const taskPath = require.resolve('../src');
 
 describe('haste-babel', () => {
+  let test;
+
+  afterEach(() => test.cleanup());
+
   it('should transpile with babel', async () => {
-    const { run, files } = await setup({
+    test = await setup({
       'test.js': 'const a = 5;'
     });
 
-    await run(async ({ [taskPath]: babel }) => {
+    await test.run(async ({ [taskPath]: babel }) => {
       await babel({
         pattern: '*.js',
         target: 'dist',
@@ -16,15 +20,15 @@ describe('haste-babel', () => {
       });
     });
 
-    expect(files['dist/test.js'].content).toEqual('var a = 5;');
+    expect(test.files['dist/test.js'].content).toEqual('var a = 5;');
   });
 
   it('should generate source maps', async () => {
-    const { run, files } = await setup({
+    test = await setup({
       'test.js': 'const a = 5;'
     });
 
-    await run(async ({ [taskPath]: babel }) => {
+    await test.run(async ({ [taskPath]: babel }) => {
       await babel({
         pattern: '*.js',
         target: 'dist',
@@ -33,7 +37,7 @@ describe('haste-babel', () => {
       });
     });
 
-    expect(files['dist/test.js'].content).toMatch('//# sourceMappingURL=test.js.map');
+    expect(test.files['dist/test.js'].content).toMatch('//# sourceMappingURL=test.js.map');
 
     const map = {
       file: 'test.js',
@@ -44,17 +48,17 @@ describe('haste-babel', () => {
       version: 3,
     };
 
-    expect(JSON.parse(files['dist/test.js.map'].content)).toEqual(map);
+    expect(JSON.parse(test.files['dist/test.js.map'].content)).toEqual(map);
   });
 
   it('should fail for invalid javascript', async () => {
     expect.assertions(1);
 
-    const { run } = await setup({
+    test = await setup({
       'test.js': 'invalid javascript'
     });
 
-    await run(async ({ [taskPath]: babel }) => {
+    await test.run(async ({ [taskPath]: babel }) => {
       try {
         await babel({
           pattern: '*.js',
