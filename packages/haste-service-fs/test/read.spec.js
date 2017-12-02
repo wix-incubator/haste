@@ -16,7 +16,7 @@ describe.only('haste-service-fs', () => {
       };
 
       const result = await read({
-        pattern: filename
+        pattern: filename,
       });
 
       expect(result).toEqual([expected]);

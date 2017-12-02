@@ -45,7 +45,7 @@ module.exports = class Dashboard {
       smartCSR: true,
       dockBorders: false,
       fullUnicode: true,
-      autoPadding: true
+      autoPadding: true,
     });
 
     this.screen.key(['escape', 'q', 'C-c'], () => process.exit(0));

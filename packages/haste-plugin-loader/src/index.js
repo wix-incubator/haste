@@ -10,7 +10,7 @@ module.exports = class LoaderPlugin {
   apply(runner) {
     const loader = new SequenceLoader({
       oneLinerTasks: this.oneLinerTasks,
-      frameRate: this.frameRate
+      frameRate: this.frameRate,
     });
 
     runner.plugin('start', () => {

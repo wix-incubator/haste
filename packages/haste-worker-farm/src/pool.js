@@ -17,7 +17,7 @@ module.exports = class Pool {
   forkWorker() {
     const worker = new Worker({
       modulePath: this.modulePath,
-      workerOptions: this.workerOptions
+      workerOptions: this.workerOptions,
     });
 
     this.stdout.add(worker.child.stdout);

@@ -3,5 +3,5 @@ const write = require('./write');
 
 module.exports = {
   read,
-  write
+  write,
 };

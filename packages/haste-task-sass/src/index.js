@@ -24,6 +24,6 @@ module.exports = async ({ pattern, target, options }, { fs }) => {
           content: css.toString(),
           map: map && map.toString(),
         });
-      })
+      }),
   );
 };

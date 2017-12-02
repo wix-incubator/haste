@@ -7,7 +7,7 @@ module.exports = async (configure) => {
     plugins: [
       new DashboardPlugin({
         oneLinerTasks: true,
-        tasks: ['babel', 'sass', 'server', 'webpack-dev-server']
+        tasks: ['babel', 'sass', 'server', 'webpack-dev-server'],
       }),
     ],
   });
@@ -19,17 +19,17 @@ module.exports = async (configure) => {
   await Promise.all([
     run(
       read({ pattern: `${paths.assets}/**/*.*` }),
-      write({ target: paths.build })
+      write({ target: paths.build }),
     ),
     run(
       read({ pattern: `${paths.src}/**/*.js` }),
       babel(),
-      write({ target: paths.build })
+      write({ target: paths.build }),
     ),
     run(
       read({ pattern: `${paths.src}/**/*.scss` }),
       sass(),
-      write({ target: paths.build })
+      write({ target: paths.build }),
     ),
     run(webpackDevServer({ configPath: paths.config.webpack.development })),
   ]);
@@ -40,17 +40,17 @@ module.exports = async (configure) => {
     read({ pattern: changed }),
     babel(),
     write({ target: paths.build }),
-    server({ serverPath: 'dist/src/server.js' })
+    server({ serverPath: 'dist/src/server.js' }),
   ));
 
   watch(`${paths.src}/**/*.scss`, changed => run(
     read({ pattern: changed }),
     sass(),
-    write({ target: paths.build })
+    write({ target: paths.build }),
   ));
 
   watch(paths.assets, changed => run(
     read({ pattern: changed }),
-    write({ target: paths.build })
+    write({ target: paths.build }),
   ));
 };

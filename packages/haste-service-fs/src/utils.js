@@ -3,7 +3,7 @@ const path = require('path');
 const mkdirp = require('mkdirp');
 
 const makeDir = name => new Promise((resolve, reject) =>
-  mkdirp(name, err => err ? reject(err) : resolve())
+  mkdirp(name, err => err ? reject(err) : resolve()),
 );
 
 module.exports.writeFile = (filename, content) => new Promise(async (resolve, reject) => {

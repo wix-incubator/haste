@@ -45,8 +45,8 @@ describe('haste-jasmine', () => {
 
     const config = {
       helpers: [
-        require.resolve('./fixtures/setup')
-      ]
+        require.resolve('./fixtures/setup'),
+      ],
     };
 
     await test.run(async ({ [taskPath]: jasmine }) => {

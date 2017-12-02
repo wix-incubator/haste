@@ -12,7 +12,7 @@ module.exports = class DashboardPlugin {
   apply(runner) {
     const dashboard = new Dashboard({
       tasks: this.tasks,
-      maxPanels: 4
+      maxPanels: 4,
     });
 
     runner.plugin('start-worker', (worker) => {
@@ -21,13 +21,13 @@ module.exports = class DashboardPlugin {
       worker.child.stderr.setEncoding('utf8');
 
       ['stdout', 'stderr'].forEach(std =>
-        worker.child[std].on('data', log)
+        worker.child[std].on('data', log),
       );
     });
 
     const loader = new SequenceLoader({
       oneLinerTasks: this.oneLinerTasks,
-      frameRate: this.frameRate
+      frameRate: this.frameRate,
     });
 
     runner.plugin('start', () => {

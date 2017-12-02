@@ -18,7 +18,7 @@ module.exports = ({ filename, content, map, target }) => {
   }
 
   promises.push(
-    writeFile(outFilename, content)
+    writeFile(outFilename, content),
   );
 
   return Promise.all(promises);

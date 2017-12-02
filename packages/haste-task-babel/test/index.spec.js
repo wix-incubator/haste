@@ -9,7 +9,7 @@ describe('haste-babel', () => {
 
   it('should transpile with babel', async () => {
     test = await setup({
-      'test.js': 'const a = 5;'
+      'test.js': 'const a = 5;',
     });
 
     await test.run(async ({ [taskPath]: babel }) => {
@@ -25,7 +25,7 @@ describe('haste-babel', () => {
 
   it('should generate source maps', async () => {
     test = await setup({
-      'test.js': 'const a = 5;'
+      'test.js': 'const a = 5;',
     });
 
     await test.run(async ({ [taskPath]: babel }) => {
@@ -33,7 +33,7 @@ describe('haste-babel', () => {
         pattern: '*.js',
         target: 'dist',
         plugins: [require.resolve('babel-plugin-transform-es2015-block-scoping')],
-        sourceMaps: true
+        sourceMaps: true,
       });
     });
 
@@ -55,7 +55,7 @@ describe('haste-babel', () => {
     expect.assertions(1);
 
     test = await setup({
-      'test.js': 'invalid javascript'
+      'test.js': 'invalid javascript',
     });
 
     await test.run(async ({ [taskPath]: babel }) => {

@@ -9,7 +9,7 @@ module.exports = ({ serverPath }, { worker }) => {
 
   server = spawn(process.execPath, [serverPath], {
     env: Object.assign({ NODE_ENV: 'development' }, process.env),
-    stdio: 'inherit'
+    stdio: 'inherit',
   });
 
   worker.idle();

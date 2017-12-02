@@ -18,7 +18,7 @@ describe('haste-task-webpack', () => {
     it('should bundle with webpack', async () => {
       test = await setup({
         'entry.js': fromFixture('./fixtures/entry.js'),
-        'webpack.config.js': fromFixture('./fixtures/webpack.config.js')
+        'webpack.config.js': fromFixture('./fixtures/webpack.config.js'),
       });
 
       await test.run(async ({ [taskPath]: webpack }) => {
@@ -33,7 +33,7 @@ describe('haste-task-webpack', () => {
 
       test = await setup({
         'entry.js': fromFixture('./fixtures/entry.js'),
-        'webpack.config.invalid.js': fromFixture('./fixtures/webpack.config.invalid.js')
+        'webpack.config.invalid.js': fromFixture('./fixtures/webpack.config.invalid.js'),
       });
 
       await test.run(async ({ [taskPath]: webpack }) => {
@@ -48,13 +48,13 @@ describe('haste-task-webpack', () => {
     it('should support passing callback that accepts webpack err and stats', async () => {
       test = await setup({
         'entry.js': fromFixture('./fixtures/entry.js'),
-        'webpack.config.js': fromFixture('./fixtures/webpack.config.js')
+        'webpack.config.js': fromFixture('./fixtures/webpack.config.js'),
       });
 
       await test.run(async ({ [taskPath]: webpack }) => {
         await webpack({
           configPath: test.files['webpack.config.js'].path,
-          callbackPath: require.resolve('./fixtures/callback')
+          callbackPath: require.resolve('./fixtures/callback'),
         });
       });
 
@@ -67,7 +67,7 @@ describe('haste-task-webpack', () => {
 
       test = await setup({
         'invalid-javascript.js': fromFixture('./fixtures/invalid-javascript.js'),
-        'webpack.config.error.js': fromFixture('./fixtures/webpack.config.error.js')
+        'webpack.config.error.js': fromFixture('./fixtures/webpack.config.error.js'),
       });
 
       await test.run(async ({ [taskPath]: webpack }) => {
@@ -85,21 +85,21 @@ describe('haste-task-webpack', () => {
       test = await setup({
         'entry.js': fromFixture('./fixtures/entry.js'),
         'webpack.config.js': fromFixture('./fixtures/webpack.config.js'),
-        'webpack.config.function.js': fromFixture('./fixtures/webpack.config.function.js')
+        'webpack.config.function.js': fromFixture('./fixtures/webpack.config.function.js'),
       });
 
       const configParams = {
         entry: test.files['entry.js'].path,
         output: {
           path: test.cwd,
-          filename: 'bundle.js'
-        }
+          filename: 'bundle.js',
+        },
       };
 
       await test.run(async ({ [taskPath]: webpack }) => {
         await webpack({
           configPath: test.files['webpack.config.function.js'].path,
-          configParams
+          configParams,
         });
       });
 
