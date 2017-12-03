@@ -2,7 +2,7 @@ const { create } = require('haste-core');
 const DashboardPlugin = require('haste-plugin-dashboard');
 const paths = require('../../config/paths');
 
-const { define } = create({
+const { define, watch } = create({
   plugins: [
     new DashboardPlugin({
       tasks: ['babel', 'sass', 'copy', 'webpackDevServer'],
@@ -22,16 +22,18 @@ module.exports = define(async ({
     webpackDevServer({ configPath: paths.config.webpack.development }),
   ]);
 
-  // watch(`${paths.src}/**/*.js`, async (changed) => {
-  //   await babel({ pattern: changed, target: paths.build });
-  //   // spawnserver
-  // });
+  // spawn server
 
-  // watch(`${paths.src}/**/*.scss`, async (changed) => {
-  //   await sass({ pattern: changed, target: paths.build });
-  // });
+  watch({ pattern: `${paths.src}/**/*.js` }, async (changed) => {
+    await babel({ pattern: changed, target: paths.build });
+    // spawn server
+  });
 
-  // watch(paths.assets, async (changed) => {
-  //   await copy({ pattern: changed, target: paths.build });
-  // });
+  watch({ pattern: `${paths.src}/**/*.scss` }, async (changed) => {
+    await sass({ pattern: changed, target: paths.build });
+  });
+
+  watch({ pattern: paths.assets }, async (changed) => {
+    await copy({ pattern: changed, target: paths.build });
+  });
 }, { persistent: true });
