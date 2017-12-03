@@ -1,7 +1,9 @@
 const os = require('os');
+const chokidar = require('chokidar');
 const { AsyncSeriesHook } = require('tapable');
 const { Farm } = require('haste-worker-farm');
 const Execution = require('./execution');
+
 
 module.exports = class Runner {
   constructor() {
@@ -31,5 +33,12 @@ module.exports = class Runner {
         persistent,
       };
     };
+  }
+
+  watch({ pattern, cwd = process.cwd(), ignoreInitial = true }, callback) {
+    const watcher = chokidar.watch(pattern, { ignoreInitial, cwd })
+      .on('all', (event, path) => callback(path));
+
+    return watcher;
   }
 };

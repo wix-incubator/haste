@@ -7,5 +7,6 @@ module.exports = ({ plugins = [] } = {}) => {
 
   return {
     define: (...args) => runner.define(...args),
+    watch: (...args) => runner.watch(...args),
   };
 };
