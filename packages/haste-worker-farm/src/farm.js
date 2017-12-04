@@ -7,8 +7,10 @@ module.exports = class Farm {
   }
 
   request(call) {
-    this.pendingCalls.push(call);
-    this.processQueue();
+    return new Promise((resolve, reject) => {
+      this.pendingCalls.push({ call, resolve, reject });
+      this.processQueue();
+    });
   }
 
   async processQueue() {
@@ -20,11 +22,11 @@ module.exports = class Farm {
       return null;
     }
 
-    const call = this.pendingCalls.shift();
+    const { call, resolve, reject } = this.pendingCalls.shift();
     this.ongoingCalls.push(call);
 
     try {
-      await call();
+      await call().then(resolve, reject);
     } finally {
       this.ongoingCalls.splice(this.ongoingCalls.indexOf(call), 1);
       this.processQueue();
