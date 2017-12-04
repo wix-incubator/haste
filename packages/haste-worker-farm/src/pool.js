@@ -37,13 +37,9 @@ module.exports = class Pool {
       throw new Error('Farm has ended, no more calls can be done to it');
     }
 
-    return new Promise((resolve, reject) => {
-      this.farm.request(() => {
-        const worker = this.resolveWorker() || this.forkWorker();
-
-        return worker.send({ options })
-          .then(resolve, reject);
-      });
+    return this.farm.request(() => {
+      const worker = this.resolveWorker() || this.forkWorker();
+      return worker.send({ options });
     });
   }
 
