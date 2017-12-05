@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.22 (December 5, 2017)
+
+#### :bug: Bug Fix
+* `haste-core`
+  * [#162](https://github.com/wix/haste/pull/162) Handle `uncaughtException` in worker, so the main process will know a certain task has failed
+
 ## 0.1.21 (November 20, 2017)
 
 #### :bug: Bug Fix
