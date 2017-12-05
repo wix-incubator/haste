@@ -1,6 +1,6 @@
 {
   "name": "haste-plugin-loader",
-  "version": "0.1.16",
+  "version": "0.1.22",
   "main": "./src/index.js",
   "author": "Ran Yitzhaki",
   "engines": {

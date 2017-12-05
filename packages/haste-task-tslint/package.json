@@ -1,6 +1,6 @@
 {
   "name": "haste-task-tslint",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "main": "./src/index.js",
   "author": "Ronen Amiel",
   "engines": {

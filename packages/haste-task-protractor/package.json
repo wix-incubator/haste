@@ -1,6 +1,6 @@
 {
   "name": "haste-task-protractor",
-  "version": "0.1.19",
+  "version": "0.1.22",
   "main": "./src/index.js",
   "author": "Ronen Amiel",
   "engines": {
@@ -13,6 +13,6 @@
     "protractor": "^5.1.2"
   },
   "devDependencies": {
-    "haste-test-utils": "^0.1.13"
+    "haste-test-utils": "^0.1.22"
   }
 }

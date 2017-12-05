@@ -1,6 +1,6 @@
 {
   "name": "haste-cli",
-  "version": "0.1.16",
+  "version": "0.1.22",
   "main": "index.js",
   "author": "Ronen Amiel",
   "engines": {
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "cosmiconfig": "^2.2.2",
-    "haste-core": "^0.1.13",
+    "haste-core": "^0.1.22",
     "lodash": "^4.17.4",
     "resolve-from": "^3.0.0",
     "yargs": "^8.0.2"
