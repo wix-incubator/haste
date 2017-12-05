@@ -17,6 +17,10 @@ process.on('message', ({ options = {}, input, id }) => {
     process.send({ type: 'failure', error, id });
   };
 
+  process.on('uncaughtException', (error) => {
+    handleError(error);
+  });
+
   let promise;
 
   try {
