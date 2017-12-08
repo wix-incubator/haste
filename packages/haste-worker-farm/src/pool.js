@@ -48,7 +48,9 @@ module.exports = class Pool {
   }
 
   kill() {
-    this.ending = true;
-    this.workers.forEach(worker => worker.kill());
+    if (!this.ending) {
+      this.ending = true;
+      this.workers.forEach(worker => worker.kill());
+    }
   }
 };
