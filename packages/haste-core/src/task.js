@@ -2,10 +2,6 @@ const { AsyncSeriesWaterfallHook } = require('tapable');
 const { Pool } = require('haste-worker-farm');
 const { resolveTaskName } = require('./utils');
 
-const defaultWorkerOptions = {
-  cwd: process.cwd(),
-};
-
 module.exports = class Task {
   constructor({ farm, name, workerOptions, persistent, context }) {
     this.name = name;
@@ -14,8 +10,8 @@ module.exports = class Task {
 
     this.pool = new Pool({
       farm,
+      workerOptions,
       modulePath: this.modulePath,
-      workerOptions: { ...defaultWorkerOptions, ...workerOptions },
     });
 
     process.on('exit', () => {
