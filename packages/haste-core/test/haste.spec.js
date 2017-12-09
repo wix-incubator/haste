@@ -169,7 +169,7 @@ describe('haste', () => {
     });
   });
 
-  describe.only('API of idle tasks', () => {
+  describe('API of idle tasks', () => {
     it('should call the exposed api of the task', async () => {
       test = await setup();
 

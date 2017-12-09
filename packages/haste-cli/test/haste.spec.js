@@ -9,7 +9,7 @@ function run({ command = '', args = [], cwd } = {}) {
 
 const simplePresetPath = require.resolve('./fixtures/simple-preset');
 
-describe.only('haste-cli', () => {
+describe('haste-cli', () => {
   expect.assertions(2);
 
   it('should fail if no command was passed', async () => {
