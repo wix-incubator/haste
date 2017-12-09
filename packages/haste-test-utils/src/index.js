@@ -1,4 +1,4 @@
-const { create } = require('haste-core');
+const { createRunner } = require('haste-core');
 const TestPlugin = require('./test-plugin');
 const fsSetup = require('./fs-setup');
 
@@ -7,8 +7,8 @@ module.exports.setup = async (fsObject) => {
   const testPlugin = new TestPlugin();
 
   const run = async (action, options = {}) => {
-    const { define } = create({ plugins: [testPlugin] });
-    await define(action)({ workerOptions: { cwd }, ...options });
+    const runner = createRunner({ plugins: [testPlugin] });
+    await runner.command(action)({ workerOptions: { cwd }, ...options });
   };
 
   const cleanup = () => testPlugin.cleanup();

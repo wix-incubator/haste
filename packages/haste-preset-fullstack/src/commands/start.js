@@ -1,8 +1,8 @@
-const { create } = require('haste-core');
+const { createRunner } = require('haste-core');
 const DashboardPlugin = require('haste-plugin-dashboard');
 const paths = require('../../config/paths');
 
-const { define, watch } = create({
+const runner = createRunner({
   plugins: [
     new DashboardPlugin({
       tasks: ['babel', 'sass', 'copy', 'webpackDevServer'],
@@ -10,7 +10,7 @@ const { define, watch } = create({
   ],
 });
 
-module.exports = define(async ({
+module.exports = runner.command(async ({
   clean, copy, babel, sass, webpackDevServer,
 }) => {
   await copy({ pattern: `${paths.assets}/**/*.*`, target: paths.build });
@@ -24,16 +24,16 @@ module.exports = define(async ({
 
   // spawn server
 
-  watch({ pattern: `${paths.src}/**/*.js` }, async (changed) => {
+  runner.watch({ pattern: `${paths.src}/**/*.js` }, async (changed) => {
     await babel({ pattern: changed, target: paths.build });
     // spawn server
   });
 
-  watch({ pattern: `${paths.src}/**/*.scss` }, async (changed) => {
+  runner.watch({ pattern: `${paths.src}/**/*.scss` }, async (changed) => {
     await sass({ pattern: changed, target: paths.build });
   });
 
-  watch({ pattern: paths.assets }, async (changed) => {
+  runner.watch({ pattern: paths.assets }, async (changed) => {
     await copy({ pattern: changed, target: paths.build });
   });
 }, { persistent: true });

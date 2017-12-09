@@ -6,7 +6,7 @@ module.exports = ({ plugins = [] } = {}) => {
   plugins.forEach(plugin => plugin.apply(runner));
 
   return {
-    define: (...args) => runner.define(...args),
+    command: (...args) => runner.command(...args),
     watch: (...args) => runner.watch(...args),
   };
 };
