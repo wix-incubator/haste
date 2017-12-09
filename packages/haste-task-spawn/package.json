@@ -9,6 +9,6 @@
   "license": "MIT",
   "devDependencies": {
     "haste-test-utils": "^0.1.22",
-    "retry-promise": "^1.0.0"
+    "retry-promise": "1.0.0"
   }
 }
