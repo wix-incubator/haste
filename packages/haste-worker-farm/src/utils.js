@@ -7,3 +7,7 @@ module.exports.parseError = (errorObj) => {
 
   return new WorkerError(error);
 };
+
+module.exports.reduceObj = (obj, callback, initialValue = {}) => {
+  return Object.keys(obj).reduce(callback, initialValue);
+};

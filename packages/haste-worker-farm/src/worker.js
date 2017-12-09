@@ -1,4 +1,5 @@
 const { fork } = require('child_process');
+const uuid = require('uuid/v4');
 const { parseError } = require('./utils');
 
 const WORKER_BIN = require.resolve('./worker-bin');
@@ -15,8 +16,12 @@ module.exports = class Worker {
   constructor({ workerOptions, modulePath }) {
     this.workerOptions = workerOptions;
     this.modulePath = modulePath;
+
     this.busy = false;
+    this.idle = false;
+
     this.promise = null;
+    this.calls = {};
 
     this.initialize();
   }
@@ -47,20 +52,53 @@ module.exports = class Worker {
     });
   }
 
-  receive({ type, result, error }) {
+  createApiCall(key) {
+    return (...args) => new Promise((resolve, reject) => {
+      const callId = uuid();
+
+      this.calls[callId] = { resolve, reject };
+
+      this.child.send({
+        type: 'CHILD_MESSAGE_API',
+        options: {
+          name: key,
+          callId,
+          args,
+        },
+      });
+    });
+  }
+
+  createApi(keys) {
+    const api = keys.reduce((obj, key) => {
+      return { ...obj, [key]: this.createApiCall(key) };
+    }, {});
+
+    return api;
+  }
+
+  receive({ type, result, error, options }) {
     switch (type) {
       case 'PARENT_MESSAGE_COMPLETE':
         this.busy = false;
-        this.promise.resolve(result);
+        this.promise.resolve();
         break;
 
       case 'PARENT_MESSAGE_IDLE':
-        this.promise.resolve(result);
+        this.idle = true;
+        this.api = this.createApi(result);
+        this.promise.resolve(this.api);
         break;
 
       case 'PARENT_MESSAGE_ERROR':
         this.busy = false;
         this.promise.reject(parseError(error));
+        break;
+
+      case 'PARENT_MESSAGE_API':
+        error ?
+          this.calls[options.callId].reject(error) :
+          this.calls[options.callId].resolve(result);
         break;
 
       default:
