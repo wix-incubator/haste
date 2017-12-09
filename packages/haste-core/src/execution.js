@@ -42,9 +42,13 @@ module.exports = class Execution {
           return null;
         }
 
+        if (target[name]) {
+          return target[name];
+        }
+
         const { api } = this.createTask(name);
 
-        return api;
+        return target[name] = api;
       },
     });
 
