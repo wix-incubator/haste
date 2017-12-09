@@ -1,5 +1,4 @@
 const SequenceLoader = require('./sequence-logger/sequence-loader');
-const { generateRunTitle } = require('./utils');
 
 module.exports = class LoaderPlugin {
   constructor({ oneLinerTasks = true, frameRate = 60 } = {}) {
