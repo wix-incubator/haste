@@ -60,8 +60,8 @@ async function execute({ options }) {
     return handleError(error);
   }
 
-  if (result && result.api) {
-    api = result.api;
+  if (result) {
+    api = result;
 
     return process.send({
       type: 'PARENT_MESSAGE_IDLE',
