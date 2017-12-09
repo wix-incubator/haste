@@ -91,7 +91,7 @@ async function executeApi({ options: { name, args, callId } }) {
       options: {
         callId,
       },
-      error,
+      error: serializeError(error),
     });
   }
 }
