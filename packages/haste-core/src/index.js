@@ -1,5 +1,5 @@
-const create = require('./create');
+const createRunner = require('./create-runner');
 
 module.exports = {
-  create,
+  createRunner,
 };
