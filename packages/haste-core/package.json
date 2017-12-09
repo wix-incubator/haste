@@ -7,6 +7,9 @@
     "node": ">=8"
   },
   "license": "MIT",
+  "devDependencies": {
+    "haste-test-utils": "^0.1.13"
+  },
   "dependencies": {
     "chokidar": "^1.7.0",
     "haste-worker-farm": "^0.1.15",
