@@ -51,8 +51,6 @@ module.exports = class Pool {
           return { ...obj, [key]: wrap(result[key]) };
         });
       }
-
-      return result;
     });
   }
 
