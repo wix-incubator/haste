@@ -6,9 +6,9 @@ module.exports.setup = async (fsObject) => {
   const { cwd, files } = await fsSetup(fsObject);
   const testPlugin = new TestPlugin();
 
-  const run = async (action) => {
+  const run = async (action, options = {}) => {
     const { define } = create({ plugins: [testPlugin] });
-    await define(action)({ workerOptions: { cwd } });
+    await define(action)({ workerOptions: { cwd }, ...options });
   };
 
   const cleanup = () => testPlugin.cleanup();
