@@ -3,7 +3,7 @@ const path = require('path');
 const tempy = require('tempy');
 const { write } = require('../src');
 
-describe.only('haste-service-fs', () => {
+describe('haste-service-fs', () => {
   describe('write', () => {
     it('should create a file at target directory', async () => {
       const target = tempy.directory();

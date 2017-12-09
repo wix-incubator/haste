@@ -8,7 +8,7 @@ describe('haste-spawn', () => {
 
   afterEach(() => test.cleanup());
 
-  it.only('should spawn a new node script', async () => {
+  it('should spawn a new node script', async () => {
     test = await setup();
 
     await test.run(async ({ [taskPath]: server }) => {

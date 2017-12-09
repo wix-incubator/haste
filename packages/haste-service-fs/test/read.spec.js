@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { read } = require('../src');
 
-describe.only('haste-service-fs', () => {
+describe('haste-service-fs', () => {
   describe('read', () => {
     const resolve = (...pathParts) => path.join(__dirname, 'fixtures', ...pathParts);
     const filename = resolve('file.txt');
