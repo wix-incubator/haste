@@ -1,5 +1,6 @@
 const mergeStream = require('merge-stream');
 const Worker = require('./worker');
+const { reduceObj } = require('./utils');
 
 module.exports = class Pool {
   constructor({ farm, modulePath, workerOptions }) {
@@ -29,7 +30,9 @@ module.exports = class Pool {
   }
 
   resolveWorker() {
-    return this.workers.find(worker => worker.busy === false);
+    return this.workers.find((worker) => {
+      return worker.busy === false && worker.idle === false;
+    });
   }
 
   async send({ options }) {
@@ -37,9 +40,19 @@ module.exports = class Pool {
       throw new Error('Farm has ended, no more calls can be done to it');
     }
 
-    return this.farm.request(() => {
+    return this.farm.request(async () => {
       const worker = this.resolveWorker() || this.forkWorker();
-      return worker.send({ options });
+      const result = await worker.send({ options });
+
+      const wrap = f => (...args) => this.farm.request(() => f(...args));
+
+      if (worker.idle) {
+        return reduceObj(result, (obj, key) => {
+          return { ...obj, [key]: wrap(result[key]) };
+        });
+      }
+
+      return result;
     });
   }
 

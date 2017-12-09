@@ -1,6 +1,7 @@
 const fs = require('haste-service-fs');
 const serializeError = require('serialize-error');
 
+let api = null;
 let modulePath = null;
 
 process.on('message', ({ type, options }) => {
@@ -15,6 +16,10 @@ process.on('message', ({ type, options }) => {
       execute({ options });
       break;
 
+    case 'CHILD_MESSAGE_API':
+      executeApi({ options });
+      break;
+
     case 'CHILD_MESSAGE_KILL':
       process.exit(0);
       break;
@@ -24,40 +29,64 @@ process.on('message', ({ type, options }) => {
   }
 });
 
-const worker = {
-  idle: (result) => {
-    process.send({ type: 'PARENT_MESSAGE_IDLE', result });
-  },
-  complete: (result) => {
-    process.send({ type: 'PARENT_MESSAGE_COMPLETE', result });
-  },
-  error: (error) => {
-    if (error) {
-      console.error(error.stack || error);
-    }
+function handleError(error) {
+  if (error) {
+    console.error(error.stack || error);
+  }
 
-    if (!(error instanceof Error)) {
-      error = new Error(error);
-    }
+  if (!(error instanceof Error)) {
+    error = new Error(error);
+  }
 
-    process.send({
-      type: 'PARENT_MESSAGE_ERROR',
-      error: serializeError(error),
-    });
-  },
-};
+  process.send({
+    type: 'PARENT_MESSAGE_ERROR',
+    error: serializeError(error),
+  });
+}
 
 async function execute({ options }) {
   let result;
 
   try {
-    result = require(modulePath)(options, { worker, fs });
+    result = await require(modulePath)(options, { fs });
   } catch (error) {
-    return worker.error(error);
+    return handleError(error);
   }
 
-  if (result instanceof Promise) {
-    result.then(worker.complete, worker.error);
+  if (result.api) {
+    api = result.api;
+
+    return process.send({
+      type: 'PARENT_MESSAGE_IDLE',
+      result: Object.keys(api),
+    });
+  }
+
+  return process.send({
+    type: 'PARENT_MESSAGE_COMPLETE',
+    result,
+  });
+}
+
+async function executeApi({ options: { name, args, callId } }) {
+  try {
+    const result = await api[name](...args);
+
+    process.send({
+      type: 'PARENT_MESSAGE_API',
+      options: {
+        callId,
+      },
+      result,
+    });
+  } catch (error) {
+    process.send({
+      type: 'PARENT_MESSAGE_API',
+      options: {
+        callId,
+      },
+      error,
+    });
   }
 
   process.on('uncaughtException', (error) => {
