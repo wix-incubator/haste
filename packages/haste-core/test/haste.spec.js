@@ -11,6 +11,7 @@ const requireErrorPath = resolveFromFixtures('require-error');
 const nonAsyncPath = resolveFromFixtures('non-async');
 const noErrorPath = resolveFromFixtures('no-error');
 const errorOutsidePath = resolveFromFixtures('error-outside');
+const idlePath = resolveFromFixtures('idle');
 
 describe('haste', () => {
   let test;
@@ -165,6 +166,63 @@ describe('haste', () => {
       });
 
       expect(test.stdio.stdout).toMatch(JSON.stringify(options));
+    });
+  });
+
+  describe.only('API of idle tasks', () => {
+    it('should call the exposed api of the task', async () => {
+      test = await setup();
+
+      await test.run(async ({ [idlePath]: idle }) => {
+        const api = await idle();
+        expect(test.stdio.stdout).toMatch('idle');
+
+        await api.log();
+        expect(test.stdio.stdout).toMatch('log');
+      });
+    });
+
+    it('should pass arguments to the exposed api of the task', async () => {
+      test = await setup();
+
+      const args = [1, 2, 3];
+
+      await test.run(async ({ [idlePath]: idle }) => {
+        const api = await idle();
+        expect(test.stdio.stdout).toMatch('idle');
+
+        await api.options(...args);
+        expect(test.stdio.stdout).toMatch(args.join(' '));
+      });
+    });
+
+    it('should resolve with the result if invoking the api method was successful', async () => {
+      test = await setup();
+
+      await test.run(async ({ [idlePath]: idle }) => {
+        const api = await idle();
+        expect(test.stdio.stdout).toMatch('idle');
+
+        const result = await api.successful();
+        expect(result).toMatch('successful');
+      });
+    });
+
+    it('should reject with the error if invoking the api method was unsuccessful', async () => {
+      expect.assertions(2);
+
+      test = await setup();
+
+      await test.run(async ({ [idlePath]: idle }) => {
+        const api = await idle();
+        expect(test.stdio.stdout).toMatch('idle');
+
+        try {
+          await api.unsuccessful();
+        } catch (error) {
+          expect(error.message).toMatch('unsuccessful');
+        }
+      });
     });
   });
 
