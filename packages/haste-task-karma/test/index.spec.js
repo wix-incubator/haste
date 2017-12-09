@@ -25,7 +25,7 @@ describe('haste-karma', () => {
     expect(test.stdio.stdout).toMatch('Executed 1 of 1 SUCCESS');
   });
 
-  it.only('should run a failing test and reject', async () => {
+  it('should run a failing test and reject', async () => {
     expect.assertions(2);
 
     test = await setup();
