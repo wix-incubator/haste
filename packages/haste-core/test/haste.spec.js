@@ -1,4 +1,5 @@
 const path = require('path');
+const retry = require('retry-promise').default;
 const { setup } = require('haste-test-utils');
 
 const resolveFromFixtures = name => path.join(__dirname, './fixtures', name);
@@ -175,10 +176,14 @@ describe('haste', () => {
 
       await test.run(async ({ [idlePath]: idle }) => {
         const api = await idle();
-        expect(test.stdio.stdout).toMatch('idle');
+        await retry(async () => {
+          expect(test.stdio.stdout).toMatch('idle');
+        });
 
         await api.log();
-        expect(test.stdio.stdout).toMatch('log');
+        await retry(async () => {
+          expect(test.stdio.stdout).toMatch('log');
+        });
       });
     });
 
@@ -189,10 +194,14 @@ describe('haste', () => {
 
       await test.run(async ({ [idlePath]: idle }) => {
         const api = await idle();
-        expect(test.stdio.stdout).toMatch('idle');
+        await retry(async () => {
+          expect(test.stdio.stdout).toMatch('idle');
+        });
 
         await api.options(...args);
-        expect(test.stdio.stdout).toMatch(args.join(' '));
+        await retry(async () => {
+          expect(test.stdio.stdout).toMatch(args.join(' '));
+        });
       });
     });
 
@@ -201,10 +210,14 @@ describe('haste', () => {
 
       await test.run(async ({ [idlePath]: idle }) => {
         const api = await idle();
-        expect(test.stdio.stdout).toMatch('idle');
+        await retry(async () => {
+          expect(test.stdio.stdout).toMatch('idle');
+        });
 
         const result = await api.successful();
-        expect(result).toMatch('successful');
+        await retry(async () => {
+          expect(result).toMatch('successful');
+        });
       });
     });
 
@@ -215,12 +228,16 @@ describe('haste', () => {
 
       await test.run(async ({ [idlePath]: idle }) => {
         const api = await idle();
-        expect(test.stdio.stdout).toMatch('idle');
+        await retry(async () => {
+          expect(test.stdio.stdout).toMatch('idle');
+        });
 
         try {
           await api.unsuccessful();
         } catch (error) {
-          expect(error.message).toMatch('unsuccessful');
+          await retry(async () => {
+            expect(error.message).toMatch('unsuccessful');
+          });
         }
       });
     });
