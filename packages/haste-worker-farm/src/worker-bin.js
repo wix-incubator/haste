@@ -64,7 +64,6 @@ async function execute({ options }) {
 
   return process.send({
     type: 'PARENT_MESSAGE_COMPLETE',
-    result,
   });
 }
 
