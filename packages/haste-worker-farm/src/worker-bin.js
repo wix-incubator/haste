@@ -60,7 +60,7 @@ async function execute({ options }) {
     return handleError(error);
   }
 
-  if (result.api) {
+  if (result && result.api) {
     api = result.api;
 
     return process.send({
