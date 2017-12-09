@@ -4,6 +4,13 @@ const serializeError = require('serialize-error');
 let api = null;
 let modulePath = null;
 
+process.on('uncaughtException', (error) => {
+  process.send({
+    type: 'PARENT_MESSAGE_ERROR',
+    error: serializeError(error),
+  });
+});
+
 process.on('message', ({ type, options }) => {
   console.log(type, process.pid);
 
@@ -87,8 +94,4 @@ async function executeApi({ options: { name, args, callId } }) {
       error,
     });
   }
-
-  process.on('uncaughtException', (error) => {
-    worker.error(error);
-  });
 }
