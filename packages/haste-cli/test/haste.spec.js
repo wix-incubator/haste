@@ -51,14 +51,16 @@ describe.only('haste-cli', () => {
   it('should fail if requested preset does not support passed command', async () => {
     expect.assertions(2);
 
+    const command = 'no-action';
+
     try {
       await run({
-        command: 'no-action',
+        command,
         args: ['--preset', simplePresetPath],
       });
     } catch (error) {
       expect(error.code).toEqual(1);
-      expect(error.message).toMatch(`${simplePresetPath} doesn't support command "no-action"`);
+      expect(error.message).toMatch(`Preset "${simplePresetPath}" doesn't support command "${command}"`);
     }
   });
 
