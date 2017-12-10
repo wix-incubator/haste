@@ -1,5 +1,5 @@
 {
-  "name": "haste-test-utils",
+  "name": "haste-test-utils-core",
   "version": "0.1.22",
   "main": "./src/index.js",
   "author": "Ran Yitzhaki",
@@ -8,7 +8,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "haste-test-utils-core": "^0.1.22",
-    "haste-core": "^0.1.13"
+    "fs-extra": "^4.0.2",
+    "tempy": "^0.2.1"
   }
 }

@@ -1,6 +1,9 @@
 const path = require('path');
 const retry = require('retry-promise').default;
-const { setup } = require('haste-test-utils');
+const { createSetup } = require('haste-test-utils-core');
+const { createRunner } = require('../src');
+
+const setup = createSetup(createRunner);
 
 const resolveFromFixtures = name => path.join(__dirname, './fixtures', name);
 
