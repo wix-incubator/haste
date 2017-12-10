@@ -6,7 +6,7 @@ const failingConfigPath = require.resolve('./fixtures/failing.conf.js');
 
 jest.setTimeout(30000);
 
-describe('haste-protractor', () => {
+describe.skip('haste-protractor', () => {
   describe('e2e', () => {
     let test;
 
