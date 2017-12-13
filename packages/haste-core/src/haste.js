@@ -2,8 +2,8 @@ const chokidar = require('chokidar');
 const Runner = require('./runner');
 const { camelCaseToDash, isPath } = require('./utils');
 
-const watch = (pattern, callback) => {
-  const watcher = chokidar.watch(pattern, { ignoreInitial: true, cwd: process.cwd() })
+const watch = ({ pattern, cwd = process.cwd(), ignoreInitial = true, ...options }, callback) => {
+  const watcher = chokidar.watch(pattern, { cwd, ignoreInitial, ...options })
     .on('all', (event, path) => callback(path));
 
   return watcher;
