@@ -36,20 +36,20 @@ module.exports = async (configure) => {
 
   await run(server({ serverPath: 'src/server.js' }));
 
-  watch(`${paths.src}/**/*.js`, changed => run(
+  watch({ pattern: `${paths.src}/**/*.js` }, changed => run(
     read({ pattern: changed }),
     babel(),
     write({ target: paths.build }),
     server({ serverPath: 'dist/src/server.js' })
   ));
 
-  watch(`${paths.src}/**/*.scss`, changed => run(
+  watch({ pattern: `${paths.src}/**/*.scss` }, changed => run(
     read({ pattern: changed }),
     sass(),
     write({ target: paths.build })
   ));
 
-  watch(paths.assets, changed => run(
+  watch({ pattern: paths.assets }, changed => run(
     read({ pattern: changed }),
     write({ target: paths.build })
   ));

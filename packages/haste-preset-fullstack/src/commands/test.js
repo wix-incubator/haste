@@ -17,7 +17,7 @@ module.exports = async (configure, { watch: shouldWatch }) => {
   );
 
   if (shouldWatch) {
-    watch([`${paths.src}/**/*.js`, `${paths.test}/**/*.js`], changed => run(
+    watch({ pattern: [`${paths.src}/**/*.js`, `${paths.test}/**/*.js`] }, changed => run(
       read({ pattern: changed }),
       mocha()
     ));
