@@ -5,7 +5,7 @@ module.exports.createSetup = createRunner => async (fsObject) => {
   const { cwd, files } = await fsSetup(fsObject);
   const testPlugin = new TestPlugin();
 
-  const runner = createRunner({ plugins: [testPlugin] });
+  const runner = createRunner({ logger: testPlugin });
 
   const run = async (action, options = {}) => {
     await runner.command(action)({ workerOptions: { cwd }, ...options });
