@@ -2,3 +2,5 @@ node_modules
 dist
 coverage
 **/test/expected/**
+website/core
+website/pages
