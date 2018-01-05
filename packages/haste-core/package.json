@@ -14,6 +14,7 @@
   "dependencies": {
     "chokidar": "^1.7.0",
     "haste-worker-farm": "^0.1.15",
+    "haste-plugin-logger": "^0.1.22",
     "resolve-from": "^4.0.0",
     "tapable": "1.0.0-beta.3"
   }
