@@ -1,12 +1,10 @@
 const Runner = require('./runner');
+const Logger = require('haste-plugin-logger');
 
-module.exports = ({ plugins = [] } = {}) => {
+module.exports = ({ plugins = [], logger = new Logger() } = {}) => {
   const runner = new Runner();
 
-  plugins.forEach(plugin => plugin.apply(runner));
+  [...plugins, logger].forEach(plugin => plugin.apply(runner));
 
-  return {
-    command: (...args) => runner.command(...args),
-    watch: (...args) => runner.watch(...args),
-  };
+  return runner;
 };
