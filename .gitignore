@@ -1,6 +1,7 @@
 node_modules
 npm-debug.log
 npm-debug.log*
+.DS_Store
 yarn-error.log*
 yarn.lock
 package-lock.json
@@ -8,3 +9,14 @@ lerna-debug.log
 !packages/haste/test/fixtures/node_modules
 .vscode
 coverage
+
+lib/core/metadata.js
+lib/core/MetadataBlog.js
+
+website/translated_docs
+website/build/
+website/yarn.lock
+website/node_modules
+
+website/i18n/*
+!website/i18n/en.json
