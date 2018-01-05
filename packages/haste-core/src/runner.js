@@ -15,7 +15,7 @@ module.exports = class Runner {
   }
 
   command(action, { persistent = false } = {}) {
-    return async ({ context, workerOptions }) => {
+    return async ({ context, workerOptions } = {}) => {
       const execution = new Execution({
         action,
         context,
