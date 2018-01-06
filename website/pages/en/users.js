@@ -31,7 +31,7 @@ class Users extends React.Component {
             </div>
             <div className="logos">{showcase}</div>
             <a
-              href="https://github.com/facebook/docusaurus/edit/master/website/siteConfig.js"
+              href="https://github.com/wix/haste/edit/master/website/siteConfig.js"
               className="button">
               Add your company
             </a>
