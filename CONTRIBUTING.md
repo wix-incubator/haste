@@ -62,6 +62,7 @@ Improving the documentation is an easy way to start contributing. The `docs` dir
 └── docs
 
 ```
+
 * `npm run website:start` - Run a development server with the local version of the site.
 * `GIT_USER=<GIT_USER> npm run website:publish` - Build and publish your current version to gh-pages.
 
