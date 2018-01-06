@@ -11,16 +11,22 @@ Each command initializes a runner and uses it to execute tasks.
 
 ## How to write a preset?
 
-install dependencies
+Create an empty directory
 
 ```bash
-npm i --save haste-core haste-cli haste-task-babel
+mkdir haste-preset-example
 ```
 
-or use yarn
+Install haste core and cli dependencies
 
 ```bash
-yarn add haste-core haste-cli haste-task-babel
+yarn add haste-core@next haste-cli@next
+```
+
+Install babel task and a preset to run it with
+
+```bash
+yarn add haste-task-babel@next babel-preset-env
 ```
 
 Create an `haste-preset-example.js` file:
@@ -28,7 +34,7 @@ Create an `haste-preset-example.js` file:
 ```js
 // haste-preset-example.js
 
-const build = require('./build');
+const build = require('./commands/build');
 
 module.exports = {
   build
@@ -67,6 +73,12 @@ A utility object, when you call `tasks.build()` it will search for `haste-task-b
 ## Lets use our preset
 
 Create an `src` directory and a `file.js` in it.
+
+```js
+// src/file.js
+const hello = 'world';
+```
+
 you'll see something that looks like this.
 
 ```bash
@@ -99,6 +111,13 @@ npm run build
 
 You should see a `dist` directory with the transpiled `file.js`.
 
+```js
+// dist/file.js
+'use strict';
+
+var hello = 'world';
+```
+
 ```bash
 ├── commands
 │   └── build.js
@@ -117,6 +136,4 @@ You've created your first preset.
 ## What's next?
 
 * Add more commands (test/lint/start)
-* Create a plugin
-* Create a custom logger
 * Share your preset
