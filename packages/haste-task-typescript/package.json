@@ -1,6 +1,6 @@
 {
   "name": "haste-task-typescript",
-  "version": "0.1.22",
+  "version": "0.2.0",
   "main": "./src/index.js",
   "author": "Ran Yitzhaki",
   "engines": {
@@ -12,7 +12,7 @@
     "dargs": "^5.1.0"
   },
   "devDependencies": {
-    "haste-test-utils": "^0.1.22",
+    "haste-test-utils": "^0.2.0",
     "typescript": "^2.6.1"
   }
 }

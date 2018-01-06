@@ -1,6 +1,6 @@
 {
   "name": "haste-plugin-dashboard",
-  "version": "0.1.22",
+  "version": "0.2.0",
   "main": "./src/index.js",
   "author": "Ran Yitzhaki",
   "engines": {
@@ -10,6 +10,6 @@
   "dependencies": {
     "blessed": "~0.1.81",
     "chalk": "^2.3.0",
-    "haste-plugin-loader": "^0.1.22"
+    "haste-plugin-loader": "^0.2.0"
   }
 }
