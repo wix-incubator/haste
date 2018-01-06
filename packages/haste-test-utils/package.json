@@ -1,6 +1,6 @@
 {
   "name": "haste-test-utils",
-  "version": "0.1.22",
+  "version": "0.2.0",
   "main": "./src/index.js",
   "author": "Ran Yitzhaki",
   "engines": {
@@ -8,7 +8,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "haste-test-utils-core": "^0.1.22",
-    "haste-core": "^0.1.13"
+    "haste-core": "^0.2.0",
+    "haste-test-utils-core": "^0.2.0"
   }
 }
