@@ -1,7 +1,6 @@
 {
   "docs": {
-    "Getting Started": ["getting-started"],
-    "Preset": ["preset"],
-    "API Refernce": ["api"]
+    "Getting Started": ["core-concepts", "preset", "task", "plugin", "logger"],
+    "API Refernce": ["api-reference"]
   }
 }

@@ -1,17 +1,16 @@
 ---
 id: preset
 title: Preset
-sidebar_label: Preset
 ---
 
-## What is a preset?
 A preset is an object that maps user actions (cli commands) to async functions.
 Those async functions are called **commands**.
-Each command, initializes a runner and uses it execute tasks.
+Each command initializes a runner and uses it to execute tasks.
 
-**Tasks** are modules that usualy perform a side effect like transpiling code, linting, running webpack etc.
+**Tasks** are modules that usually perform a side effect like transpiling code, linting, running webpack etc.
 
 ## How to write a preset?
+
 install dependencies
 
 ```bash
@@ -54,21 +53,23 @@ module.exports = runner.command(async (tasks) => {
 });
 ```
 
-First we start by creating a runner, and using it to create a command.
+First, we start by creating a runner and using it to create a command.
 The command accepts an async function. Use the `tasks` argument To call your tasks.
 
 ## The tasks object
+
 A utility object, when you call `tasks.build()` it will search for `haste-task-build` in your `node_modules`, it will load it and run it on a different process.
 
 **NOTE:** You can also run a local task using `tasks['./path/to/local/task.js']`.
 
 > Wondering how this magic object is implemented? Read about [Proxy object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy)
 
-## Lets give our preset a try
+## Lets use our preset
+
 Create an `src` directory and a `file.js` in it.
 you'll see something that looks like this.
 
-```
+```bash
 ├── commands
 │   └── build.js
 ├── haste-preset-example.js
@@ -82,13 +83,28 @@ Now run the following command.
 ./node_modules/.bin/haste build -p ./haste-preset-example.js
 ```
 
-You should be able to see a `dist` folder with the transpiled file.
+> **Which actually means:** Use `haste-cli` binary file from the `node_modules` to run the build command of the preset `haste-preset-example.js`.
+
+> you can also define it in your `package.json` and run `npm run build`.
+```json
+{
+  "scripts": {
+    "build": "haste build"
+  },
+  "haste": {
+    "preset": "./haste-preset-example.js"
+  }
+}
+```
+
+After running the build command you should be able to see a `dist` directory with the transpiled `file.js`.
 
 Horray! 👏
-Youv'e create your first preset.
+You've created your first preset.
 
 ## What's next?
 
-* add commands (test/lint/start)
-* add plugins
-* share your preset
+* Add more commands (test/lint/start)
+* Create a plugin
+* Create a custom logger
+* Share your preset
