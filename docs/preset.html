@@ -55,15 +55,7 @@ you'll see something that looks like this.</p>
 └── src
     └── file.js
 </code></pre>
-<p>Now run the following command.</p>
-<pre><code class="hljs css bash">./node_modules/.bin/haste build -p ./haste-preset-example.js
-</code></pre>
-<blockquote>
-<p><strong>Which actually means:</strong> Use <code>haste-cli</code> binary file from the <code>node_modules</code> to run the build command of the preset <code>haste-preset-example.js</code>.</p>
-</blockquote>
-<blockquote>
-<p>you can also define it in your <code>package.json</code> and run <code>npm run build</code>.</p>
-</blockquote>
+<p>Place the following in your <code>package.json</code>.</p>
 <pre><code class="hljs css json">{
   <span class="hljs-attr">"scripts"</span>: {
     <span class="hljs-attr">"build"</span>: <span class="hljs-string">"haste build"</span>
@@ -73,7 +65,20 @@ you'll see something that looks like this.</p>
   }
 }
 </code></pre>
-<p>After running the build command you should be able to see a <code>dist</code> directory with the transpiled <code>file.js</code>.</p>
+<p>Now run:</p>
+<pre><code class="hljs css bash">npm run build
+</code></pre>
+<p>You should see a <code>dist</code> directory with the transpiled <code>file.js</code>.</p>
+<pre><code class="hljs css bash">├── commands
+│   └── build.js
+├── haste-preset-example.js
+├── package.json
+├── src
+│   └── file.js
+└── dist
+    └── src
+       └── file.js
+</code></pre>
 <p>Horray! 👏
 You've created your first preset.</p>
 <h2><a class="anchor" aria-hidden="true" name="what-s-next"></a><a href="#what-s-next" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>What's next?</h2>
