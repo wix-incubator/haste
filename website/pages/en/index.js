@@ -94,7 +94,7 @@ const Block = props => (
     padding={['bottom', 'top']}
     id={props.id}
     background={props.background}>
-    <GridBlock align="center" contents={props.children} layout={props.layout} />
+    <GridBlock align={props.align || "center"} contents={props.children} layout={props.layout} />
   </Container>
 );
 
@@ -138,7 +138,7 @@ const Dashboard = () => (
 );
 
 const Description = props => (
-  <Block background="dark">
+  <Block background="dark" align="left">
     {[
       {
         content: 'Haste is a tool for creating fast and elegant build processes: By running CPU heavy tasks on separate processes, Haste can fully utilize your machine\'s resources. This isolation also enables full control on how the output is managed and plugins can extend the core functionality to create visually rich user interfaces.',
