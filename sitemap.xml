@@ -5,9 +5,12 @@
 <url> <loc>https://wix.github.io/haste/users.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/en/users.html" /> </url>
 <url> <loc>https://wix.github.io/haste/blog/2017/01/05/blog-post.html</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
 <url> <loc>https://wix.github.io/haste/docs/api-reference.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/docs/api-reference.html" /> </url>
+<url> <loc>https://wix.github.io/haste/docs/command.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/docs/command.html" /> </url>
 <url> <loc>https://wix.github.io/haste/docs/core-concepts.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/docs/core-concepts.html" /> </url>
+<url> <loc>https://wix.github.io/haste/docs/create-runner.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/docs/create-runner.html" /> </url>
 <url> <loc>https://wix.github.io/haste/docs/logger.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/docs/logger.html" /> </url>
 <url> <loc>https://wix.github.io/haste/docs/plugin.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/docs/plugin.html" /> </url>
 <url> <loc>https://wix.github.io/haste/docs/preset.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/docs/preset.html" /> </url>
+<url> <loc>https://wix.github.io/haste/docs/runner.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/docs/runner.html" /> </url>
 <url> <loc>https://wix.github.io/haste/docs/task.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/docs/task.html" /> </url>
 </urlset>
