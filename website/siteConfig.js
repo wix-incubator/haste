@@ -26,7 +26,6 @@ const siteConfig = {
     { doc: 'core-concepts', label: 'Getting Started' },
     { doc: 'api-reference', label: 'API Reference' },
     { page: 'help', label: 'Help' },
-    { blog: true, label: 'Blog' },
   ],
   users,
   /* path to images for header/footer */
