@@ -1,6 +1,6 @@
 {
   "name": "haste-task-karma",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "./src/index.js",
   "license": "MIT",
   "author": "Ronen Amiel",
@@ -11,7 +11,7 @@
     "karma": "^1.7.1"
   },
   "devDependencies": {
-    "haste-test-utils": "^0.2.0",
+    "haste-test-utils": "^0.2.1",
     "jasmine-core": "^2.8.0",
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.4"
