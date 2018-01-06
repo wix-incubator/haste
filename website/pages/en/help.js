@@ -18,15 +18,16 @@ class Help extends React.Component {
     const supportLinks = [
       {
         content:
-          'Learn more using the [documentation on this site.](/test-site/docs/en/doc1.html)',
-        title: 'Browse Docs',
+          'Learn more using the [documentation on this site.](/haste/docs/core-concepts.html)',
+        title: 'Browse the documentation',
       },
       {
-        content: 'Ask questions about the documentation and project',
-        title: 'Join the community',
+        content: "Open [Issues](https://github.com/wix/haste/issues/new) or [Pull Requests](https://github.com/wix/haste/compare) for bugs you find or any new features you may want. Please make sure to go over the [contributing guide](https://github.com/wix/haste/blob/master/CONTRIBUTING.md).",
+        title: 'Github',
       },
       {
-        content: "Find out what's new with this project",
+        content:
+          'Have a look at the [changelog](https://github.com/wix/haste/blob/master/CHANGELOG.md)',
         title: 'Stay up to date',
       },
     ];
@@ -38,7 +39,7 @@ class Help extends React.Component {
             <header className="postHeader">
               <h2>Need help?</h2>
             </header>
-            <p>This project is maintained by a dedicated group of people.</p>
+            <p>Haste is actively maintained, If you need any help, please use one of the mechanisms below</p>
             <GridBlock contents={supportLinks} layout="threeColumn" />
           </div>
         </Container>
