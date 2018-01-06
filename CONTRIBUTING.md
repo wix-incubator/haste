@@ -18,14 +18,14 @@ Please **ask first** if somebody else is already working on this or the core dev
 Haste is a monorepo, meaning it is divided into independent sub-packages.
 These packages can be found in the [`packages/`](https://github.com/wix/haste/tree/master/packages) directory. We're using [Lerna](https://github.com/lerna/lerna) for the repo management.
 
-```
-packages/
-  haste-cli
-  haste-core
-  haste-test-utils
-  haste-preset-**
-  haste-plugin-**
-  haste-task-**
+```bash
+└── packages
+  ├── haste-cli
+  ├── haste-core
+  ├── haste-test-utils
+  ├── haste-preset-**
+  ├── haste-plugin-**
+  └── haste-task-**
 ```
 
 ### Package Descriptions
