@@ -6,6 +6,8 @@
     "test:coverage": "jest --coverage --maxWorkers=2 && codecov",
     "test:watch": "jest --watch",
     "test": "jest --maxWorkers=2",
+    "website:start": "npm start --prefix website",
+    "website:publish": "./scripts/website-publish.sh",
     "build": "npm run bootstrap && npm run lint"
   },
   "devDependencies": {
