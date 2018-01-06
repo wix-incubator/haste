@@ -12,8 +12,6 @@ process.on('uncaughtException', (error) => {
 });
 
 process.on('message', ({ type, options }) => {
-  console.log(type, process.pid);
-
   switch (type) {
     case 'CHILD_MESSAGE_INITIALIZE':
       modulePath = options.modulePath;
