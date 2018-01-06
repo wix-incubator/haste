@@ -78,14 +78,8 @@ you'll see something that looks like this.
     └── file.js
 ```
 
-Now run the following command.
-```bash
-./node_modules/.bin/haste build -p ./haste-preset-example.js
-```
+Place the following in your `package.json`.
 
-> **Which actually means:** Use `haste-cli` binary file from the `node_modules` to run the build command of the preset `haste-preset-example.js`.
-
-> you can also define it in your `package.json` and run `npm run build`.
 ```json
 {
   "scripts": {
@@ -97,7 +91,25 @@ Now run the following command.
 }
 ```
 
-After running the build command you should be able to see a `dist` directory with the transpiled `file.js`.
+Now run:
+
+```bash
+npm run build
+```
+
+You should see a `dist` directory with the transpiled `file.js`.
+
+```bash
+├── commands
+│   └── build.js
+├── haste-preset-example.js
+├── package.json
+├── src
+│   └── file.js
+└── dist
+    └── src
+       └── file.js
+```
 
 Horray! 👏
 You've created your first preset.
