@@ -1,0 +1,4 @@
+---
+id: plugin
+title: Plugin
+---

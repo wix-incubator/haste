@@ -23,8 +23,8 @@ const siteConfig = {
   projectName: 'Haste',
   organizationName: 'wix',
   headerLinks: [
-    { doc: 'getting-started', label: 'Getting Started' },
-    { doc: 'api', label: 'API Reference' },
+    { doc: 'core-concepts', label: 'Getting Started' },
+    { doc: 'api-reference', label: 'API Reference' },
     { page: 'help', label: 'Help' },
     { blog: true, label: 'Blog' },
   ],
