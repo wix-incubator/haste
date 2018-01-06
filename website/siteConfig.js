@@ -35,7 +35,7 @@ const siteConfig = {
   /* colors for website */
   colors: {
     primaryColor: '#393939',
-    secondaryColor: '#red',
+    secondaryColor: 'blue',
   },
   // This copyright info is used in /core/Footer.js and blog rss/atom feeds.
   copyright:
@@ -44,7 +44,7 @@ const siteConfig = {
     } Ronen Amiel & Ran Yitzhaki`,
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks
-    theme: 'default',
+    theme: 'agate',
   },
   scripts: ['https://buttons.github.io/buttons.js'],
   // You may provide arbitrary config keys to be used as needed by your template.
