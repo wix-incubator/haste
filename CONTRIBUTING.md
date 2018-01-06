@@ -52,6 +52,16 @@ That's it, you're good to go.
 * `npm run lint` - Run [eslint](https://eslint.org/) on all packages with the following [rules](https://github.com/wix/haste/blob/master/.eslintrc).
 * `npm run test:watch` Run the tests using interactive watch mode.
 
+## The website
+Improving documentation it's an easy and great way to start contributing. We are using [docusaurus](http://docusaurus.io) for the website generation. Everything inside of the `docs` directory is just markdown files, the website itself is in the `website` directory.
+
+```bash
+├── website
+└── docs
+```
+* `npm run website:start` - Run a development server with the local version of the docs.
+* `GIT_USER=<GIT_USER> npm run website:publish` - Build and publish your current version to gh-pages.
+
 ------------
 
 *Thanks to [create-react-app](https://github.com/facebookincubator/create-react-app/blob/master/CONTRIBUTING.md) for the inspiration with this contributing guide*
