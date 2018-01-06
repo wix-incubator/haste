@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Haste Blog</title>
+        <link>https://wix.github.io/haste/blog</link>
+        <description>The best place to stay up-to-date with the latest Haste news and events.</description>
+        <lastBuildDate>Thu, 05 Jan 2017 06:00:00 GMT</lastBuildDate>
+        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+        <generator>Feed for Node.js</generator>
+        <image>
+            <title>Haste Blog</title>
+            <url>https://wix.github.io/hasteimg/logo.png</url>
+            <link>https://wix.github.io/haste/blog</link>
+        </image>
+        <copyright>Copyright © 2018 Ronen Amiel &amp; Ran Yitzhaki</copyright>
+        <item>
+            <title><![CDATA[Blog Title]]></title>
+            <link>https://wix.github.io/haste/blog/2017/01/05/blog-post.html</link>
+            <guid>https://wix.github.io/haste/blog/2017/01/05/blog-post.html</guid>
+            <pubDate>Thu, 05 Jan 2017 06:00:00 GMT</pubDate>
+            <description><![CDATA[
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus elementum massa eget nulla aliquet sagittis. Proin odio tortor, vulputate ut odio in, ultrices ultricies augue. Cras ornare ultrices lorem malesuada iaculis. Etiam sit amet libero tempor, pulvinar mauris sed, sollicitudin sapien.
+
+]]></description>
+        </item>
+    </channel>
+</rss>

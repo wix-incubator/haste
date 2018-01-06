@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+<url> <loc>https://wix.github.io/haste/help.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/en/help.html" /> </url>
+<url> <loc>https://wix.github.io/haste/index.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/en/index.html" /> </url>
+<url> <loc>https://wix.github.io/haste/users.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/en/users.html" /> </url>
+<url> <loc>https://wix.github.io/haste/blog/2017/01/05/blog-post.html</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
+<url> <loc>https://wix.github.io/haste/docs/api-reference.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/docs/api-reference.html" /> </url>
+<url> <loc>https://wix.github.io/haste/docs/core-concepts.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/docs/core-concepts.html" /> </url>
+<url> <loc>https://wix.github.io/haste/docs/logger.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/docs/logger.html" /> </url>
+<url> <loc>https://wix.github.io/haste/docs/plugin.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/docs/plugin.html" /> </url>
+<url> <loc>https://wix.github.io/haste/docs/preset.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/docs/preset.html" /> </url>
+<url> <loc>https://wix.github.io/haste/docs/task.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://wix.github.io/haste/docs/task.html" /> </url>
+</urlset>
