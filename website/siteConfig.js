@@ -8,7 +8,7 @@
 /* List of projects/orgs using your project for the users page */
 const users = [
   {
-    caption: 'User1',
+    caption: 'Wix.com',
     image: '/haste/img/wix-logo.png',
     infoLink: 'https://www.wix.com',
     pinned: true,
