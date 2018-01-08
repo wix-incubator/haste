@@ -10,6 +10,8 @@
 
 #### :collision: This is a breaking version and major API's were redefined. All tasks and plugins were changed in order to work with the new API's
 
+* [#177](https://github.com/wix/haste/pull/177) Merge version 0.2.0 with master
+
 #### :memo: Documentation
 * `website`
   * A website with documentation was created
