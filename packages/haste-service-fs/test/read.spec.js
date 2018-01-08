@@ -36,7 +36,7 @@ describe('haste-service-fs', () => {
       expect(result).toEqual([expected]);
     });
 
-    it('should not read directories', async () => {
+    it('should read nested files but not the directories themselves', async () => {
       const pattern = resolve('nested', '**');
 
       const expected = {
@@ -60,7 +60,37 @@ describe('haste-service-fs', () => {
         cwd,
       };
 
-      const result = await read({ pattern, options: { cwd } });
+      const result = await read({ pattern, cwd });
+
+      expect(result).toEqual([expected]);
+    });
+
+    it('should use a relative path source option to read files from', async () => {
+      const pattern = resolve('nested', '**');
+      const source = 'nested';
+
+      const expected = {
+        filename: nestedFilename,
+        content: fs.readFileSync(nestedFilename, 'utf8'),
+        cwd: path.join(process.cwd(), source),
+      };
+
+      const result = await read({ pattern, source });
+
+      expect(result).toEqual([expected]);
+    });
+
+    it('should use an absolue path source option to read files from', async () => {
+      const pattern = resolve('nested', '**');
+      const absoluteSource = resolve('nested');
+
+      const expected = {
+        filename: nestedFilename,
+        content: fs.readFileSync(nestedFilename, 'utf8'),
+        cwd: absoluteSource,
+      };
+
+      const result = await read({ pattern, source: absoluteSource });
 
       expect(result).toEqual([expected]);
     });
