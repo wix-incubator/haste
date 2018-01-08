@@ -1,5 +1,50 @@
 # Changelog
 
+## 0.2.1 (January 6, 2018)
+
+#### :bug: Bug
+* `haste-worker-farm`
+  * Remove redundant `console.log`
+
+## 0.2.0 (January 6, 2018)
+
+#### :collision: This is a breaking version and major API's were redefined. All tasks and plugins were changed in order to work with the new API's
+
+#### :memo: Documentation
+* `website`
+  * A website with documentation was created
+* `CONTRIBUTING.md`
+  * Add explanations for the website and docs management
+
+#### :house: Internal
+* `haste-cli`
+  * Refactor the cli module and remove the `haste-core` dependency
+* `haste-worker-farm`
+  * A module for managing the use of child processes was created
+* `haste-core`
+  * Changes of the core to work with the new preset API
+  * Resolution of tasks now supports relative paths and camel-cased methods
+  * Change the plugin system to use the `1.0.0` version of `tapable`
+* `haste-service-fs`
+  * A service for file system management was created and will be injected to all tasks
+* `haste-test-utils`
+  * Refactor `haste-test-utils` to work with the core itself and supply better testing experience
+* `haste-test-utils-core`
+  * Separate `haste-test-utils` into two packages to prevent circular dependencies between `haste-core` and `haste-test-utils`
+* `.eslintrc`
+  * Removed the following rules:
+    * `consistent-return`
+    * `no-use-before-define`
+    * `no-underscore-dangle`
+    * `no-param-reassign`
+  * Added the following rules:
+    * `comma-dangle`
+
+#### :wave: Deletion
+Removed in favor of new API and fs-service
+* `haste-task-read`
+* `haste-task-write`
+
 ## 0.1.22 (December 5, 2017)
 
 #### :bug: Bug Fix
