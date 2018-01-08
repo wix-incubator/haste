@@ -37,6 +37,10 @@ describe('haste-protractor', () => {
     const execa = require('execa');
     const protractor = require('../src/index');
 
+    beforeEach(() => {
+      execa.mockReset();
+    });
+
     it('should merge webdriver manager options with the default and transform to args', async () => {
       const webdriverManagerOptions = { gecko: 'true', standalone: true, 'versions.chrome': 2.29 };
 
@@ -44,6 +48,15 @@ describe('haste-protractor', () => {
 
       const expectedArgs = ['update', '--standalone', '--gecko', 'true', '--versions.chrome', '2.29'];
       const passedArgs = execa.mock.calls[0][1];
+
+      expect(passedArgs).toEqual(expectedArgs);
+    });
+
+    it('should call node with correct flags when debug falg is on', async () => {
+      await protractor({ debug: true, configPath: 'foo/protractor.conf' })();
+
+      const expectedArgs = ['--inspect-brk', expect.stringMatching(/node_modules\/protractor\/bin\/protractor/), 'foo/protractor.conf'];
+      const passedArgs = execa.mock.calls[1][1];
 
       expect(passedArgs).toEqual(expectedArgs);
     });
