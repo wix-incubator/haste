@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.2 (January 8, 2018)
+
+#### :nail_care: Enhancement
+* `haste-task-copy`
+  * [#176](https://github.com/wix/haste/pull/176) Support `source` option for copy task
+* `haste-service-fs`
+  * [#176](https://github.com/wix/haste/pull/176) Support `source` option for fs service
+
 ## 0.2.1 (January 6, 2018)
 
 #### :bug: Bug
