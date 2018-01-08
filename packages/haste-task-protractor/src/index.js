@@ -4,17 +4,16 @@ const dargs = require('dargs');
 const PROTRACTOR_BIN = require.resolve('protractor/bin/protractor');
 const WEBDRIVER_BIN = require.resolve('protractor/bin/webdriver-manager');
 
-const defaultOptions = { standalone: true, gecko: 'false' };
+const defaultWebdriverOptions = { standalone: true, gecko: 'false' };
+const dargsSettings = { allowCamelCase: true, useEquals: false, ignoreFalse: false };
 
-module.exports = ({ configPath, webdriverManagerOptions = {}, debug = false }) => async () => {
-  const options = { ...defaultOptions, ...webdriverManagerOptions };
-  const args = dargs(options, { allowCamelCase: true, useEquals: false, ignoreFalse: false });
+module.exports =
+  ({ configPath, webdriverManagerOptions = {}, protractorOptions = {} }) => async () => {
+    const webdriverOptions = { ...defaultWebdriverOptions, ...webdriverManagerOptions };
 
-  await execa(WEBDRIVER_BIN, ['update', ...args], { stdio: 'inherit' });
+    const webdriverArgs = dargs(webdriverOptions, dargsSettings);
+    const protractorArgs = dargs(protractorOptions, dargsSettings);
 
-  if (debug) {
-    await execa('node', ['--inspect-brk', PROTRACTOR_BIN, configPath], { stdio: 'inherit' });
-  } else {
-    await execa(PROTRACTOR_BIN, [configPath], { stdio: 'inherit' });
-  }
-};
+    await execa(WEBDRIVER_BIN, ['update', ...webdriverArgs], { stdio: 'inherit' });
+    await execa(PROTRACTOR_BIN, [...protractorArgs, configPath], { stdio: 'inherit' });
+  };

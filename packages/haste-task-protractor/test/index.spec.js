@@ -53,9 +53,10 @@ describe('haste-protractor', () => {
     });
 
     it('should call node with correct flags when debug falg is on', async () => {
-      await protractor({ debug: true, configPath: 'foo/protractor.conf' })();
+      const protractorOptions = { framework: 'mocha', debug: true, specs: 'e2e.test.js' };
+      await protractor({ protractorOptions, configPath: 'foo/protractor.conf' })();
 
-      const expectedArgs = ['--inspect-brk', expect.stringMatching(/node_modules\/protractor\/bin\/protractor/), 'foo/protractor.conf'];
+      const expectedArgs = ['--framework', 'mocha', '--debug', '--specs', 'e2e.test.js', 'foo/protractor.conf'];
       const passedArgs = execa.mock.calls[1][1];
 
       expect(passedArgs).toEqual(expectedArgs);
