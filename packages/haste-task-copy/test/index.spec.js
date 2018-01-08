@@ -71,4 +71,38 @@ describe('haste-copy', () => {
 
     expect(test.files['dist/folder/structure/test.txt'].content).toEqual('hello world');
   });
+
+  it('should copy files inside of "source" option into target directory when source is relative to cwd', async () => {
+    test = await setup({
+      'folder/structure/test.txt': 'hello world',
+    });
+
+    await test.run(async ({ [taskPath]: copy }) => {
+      await copy({
+        pattern: '**/*.txt',
+        source: 'folder',
+        target: 'dist',
+      });
+    });
+
+    expect(test.files['dist/structure/test.txt'].content).toEqual('hello world');
+  });
+
+  it('should copy files inside of "source" option into target directory when source is absolute', async () => {
+    test = await setup({
+      'folder/structure/test.txt': 'hello world',
+    });
+
+    const absoluteSource = path.join(test.cwd, 'folder');
+
+    await test.run(async ({ [taskPath]: copy }) => {
+      await copy({
+        pattern: '**/*.txt',
+        source: absoluteSource,
+        target: 'dist',
+      });
+    });
+
+    expect(test.files['dist/structure/test.txt'].content).toEqual('hello world');
+  });
 });
