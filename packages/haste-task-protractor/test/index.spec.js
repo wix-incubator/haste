@@ -43,6 +43,10 @@ describe.skip('haste-protractor', () => {
     const execa = require('execa');
     const protractor = require('../src/index');
 
+    beforeEach(() => {
+      execa.mockReset();
+    });
+
     it('should merge webdriver manager options with the default and transform to args', async () => {
       const webdriverManagerOptions = { gecko: 'true', standalone: true, 'versions.chrome': 2.29 };
 
@@ -50,6 +54,16 @@ describe.skip('haste-protractor', () => {
 
       const expectedArgs = ['update', '--standalone', '--gecko', 'true', '--versions.chrome', '2.29'];
       const passedArgs = execa.mock.calls[0][1];
+
+      expect(passedArgs).toEqual(expectedArgs);
+    });
+
+    it('should call protractor with correct options when options are passed', async () => {
+      const protractorOptions = { framework: 'mocha', debug: true, specs: 'e2e.test.js' };
+      await protractor({ protractorOptions, configPath: 'foo/protractor.conf' })();
+
+      const expectedArgs = ['--framework', 'mocha', '--debug', '--specs', 'e2e.test.js', 'foo/protractor.conf'];
+      const passedArgs = execa.mock.calls[1][1];
 
       expect(passedArgs).toEqual(expectedArgs);
     });
