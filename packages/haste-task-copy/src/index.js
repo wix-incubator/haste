@@ -19,18 +19,20 @@ const copyFile = (source, target) => new Promise((resolve, reject) => {
   rd.pipe(wr);
 });
 
-module.exports = async ({ pattern, target, cwd = process.cwd() }, { fs: fsService }) => {
-  const files = await fsService.read({ pattern });
+module.exports = async ({ pattern, target, cwd = process.cwd(), source }, { fs: fsService }) => {
+  const files = await fsService.read({ pattern, cwd, source });
 
   return Promise.all(
     files.map(async ({ filename, cwd: sourceCwd }) => {
-      const absoluteFilePath = path.isAbsolute(filename) ?
-        filename : path.join(sourceCwd, filename);
+      const absoluteSourcePath = path.isAbsolute(filename) ?
+        filename :
+        path.join(sourceCwd, filename);
+
       const absoluteTarget = path.isAbsolute(target) ? target : path.join(cwd, target);
       const absoluteTargetFilePath = path.join(absoluteTarget, filename);
 
       await makeDir(path.dirname(absoluteTargetFilePath));
-      await copyFile(absoluteFilePath, absoluteTargetFilePath);
+      await copyFile(absoluteSourcePath, absoluteTargetFilePath);
     }),
   );
 };
