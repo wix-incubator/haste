@@ -7,15 +7,18 @@
     "jest"
   ],
   "rules": {
+    "arrow-body-style": "off",
+    "consistent-return": "off",
     "class-methods-use-this": "off",
-    "no-console": "off",
-    "no-confusing-arrow": "off",
-    "comma-dangle": "off",
     "global-require": "off",
-    "no-multi-assign": "off",
     "import/no-dynamic-require": "off",
+    "no-confusing-arrow": "off",
+    "no-console": "off",
+    "no-multi-assign": "off",
+    "no-param-reassign": "off",
     "no-return-assign": "off",
+    "no-underscore-dangle": "off",
     "no-unused-expressions": "off",
-    "arrow-body-style": "off"
+    "no-use-before-define": "off"
   }
 }

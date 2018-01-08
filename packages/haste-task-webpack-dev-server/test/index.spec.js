@@ -1,14 +1,16 @@
 const fs = require('fs');
 const http = require('http');
-const { run } = require('haste-test-utils');
 
-const configPath = require.resolve('./fixtures/webpack.config');
+const { setup } = require('haste-test-utils');
+
+const taskPath = require.resolve('../src');
+
+const validConfigPath = require.resolve('./fixtures/webpack.config');
+const invalidConfigPath = require.resolve('./fixtures/webpack.invalid');
 const decoratorPath = require.resolve('./fixtures/decorator');
 const callbackPath = require.resolve('./fixtures/callback');
 
-const { command: webpackDevServer, kill } = run(require.resolve('../src'));
-
-const fileContent = fs.readFileSync(require.resolve('./fixtures/entry')).toString();
+const fileContent = fs.readFileSync(require.resolve('./fixtures/entry'), 'utf8');
 
 const request = url => new Promise((resolve, reject) => {
   const req = http.get(url, (res) => {
@@ -24,78 +26,98 @@ const request = url => new Promise((resolve, reject) => {
   req.on('error', reject);
 });
 
-jest.setTimeout(20000);
-
 describe('haste-webpack-dev-server', () => {
-  afterEach(kill);
+  let test;
 
-  it('should run an http server and serve webpack assets', () => {
-    const { task } = webpackDevServer({ configPath });
+  afterEach(() => test.cleanup());
 
-    return task()
-      .then(async () => {
-        const { data } = await request('http://127.0.0.1:9200/bundle.js');
-        expect(data).toMatch(fileContent);
+  it('should run an http server and serve webpack assets', async () => {
+    test = await setup();
+
+    await test.run(async ({ [taskPath]: webpackDevServer }) => {
+      await webpackDevServer({
+        configPath: validConfigPath,
       });
-  });
-
-  it('should allow configuring port and hostname', () => {
-    const port = 3000;
-    const hostname = 'localhost';
-
-    const { task } = webpackDevServer({
-      configPath,
-      port,
-      hostname,
     });
 
-    return task()
-      .then(async () => {
-        const { data } = await request(`http://${hostname}:${port}/bundle.js`);
-        expect(data).toMatch(fileContent);
-      });
+    const { data } = await request('http://127.0.0.1:9200/bundle.js');
+
+    expect(data).toMatch(fileContent);
   });
 
-  it('should return 404 for assets that don\'t exist', () => {
-    const { task } = webpackDevServer({ configPath });
+  it('should allow configuring port and hostname', async () => {
+    test = await setup();
 
-    return task()
-      .then(async () => {
-        const { res } = await request('http://127.0.0.1:9200/404.js');
-        expect(res.statusCode).toEqual(404);
+    await test.run(async ({ [taskPath]: webpackDevServer }) => {
+      await webpackDevServer({
+        configPath: validConfigPath,
+        hostname: '127.0.0.1',
+        port: 3000,
       });
+    });
+
+    const { data } = await request('http://127.0.0.1:3000/bundle.js');
+
+    expect(data).toMatch(fileContent);
   });
 
-  it('should fail for invalid webpack configurations', () => {
+  it('should return 404 for assets that don\'t exist', async () => {
+    test = await setup();
+
+    await test.run(async ({ [taskPath]: webpackDevServer }) => {
+      await webpackDevServer({
+        configPath: validConfigPath,
+      });
+    });
+
+    const { res } = await request('http://127.0.0.1:9200/404.js');
+
+    expect(res.statusCode).toEqual(404);
+  });
+
+  it('should fail for invalid webpack configurations', async () => {
     expect.assertions(1);
 
-    const { task } = webpackDevServer({
-      configPath: require.resolve('./fixtures/webpack.invalid'),
+    test = await setup();
+
+    await test.run(async ({ [taskPath]: webpackDevServer }) => {
+      try {
+        await webpackDevServer({
+          configPath: invalidConfigPath,
+        });
+      } catch (error) {
+        expect(error.message).toMatch('Invalid configuration object');
+      }
+    });
+  });
+
+  it('should support passing a decorator that accepts the express app', async () => {
+    test = await setup();
+
+    await test.run(async ({ [taskPath]: webpackDevServer }) => {
+      await webpackDevServer({
+        configPath: validConfigPath,
+        decoratorPath,
+      });
     });
 
-    return task()
-      .catch((error) => {
-        expect(error.message).toMatch(/Invalid configuration object/);
-      });
+    const { data } = await request('http://127.0.0.1:9200/foo');
+
+    expect(data).toMatch('bar');
   });
 
-  it('should support passing a decorator that accepts the express app', () => {
-    const { task } = webpackDevServer({ configPath, decoratorPath });
+  it('should support passing a callback that accepts the webpack compiler', async () => {
+    test = await setup();
 
-    return task()
-      .then(async () => {
-        const { data } = await request('http://127.0.0.1:9200/foo');
-        expect(data).toMatch('bar');
+    await test.run(async ({ [taskPath]: webpackDevServer }) => {
+      await webpackDevServer({
+        configPath: validConfigPath,
+        callbackPath,
       });
-  });
+    });
 
-  it('should support passing a callback that accepts the webpack compiler', () => {
-    const { task, stdout } = webpackDevServer({ configPath, callbackPath });
+    await request('http://127.0.0.1:9200/bundle.js');
 
-    return task()
-      .then(async () => {
-        await request('http://127.0.0.1:9200/bundle.js');
-        expect(stdout()).toMatch('1 module');
-      });
+    expect(test.stdio.stdout).toMatch('1 module');
   });
 });

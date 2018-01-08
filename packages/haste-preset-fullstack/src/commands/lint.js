@@ -12,6 +12,6 @@ module.exports = async (configure) => {
 
   await run(
     read({ pattern: `${paths.src}/**/*.js` }),
-    eslint()
+    eslint(),
   );
 };

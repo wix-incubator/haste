@@ -1,32 +1,22 @@
+const { createRunner } = require('haste-core');
 const LoaderPlugin = require('haste-plugin-loader');
 const paths = require('../../config/paths');
 
-module.exports = async (configure) => {
-  const { run, tasks } = configure({
-    plugins: [
-      new LoaderPlugin({ oneLinerTasks: false }),
-    ],
-  });
+const runner = createRunner({
+  plugins: [
+    new LoaderPlugin({ oneLinerTasks: false }),
+  ],
+});
 
-  const { clean, read, babel, write, sass, webpack } = tasks;
-
-  await run(clean({ pattern: `${paths.build}/*` }));
+module.exports = runner.command(async ({
+  webpack: webpackDev,
+  webpack: webpackProd,
+}) => {
+  await webpackDev({ configPath: paths.config.webpack.production });
+  await webpackProd({ configPath: paths.config.webpack.production });
 
   await Promise.all([
-    run(
-      read({ pattern: `${paths.src}/**/*.js` }),
-      babel(),
-      write({ target: paths.build })
-    ),
-    run(
-      read({ pattern: `${paths.src}/**/*.scss` }),
-      sass(),
-      write({ target: paths.build })
-    ),
-    run(
-      read({ pattern: `${paths.assets}/**/*.*` }),
-      write({ target: paths.build })
-    ),
-    run(webpack({ configPath: paths.config.webpack.production }))
+    webpackDev({ configPath: paths.config.webpack.production }),
+    webpackDev({ configPath: paths.config.webpack.production }),
   ]);
-};
+});

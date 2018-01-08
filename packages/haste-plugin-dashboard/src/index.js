@@ -1,10 +1,8 @@
 const Dashboard = require('./dashboard');
 const SequenceLoader = require('haste-plugin-loader/src/sequence-logger/sequence-loader');
-const { generateRunTitle } = require('haste-plugin-loader/src/utils');
 
 module.exports = class DashboardPlugin {
-  constructor({ oneLinerTasks = true, frameRate = 60, tasks = [] } = {}) {
-    this.oneLinerTasks = oneLinerTasks;
+  constructor({ frameRate = 60, tasks = [] } = {}) {
     this.frameRate = frameRate;
     this.tasks = tasks;
   }
@@ -12,69 +10,51 @@ module.exports = class DashboardPlugin {
   apply(runner) {
     const dashboard = new Dashboard({
       tasks: this.tasks,
-      maxPanels: 4
+      maxPanels: 4,
     });
 
-    runner.plugin('start-worker', (worker) => {
-      const log = dashboard.getLogger(worker.name);
-      worker.child.stdout.setEncoding('utf8');
-      worker.child.stderr.setEncoding('utf8');
+    runner.hooks.beforeExecution.tap('connect dashboard', (execution) => {
+      const loader = new SequenceLoader({
+        frameRate: this.frameRate,
+      });
 
-      ['stdout', 'stderr'].forEach(std =>
-        worker.child[std].on('data', log)
-      );
-    });
-
-    const loader = new SequenceLoader({
-      oneLinerTasks: this.oneLinerTasks,
-      frameRate: this.frameRate
-    });
-
-    runner.plugin('start', () => {
       loader.render();
-    });
 
-    runner.plugin('start-run', (runPhase) => {
-      const runTitle = generateRunTitle(runPhase.tasks);
-      const tasksLength = runPhase.tasks.length;
-      const loaderRun = loader.startRun(runTitle, tasksLength);
+      execution.hooks.createTask.tap('start-task', (task) => {
+        const log = dashboard.getLogger(task.name);
 
-      runPhase.tasks.forEach((task) => {
-        let loaderTask;
+        task.pool.stdout.setEncoding('utf8');
+        task.pool.stderr.setEncoding('utf8');
+        // log('hey');
+        ['stdout', 'stderr'].forEach(std =>
+          task.pool[std].on('data', log),
+        );
 
-        task.plugin('start-task', () => {
-          loaderTask = loaderRun.startTask(task.name);
-        });
+        task.hooks.before.tap('before-run', (run) => {
+          const loaderTask = loader.startTask(task.name);
 
-        task.plugin('succeed-task', () => {
-          loaderTask.success(task.name);
-        });
+          run.hooks.success.tap('succeed-run', () => {
+            loaderTask.success();
+          });
 
-        task.plugin('failed-task', () => {
-          loaderTask.failure(task.name);
+          run.hooks.failure.tap('failed-run', (error) => {
+            loaderTask.failure(error);
+          });
         });
       });
 
-      runPhase.plugin('succeed-run', () => {
-        loaderRun.success();
+      execution.hooks.success.tap('finish-success', () => {
+        if (!execution.persistent) {
+          return loader.done();
+        }
+
+        loader.exitAndClear();
+        return dashboard.render();
       });
 
-      runPhase.plugin('failed-run', (error) => {
-        loaderRun.failure(error);
+      execution.hooks.failure.tap('finish-failure', (error) => {
+        loader.exitOnError(error);
       });
-    });
-
-    runner.plugin('finish-success', () => {
-      if (!runner.persistent) {
-        return loader.done();
-      }
-
-      loader.exitAndClear();
-      return dashboard.render();
-    });
-
-    runner.plugin('finish-failure', (error) => {
-      loader.exitOnError(error);
     });
   }
 };

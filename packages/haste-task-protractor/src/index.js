@@ -7,13 +7,12 @@ const WEBDRIVER_BIN = require.resolve('protractor/bin/webdriver-manager');
 const defaultWebdriverOptions = { standalone: true, gecko: 'false' };
 const dargsSettings = { allowCamelCase: true, useEquals: false, ignoreFalse: false };
 
-module.exports =
-  ({ configPath, webdriverManagerOptions = {}, protractorOptions = {} }) => async () => {
-    const webdriverOptions = { ...defaultWebdriverOptions, ...webdriverManagerOptions };
+module.exports = async ({ configPath, webdriverManagerOptions = {}, protractorOptions = {} }) => {
+  const webdriverOptions = { ...defaultWebdriverOptions, ...webdriverManagerOptions };
 
-    const webdriverArgs = dargs(webdriverOptions, dargsSettings);
-    const protractorArgs = dargs(protractorOptions, dargsSettings);
+  const webdriverArgs = dargs(webdriverOptions, dargsSettings);
+  const protractorArgs = dargs(protractorOptions, dargsSettings);
 
-    await execa(WEBDRIVER_BIN, ['update', ...webdriverArgs], { stdio: 'inherit' });
-    await execa(PROTRACTOR_BIN, [...protractorArgs, configPath], { stdio: 'inherit' });
-  };
+  await execa(WEBDRIVER_BIN, ['update', ...webdriverArgs], { stdio: 'inherit' });
+  await execa(PROTRACTOR_BIN, [...protractorArgs, configPath], { stdio: 'inherit' });
+};

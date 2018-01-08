@@ -1,28 +1,37 @@
-const fs = require('fs');
-const path = require('path');
-const tempWrite = require('temp-write');
-const clean = require('../src');
+const { setup } = require('haste-test-utils');
+
+const taskPath = require.resolve('../src');
 
 describe('haste-clean', () => {
+  let test;
+
+  afterEach(() => test.cleanup());
+
   it('should remove all files and folders a file path', async () => {
-    const tempFilename = await tempWrite('foo', 'bar.txt');
+    test = await setup({
+      'foo.txt': 'bar',
+    });
 
-    const task = clean({ pattern: tempFilename });
-
-    return task()
-      .then(() => {
-        expect(fs.existsSync(tempFilename)).toEqual(false);
+    await test.run(async ({ [taskPath]: clean }) => {
+      await clean({
+        pattern: 'foo.txt',
       });
+    });
+
+    expect(test.files['foo.txt'].exists).toEqual(false);
   });
 
   it('should remove all files and folders a from a glob pattern', async () => {
-    const tempFilename = await tempWrite('foo', 'bar.txt');
+    test = await setup({
+      'foo.txt': 'bar',
+    });
 
-    const task = clean({ pattern: path.join(path.dirname(tempFilename), '**/*.*') });
-
-    return task()
-      .then(() => {
-        expect(fs.existsSync(tempFilename)).toEqual(false);
+    await test.run(async ({ [taskPath]: clean }) => {
+      await clean({
+        pattern: '*.txt',
       });
+    });
+
+    expect(test.files['foo.txt'].exists).toEqual(false);
   });
 });

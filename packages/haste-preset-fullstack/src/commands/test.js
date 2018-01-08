@@ -13,13 +13,13 @@ module.exports = async (configure, { watch: shouldWatch }) => {
 
   await run(
     read({ pattern: `${paths.test}/**/*.spec.js` }),
-    mocha()
+    mocha(),
   );
 
   if (shouldWatch) {
     watch([`${paths.src}/**/*.js`, `${paths.test}/**/*.js`], changed => run(
       read({ pattern: changed }),
-      mocha()
+      mocha(),
     ));
   }
 };

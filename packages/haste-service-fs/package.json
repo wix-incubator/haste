@@ -1,0 +1,15 @@
+{
+  "name": "haste-service-fs",
+  "version": "0.2.0",
+  "main": "./src/index.js",
+  "author": "Ran Yitzhaki",
+  "engines": {
+    "node": ">=8"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "globby": "^6.1.0",
+    "mkdirp": "^0.5.1",
+    "tempy": "^0.2.1"
+  }
+}

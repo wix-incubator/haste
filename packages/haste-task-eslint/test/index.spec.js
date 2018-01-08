@@ -1,53 +1,51 @@
-const { run } = require('haste-test-utils');
-const eslint = require('../src');
-const tempy = require('tempy');
+const { setup } = require('haste-test-utils');
+
+const taskPath = require.resolve('../src');
 
 describe('haste-eslint', () => {
+  let test;
+
+  afterEach(() => test.cleanup());
+
   it('should pass for valid files', async () => {
-    const task = eslint();
+    test = await setup();
 
-    const file = {
-      filename: require.resolve('./fixtures/valid.js'),
-    };
-
-    const result = await task([file]);
-    expect(result).toEqual(undefined);
+    await test.run(async ({ [taskPath]: eslint }) => {
+      await eslint({
+        pattern: require.resolve('./fixtures/valid.js'),
+      });
+    });
   });
 
   it('should fail for invalid files', async () => {
     expect.assertions(1);
 
-    const task = eslint({ rules: { 'no-console': 'error' } });
+    test = await setup();
 
-    const file = {
-      filename: require.resolve('./fixtures/valid.js'),
-    };
-    try {
-      await task([file]);
-    } catch (result) {
-      expect(result).toMatch(/Unexpected console statement/);
-    }
+    await test.run(async ({ [taskPath]: eslint }) => {
+      try {
+        await eslint({
+          pattern: require.resolve('./fixtures/valid.js'),
+          options: { rules: { 'no-console': 'error' } },
+        });
+      } catch (error) {
+        expect(error.message).toMatch('Unexpected console statement');
+      }
+    });
   });
 
   it('should output fixes in case a "fix" option is passed', async () => {
-    const cwd = tempy.directory();
-    const { command, kill, setup } = run(require.resolve('../src'), { cwd });
-    const { task } = command({ fix: true, rules: { 'no-regex-spaces': 'error' } });
-
-    const filename = 'fixable.js';
-
-    const fileSystem = setup({
-      [filename]: '/foo  bar/'
+    test = await setup({
+      'fixable.js': '/foo  bar/',
     });
 
-    const file = { filename };
+    await test.run(async ({ [taskPath]: eslint }) => {
+      await eslint({
+        pattern: '*.js',
+        options: { fix: true, rules: { 'no-regex-spaces': 'error' } },
+      });
+    });
 
-    try {
-      const result = await task([file]);
-      expect(result).toEqual(undefined);
-      expect(fileSystem['fixable.js']).toBe('/foo {2}bar/');
-    } finally {
-      kill();
-    }
+    expect(test.files['fixable.js'].content).toBe('/foo {2}bar/');
   });
 });

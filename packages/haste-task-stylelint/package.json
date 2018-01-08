@@ -1,6 +1,6 @@
 {
   "name": "haste-task-stylelint",
-  "version": "0.1.22",
+  "version": "0.2.1",
   "main": "./src/index.js",
   "author": "Ronen Amiel",
   "engines": {
@@ -9,5 +9,8 @@
   "license": "MIT",
   "dependencies": {
     "stylelint": "^8.2.0"
+  },
+  "devDependencies": {
+    "haste-test-utils": "^0.2.1"
   }
 }

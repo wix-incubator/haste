@@ -1,63 +1,78 @@
 const path = require('path');
-const { run } = require('haste-test-utils');
+const { setup } = require('haste-test-utils');
 
-const { command, kill } = run(require.resolve('../src'));
+const taskPath = require.resolve('../src');
 
-jest.setTimeout(20000);
+const passing = path.resolve(__dirname, './fixtures/pass');
+const failing = path.resolve(__dirname, './fixtures/fail');
+const empty = path.resolve(__dirname, './fixtures/empty');
 
 describe('haste-jest', () => {
-  afterEach(kill);
+  let test;
+
+  afterEach(() => test.cleanup());
 
   it('should resolve for a passing test', async () => {
-    const rootDir = path.resolve(__dirname, './fixtures/pass');
+    test = await setup();
 
     const config = {
-      rootDir,
+      rootDir: passing,
     };
 
-    const projects = [rootDir];
+    const projects = [passing];
 
-    const { task, stderr } = command({ config, projects });
-
-    return task()
-      .then(() => {
-        expect(stderr()).toMatch('1 passed');
+    await test.run(async ({ [taskPath]: jest }) => {
+      await jest({
+        config,
+        projects,
       });
+    });
+
+    expect(test.stdio.stderr).toMatch('1 passed');
   });
 
   it('should reject for a failing test', async () => {
-    expect.assertions(1);
+    expect.assertions(2);
 
-    const rootDir = path.resolve(__dirname, './fixtures/fail');
+    test = await setup();
 
     const config = {
-      rootDir,
+      rootDir: failing,
     };
 
-    const projects = [rootDir];
+    const projects = [failing];
 
-    const { task, stderr } = command({ config, projects });
-
-    return task()
-      .catch(() => {
-        expect(stderr()).toMatch('1 failed');
-      });
+    await test.run(async ({ [taskPath]: jest }) => {
+      try {
+        await jest({
+          config,
+          projects,
+        });
+      } catch (error) {
+        expect(error.message).toMatch('Jest failed with 1 failing tests');
+        expect(test.stdio.stderr).toMatch('1 failed');
+      }
+    });
   });
 
   it('should resolve if there are no tests', async () => {
-    const rootDir = path.resolve(__dirname, './fixtures/empty');
+    test = await setup();
 
     const config = {
-      rootDir,
+      rootDir: empty,
     };
 
-    const projects = [rootDir];
+    const projects = [empty];
 
-    const { task, stdout } = command({ config, projects });
-
-    return task()
-      .then(() => {
-        expect(stdout()).toMatch('No tests found');
-      });
+    await test.run(async ({ [taskPath]: jest }) => {
+      try {
+        await jest({
+          config,
+          projects,
+        });
+      } catch (error) {
+        expect(test.stdio.stdout).toMatch('No tests found');
+      }
+    });
   });
 });

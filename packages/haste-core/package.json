@@ -1,16 +1,21 @@
 {
   "name": "haste-core",
-  "version": "0.1.22",
-  "main": "src/haste.js",
+  "version": "0.2.1",
+  "main": "src/index.js",
   "author": "Ronen Amiel",
   "engines": {
     "node": ">=8"
   },
   "license": "MIT",
+  "devDependencies": {
+    "haste-test-utils-core": "^0.2.0",
+    "retry-promise": "1.0.0"
+  },
   "dependencies": {
     "chokidar": "^1.7.0",
-    "resolve-from": "^3.0.0",
-    "tapable": "^0.2.8",
-    "uuid": "^3.1.0"
+    "haste-plugin-logger": "^0.2.0",
+    "haste-worker-farm": "^0.2.1",
+    "resolve-from": "^4.0.0",
+    "tapable": "1.0.0-beta.3"
   }
 }

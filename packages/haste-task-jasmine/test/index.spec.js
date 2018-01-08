@@ -1,130 +1,138 @@
-const path = require('path');
-const { run } = require('haste-test-utils');
+const { setup } = require('haste-test-utils');
 
-const { command: jasmine, kill } = run(require.resolve('../src'));
+const taskPath = require.resolve('../src');
+
+const passing = require.resolve('./fixtures/pass');
+const failing = require.resolve('./fixtures/fail');
+const reportersPath = require.resolve('./fixtures/reporters');
+const requireModule = require.resolve('./fixtures/require-module');
 
 describe('haste-jasmine', () => {
-  afterEach(kill);
+  let test;
+
+  afterEach(() => test.cleanup());
 
   it('should run a passing test and resolve', async () => {
-    const { task, stdout } = jasmine();
+    test = await setup();
 
-    const file = {
-      filename: require.resolve('./fixtures/pass'),
-    };
+    await test.run(async ({ [taskPath]: jasmine }) => {
+      await jasmine({
+        pattern: passing,
+      });
+    });
 
-    await task([file]);
-    expect(stdout()).toMatch('1 spec, 0 failures');
+    expect(test.stdio.stdout).toMatch('1 spec, 0 failures');
   });
 
   it('should run a failing test and reject', async () => {
     expect.assertions(1);
 
-    const { task, stdout } = jasmine();
+    test = await setup();
 
-    const file = {
-      filename: require.resolve('./fixtures/fail'),
-    };
-
-    try {
-      await task([file]);
-    } catch (error) {
-      expect(stdout()).toMatch('1 spec, 1 failure');
-    }
+    await test.run(async ({ [taskPath]: jasmine }) => {
+      try {
+        await jasmine({
+          pattern: failing,
+        });
+      } catch (error) {
+        expect(test.stdio.stdout).toMatch('1 spec, 1 failure');
+      }
+    });
   });
 
   it('should support passing a configuration object', async () => {
+    test = await setup();
+
     const config = {
       helpers: [
-        require.resolve('./fixtures/setup')
-      ]
-    };
-    const { task, stdout } = jasmine({ config });
-
-    const file = {
-      filename: require.resolve('./fixtures/pass'),
+        require.resolve('./fixtures/setup'),
+      ],
     };
 
-    await task([file]);
-    expect(stdout()).toMatch('setup');
+    await test.run(async ({ [taskPath]: jasmine }) => {
+      await jasmine({
+        pattern: passing,
+        config,
+      });
+    });
+
+    expect(test.stdio.stdout).toMatch('setup');
   });
 
   it('should support passing a path for repoters to use', async () => {
-    const { task, stdout } = jasmine({
-      reportersPath: require.resolve('./fixtures/reporters')
+    test = await setup();
+
+    await test.run(async ({ [taskPath]: jasmine }) => {
+      await jasmine({
+        pattern: passing,
+        reportersPath,
+      });
     });
 
-    const file = {
-      filename: require.resolve('./fixtures/pass'),
-    };
-
-    await task([file]);
-    expect(stdout()).toMatch('running suite with 1');
-  });
-
-  it('should run a passing test with a relative path and a cwd', async () => {
-    const { task, stdout } = jasmine();
-
-    const file = {
-      filename: 'pass',
-      cwd: path.join(__dirname, 'fixtures'),
-    };
-
-    await task([file]);
-    expect(stdout()).toMatch('1 spec, 0 failures');
+    expect(test.stdio.stdout).toMatch('running suite with 1');
   });
 
   it('should clean require cache after a successful run', async () => {
-    const { task, stdout } = jasmine();
+    test = await setup();
 
-    const file = {
-      filename: require.resolve('./fixtures/pass'),
-    };
+    await test.run(async ({ [taskPath]: jasmine }) => {
+      await jasmine({
+        pattern: passing,
+        reportersPath,
+      });
 
-    await task([file]);
-    expect(stdout()).toMatch('1 spec, 0 failures');
+      expect(test.stdio.stdout).toMatch('1 spec, 0 failures');
 
-    await task([file]);
-    expect(stdout()).not.toMatch('No specs found');
+      await jasmine({
+        pattern: passing,
+        reportersPath,
+      });
+
+      expect(test.stdio.stdout).not.toMatch('No specs found');
+    });
   });
 
   it('should clean require cache after a failing run', async () => {
     expect.assertions(2);
 
-    const { task, stdout } = jasmine();
+    test = await setup();
 
-    const passing = {
-      filename: require.resolve('./fixtures/pass'),
-    };
+    await test.run(async ({ [taskPath]: jasmine }) => {
+      try {
+        await jasmine({
+          pattern: failing,
+          reportersPath: require.resolve('./fixtures/reporters'),
+        });
+      } catch (error) {
+        expect(test.stdio.stdout).toMatch('1 spec, 1 failure');
+      }
 
-    const failing = {
-      filename: require.resolve('./fixtures/fail'),
-    };
-
-    try {
-      await task([failing]);
-    } catch (error) {
-      expect(stdout()).toMatch('1 spec, 1 failure');
-    }
-
-    try {
-      await task([failing, passing]);
-    } catch (error) {
-      expect(stdout()).toMatch('2 specs, 1 failure');
-    }
+      try {
+        await jasmine({
+          pattern: [failing, passing],
+          reportersPath: require.resolve('./fixtures/reporters'),
+        });
+      } catch (error) {
+        expect(test.stdio.stdout).toMatch('2 specs, 1 failure');
+      }
+    });
   });
 
   it('should not clean require cache between runs for modules in node_modules', async () => {
-    const { task, stdout } = jasmine();
+    test = await setup();
 
-    const file = {
-      filename: require.resolve('./fixtures/require-module'),
-    };
+    await test.run(async ({ [taskPath]: jasmine }) => {
+      await jasmine({
+        pattern: requireModule,
+      });
 
-    await task([file]);
-    expect(stdout()).toMatch('hey there');
+      expect(test.stdio.stdout).toMatch('hey there');
 
-    await task([file]);
-    expect(stdout().match(/hey there/gi).length).toEqual(1);
+      await jasmine({
+        pattern: requireModule,
+      });
+
+      expect(test.stdio.stdout.match(/hey there/gi).length).toEqual(1);
+    });
   });
 });

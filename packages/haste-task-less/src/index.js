@@ -4,17 +4,20 @@ const render = (content, options) => new Promise((resolve, reject) => {
   less.render(content, options, (err, result) => err ? reject(err) : resolve(result));
 });
 
-module.exports = options => (input) => {
+module.exports = async ({ pattern, target, options }, { fs }) => {
+  const files = await fs.read({ pattern });
+
   return Promise.all(
-    input
+    files
       .map(async ({ filename, content }) => {
         const { css, map } = await render(content, Object.assign({ filename }, options));
 
-        return {
+        return fs.write({
+          target,
           filename,
           content: css,
-          map: map ? JSON.parse(map) : undefined,
-        };
-      })
+          map,
+        });
+      }),
   );
 };

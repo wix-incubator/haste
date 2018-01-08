@@ -1,76 +1,76 @@
-const fs = require('fs');
-const tslint = require('../src');
+const { setup } = require('haste-test-utils');
+
+const taskPath = require.resolve('../src');
 
 const pathToValidFile = require.resolve('./fixtures/valid.ts');
 const pathToInvalidFile = require.resolve('./fixtures/invalid.ts');
 const pathToConfiguration = require.resolve('./fixtures/tslint.json');
 
 describe('haste-tslint', () => {
-  it('should resolve for valid files', () => {
-    const task = tslint({
-      configurationFilePath: pathToConfiguration,
-    });
+  let test;
 
-    const file = {
-      filename: pathToValidFile,
-      content: fs.readFileSync(pathToValidFile, 'utf-8'),
-    };
+  afterEach(() => test.cleanup());
 
-    return task([file]);
-  });
+  it('should resolve for valid files', async () => {
+    test = await setup();
 
-  it('should reject for valid files', () => {
-    expect.assertions(1);
-
-    const task = tslint({
-      configurationFilePath: pathToConfiguration,
-    });
-
-    const file = {
-      filename: pathToInvalidFile,
-      content: fs.readFileSync(pathToInvalidFile, 'utf-8'),
-    };
-
-    return task([file])
-      .catch((error) => {
-        expect(error).toMatch('Calls to \'console.error\' are not allowed');
+    await test.run(async ({ [taskPath]: tslint }) => {
+      await tslint({
+        pattern: pathToValidFile,
+        configurationFilePath: pathToConfiguration,
       });
+    });
   });
 
-  it('should reject if a tslint.json could not be found', () => {
+  it('should reject for valid files', async () => {
     expect.assertions(1);
 
-    const task = tslint({
-      configurationFilePath: 'no-file',
+    test = await setup();
+
+    await test.run(async ({ [taskPath]: tslint }) => {
+      try {
+        await tslint({
+          pattern: pathToInvalidFile,
+          configurationFilePath: pathToConfiguration,
+        });
+      } catch (error) {
+        expect(error.message).toMatch('Calls to \'console.error\' are not allowed');
+      }
     });
+  });
 
-    const file = {
-      filename: pathToValidFile,
-      content: fs.readFileSync(pathToValidFile, 'utf-8'),
-    };
+  it('should reject if a tslint.json could not be found', async () => {
+    expect.assertions(1);
 
-    return task([file])
-      .catch((error) => {
+    test = await setup();
+
+    await test.run(async ({ [taskPath]: tslint }) => {
+      try {
+        await tslint({
+          pattern: pathToValidFile,
+          configurationFilePath: 'no-file',
+        });
+      } catch (error) {
         expect(error.message).toMatch('Could not find config file');
-      });
+      }
+    });
   });
 
-  it('should pass configuration to the linter', () => {
+  it('should pass configuration to the linter', async () => {
     expect.assertions(1);
 
-    const task = tslint({
-      options: { formatter: 'verbose' },
-      configurationFilePath: pathToConfiguration,
+    test = await setup();
+
+    await test.run(async ({ [taskPath]: tslint }) => {
+      try {
+        await tslint({
+          pattern: pathToInvalidFile,
+          configurationFilePath: pathToConfiguration,
+          options: { formatter: 'verbose' },
+        });
+      } catch (error) {
+        expect(error.message).toMatch('ERROR: (no-console)');
+      }
     });
-
-    const file = {
-      filename: pathToInvalidFile,
-      content: fs.readFileSync(pathToInvalidFile, 'utf-8'),
-    };
-
-    return task([file])
-      .catch((error) => {
-        expect(error).toMatch('ERROR: (no-console)');
-      });
   });
 });

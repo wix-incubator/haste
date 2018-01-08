@@ -1,99 +1,108 @@
 const fs = require('fs');
 const path = require('path');
-const tempy = require('tempy');
-const mkdirp = require('mkdirp');
-const copy = require('../src');
+const { setup } = require('haste-test-utils');
+
+const taskPath = require.resolve('../src');
 
 describe('haste-copy', () => {
-  let projectDir;
-  const target = 'statics';
+  let test;
 
-  const copyToProject = (from, to) => {
-    const dest = path.join(projectDir, to);
-    mkdirp.sync(path.dirname(dest));
-    fs.copyFileSync(from, dest);
-  };
-
-  beforeEach(() => {
-    projectDir = tempy.directory();
-  });
+  afterEach(() => test.cleanup());
 
   it('should copy files into target directory using absolute target path', async () => {
-    const file = { filename: 'file.txt', cwd: projectDir };
-    const sourcePath = require.resolve(`./fixtures/${file.filename}`);
-    const absoluteTargetPath = path.join(projectDir, target);
-    const sourceContent = fs.readFileSync(sourcePath, 'utf8');
+    test = await setup({
+      'test.txt': 'hello world',
+    });
 
-    copyToProject(sourcePath, file.filename);
+    await test.run(async ({ [taskPath]: copy }) => {
+      await copy({
+        pattern: '*.txt',
+        target: path.join(test.cwd, 'dist'),
+      });
+    });
 
-    const task = copy({ target: absoluteTargetPath, cwd: projectDir });
-
-    await task([file]);
-
-    const result = fs.readFileSync(path.join(projectDir, target, file.filename), 'utf8');
-
-    expect(result).toEqual(sourceContent);
+    expect(test.files['dist/test.txt'].content).toEqual('hello world');
   });
 
   it('should copy files into target directory using relative target path', async () => {
-    const file = { filename: 'file.txt', cwd: projectDir };
-    const sourcePath = require.resolve(`./fixtures/${file.filename}`);
-    const sourceContent = fs.readFileSync(sourcePath, 'utf8');
+    test = await setup({
+      'test.txt': 'hello world',
+    });
 
-    copyToProject(sourcePath, file.filename);
+    await test.run(async ({ [taskPath]: copy }) => {
+      await copy({
+        pattern: '*.txt',
+        target: 'dist',
+      });
+    });
 
-    const task = copy({ target, cwd: projectDir });
-
-    await task([file]);
-
-    const result = fs.readFileSync(path.join(projectDir, target, file.filename), 'utf8');
-
-    expect(result).toEqual(sourceContent);
+    expect(test.files['dist/test.txt'].content).toEqual('hello world');
   });
 
   it('should copy binary files', async () => {
-    const file = { filename: 'logo.png', cwd: projectDir };
-    const sourcePath = require.resolve(`./fixtures/${file.filename}`);
-    const sourceContent = fs.readFileSync(sourcePath, 'utf8');
+    const filepath = path.join(__dirname, './fixtures', 'logo.png');
+    const content = fs.readFileSync(filepath, 'utf8');
 
-    copyToProject(sourcePath, file.filename);
+    test = await setup({
+      'logo.png': content,
+    });
 
-    const task = copy({ target, cwd: projectDir });
+    await test.run(async ({ [taskPath]: copy }) => {
+      await copy({
+        pattern: '*.png',
+        target: 'dist',
+      });
+    });
 
-    await task([file]);
-
-    const result = fs.readFileSync(path.join(projectDir, target, file.filename), 'utf8');
-
-    expect(result).toEqual(sourceContent);
+    expect(test.files['dist/logo.png'].content).toEqual(content);
   });
 
   it('should copy a file and create the directory structure if it does not exist', async () => {
-    const filename = './fixtures/logo.png';
-    const file = { filename, cwd: projectDir };
-    const sourcePath = require.resolve(filename);
-    const sourceContent = fs.readFileSync(sourcePath, 'utf8');
+    test = await setup({
+      'folder/structure/test.txt': 'hello world',
+    });
 
-    copyToProject(sourcePath, filename);
+    await test.run(async ({ [taskPath]: copy }) => {
+      await copy({
+        pattern: '**/*.txt',
+        target: 'dist',
+      });
+    });
 
-    const task = copy({ target, cwd: projectDir });
-
-    await task([file]);
-
-    const result = fs.readFileSync(path.join(projectDir, target, file.filename), 'utf8');
-
-    expect(result).toEqual(sourceContent);
+    expect(test.files['dist/folder/structure/test.txt'].content).toEqual('hello world');
   });
 
-  it('should throw an error if the source file does not exist', async () => {
-    expect.assertions(1);
+  it('should copy files inside of "source" option into target directory when source is relative to cwd', async () => {
+    test = await setup({
+      'folder/structure/test.txt': 'hello world',
+    });
 
-    const task = copy({ target, cwd: projectDir });
-    const file = { filename: 'does/not/exists/file.txt', cwd: projectDir };
+    await test.run(async ({ [taskPath]: copy }) => {
+      await copy({
+        pattern: '**/*.txt',
+        source: 'folder',
+        target: 'dist',
+      });
+    });
 
-    try {
-      await task([file]);
-    } catch (error) {
-      expect(error.code).toEqual('ENOENT');
-    }
+    expect(test.files['dist/structure/test.txt'].content).toEqual('hello world');
+  });
+
+  it('should copy files inside of "source" option into target directory when source is absolute', async () => {
+    test = await setup({
+      'folder/structure/test.txt': 'hello world',
+    });
+
+    const absoluteSource = path.join(test.cwd, 'folder');
+
+    await test.run(async ({ [taskPath]: copy }) => {
+      await copy({
+        pattern: '**/*.txt',
+        source: absoluteSource,
+        target: 'dist',
+      });
+    });
+
+    expect(test.files['dist/structure/test.txt'].content).toEqual('hello world');
   });
 });

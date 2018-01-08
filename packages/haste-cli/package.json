@@ -1,7 +1,6 @@
 {
   "name": "haste-cli",
-  "version": "0.1.22",
-  "main": "index.js",
+  "version": "0.2.0",
   "author": "Ronen Amiel",
   "engines": {
     "node": ">=8"
@@ -11,11 +10,13 @@
     "haste": "./bin/haste.js"
   },
   "dependencies": {
-    "cosmiconfig": "^2.2.2",
-    "haste-core": "^0.1.22",
+    "import-from": "^2.1.0",
     "lodash": "^4.17.4",
-    "resolve-from": "^3.0.0",
+    "resolve-from": "^4.0.0",
     "yargs": "^8.0.2"
+  },
+  "peerDependencies": {
+    "haste-core": "^0.1.13"
   },
   "devDependencies": {
     "execa": "^0.8.0"

@@ -1,73 +1,44 @@
-const { fork } = require('child_process');
-const Tapable = require('tapable');
-const { resolveTaskName } = require('./utils');
-const Task = require('./task');
-const Worker = require('./worker');
-const RunPhase = require('./run-phase');
-const WorkerError = require('./errors/worker-error');
+const os = require('os');
+const chokidar = require('chokidar');
+const { AsyncSeriesHook } = require('tapable');
+const { Farm } = require('haste-worker-farm');
+const Execution = require('./execution');
 
-const WORKER_BIN = require.resolve('./worker-bin');
-const WORKER_OPTIONS = { silent: true, env: Object.assign({ FORCE_COLOR: true }, process.env) };
 
-module.exports = class Runner extends Tapable {
-  constructor(context) {
-    super();
+module.exports = class Runner {
+  constructor() {
+    this.farm = new Farm({ maxConcurrentCalls: os.cpus().length });
 
-    this.context = context;
-    this.workers = {};
-    this.idle = false;
-
-    process.on('exit', () => this.close());
+    this.hooks = {
+      beforeExecution: new AsyncSeriesHook(['execution']),
+    };
   }
 
-  close() {
-    Object.values(this.workers)
-      .forEach((worker) => {
-        worker.child.kill('SIGTERM');
+  command(action, { persistent = false } = {}) {
+    return async ({ context, workerOptions } = {}) => {
+      const execution = new Execution({
+        action,
+        context,
+        persistent,
+        workerOptions,
+        farm: this.farm,
       });
+
+      await this.hooks.beforeExecution.promise(execution);
+
+      const result = await execution.execute();
+
+      return {
+        result,
+        persistent,
+      };
+    };
   }
 
-  resolveWorker(name) {
-    const modulePath = resolveTaskName(name, this.context);
+  watch({ pattern, cwd = process.cwd(), ignoreInitial = true }, callback) {
+    const watcher = chokidar.watch(pattern, { ignoreInitial, cwd })
+      .on('all', (event, path) => callback(path));
 
-    if (this.workers[modulePath]) {
-      return this.workers[modulePath];
-    }
-
-    const child = fork(WORKER_BIN, [modulePath], WORKER_OPTIONS);
-    const worker = new Worker({ child, modulePath, name });
-
-    this.applyPlugins('start-worker', worker);
-
-    this.workers[modulePath] = worker;
-
-    return worker;
-  }
-
-  run(...taskDefs) {
-    const tasks = taskDefs
-      .map(({ task: name, options, metadata }) => {
-        const worker = this.resolveWorker(name);
-        const task = new Task({ options, worker, metadata });
-
-        return task;
-      });
-
-    const runPhase = new RunPhase({ tasks });
-
-    this.applyPlugins('start-run', runPhase);
-
-    return runPhase.run()
-      .then((results) => {
-        runPhase.applyPlugins('succeed-run', results);
-        return results;
-      })
-      .catch((error) => {
-        runPhase.applyPlugins('failed-run', error);
-
-        if (!this.persistent) {
-          throw new WorkerError(error);
-        }
-      });
+    return watcher;
   }
 };

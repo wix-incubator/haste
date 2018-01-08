@@ -3,21 +3,32 @@ const resolveFrom = require('resolve-from');
 
 const HASTE_TASK_PREFIX_REGEX = /^(?!@|[^/]+\/|haste-task-)/;
 
-module.exports.flatten = list => list.reduce((sub, elm) => sub.concat(elm), []);
-
-const standardizeTaskName = module.exports.standardizeTaskName = (name) => {
-  // example -> haste-task-example
-  return name.replace(HASTE_TASK_PREFIX_REGEX, 'haste-task-');
+const standardizeTaskName = (name) => {
+  return camelCaseToDash(
+    name.replace(HASTE_TASK_PREFIX_REGEX, 'haste-task-'),
+  );
 };
+
+const camelCaseToDash = str => str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+
+const isPath = str => path.basename(str) !== str;
 
 module.exports.resolveTaskName = (taskName, runContext) => {
   if (path.isAbsolute(taskName)) {
-    return taskName;
+    try {
+      return require.resolve(taskName);
+    } catch (error) {
+      throw new Error(`Cannot resolve task ${taskName}`);
+    }
   }
 
-  return resolveFrom(runContext, standardizeTaskName(taskName));
+  const resolvedTaskName = !isPath(taskName) ? standardizeTaskName(taskName) : taskName;
+
+  try {
+    return resolveFrom(runContext, resolvedTaskName);
+  } catch (error) {
+    throw new Error(`Cannot resolve task ${taskName} in ${runContext}`);
+  }
 };
 
-module.exports.camelCaseToDash = str => str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-
-module.exports.isPath = str => path.basename(str) !== str;
+module.exports.flatten = list => list.reduce((sub, elm) => sub.concat(elm), []);

@@ -3,93 +3,106 @@ const execa = require('execa');
 
 const HASTE_BIN = require.resolve('../bin/haste');
 
-function run({ command, presetPath }) {
-  return execa(process.execPath, [HASTE_BIN, command], {
-    cwd: path.join(__dirname, presetPath),
-  });
+function run({ command = '', args = [], cwd } = {}) {
+  return execa(process.execPath, [HASTE_BIN, command, ...args], { cwd });
 }
 
+const simplePresetPath = require.resolve('./fixtures/simple-preset');
+
 describe('haste-cli', () => {
-  it('should run the preset passed from a --preset option', async () => {
-    const result = await execa(process.execPath, [HASTE_BIN, 'build', '--preset', 'haste-preset-basic'], {
-      cwd: path.join(__dirname, './fixtures/cli-configured'),
-    });
+  expect.assertions(2);
 
-    expect(result.stdout).toMatch(/running build.../);
-  });
-
-  it('should run the preset passed from a -p option', async () => {
-    const result = await execa(process.execPath, [HASTE_BIN, 'build', '-p', 'haste-preset-basic'], {
-      cwd: path.join(__dirname, './fixtures/cli-configured'),
-    });
-
-    expect(result.stdout).toMatch(/running build.../);
-  });
-
-  it('should normalize preset name', async () => {
-    const result = await execa(process.execPath, [HASTE_BIN, 'build', '--preset', 'basic'], {
-      cwd: path.join(__dirname, './fixtures/cli-configured'),
-    });
-
-    expect(result.stdout).toMatch(/running build.../);
-  });
-
-  it('should not normalize preset name if it is an absolute path', async () => {
-    const absolutePresetPath = require.resolve('./fixtures/basic/node_modules/haste-preset-basic');
-
-    const result = await execa(process.execPath, [HASTE_BIN, 'build', '--preset', absolutePresetPath], {
-      cwd: path.join(__dirname, './fixtures/cli-configured'),
-    });
-
-    expect(result.stdout).toMatch(/running build.../);
-  });
-
-  it('should throw if no "preset" was configured (via cli/config)', async () => {
-    expect.assertions(2);
-
+  it('should fail if no command was passed', async () => {
     try {
-      await run({ presetPath: './fixtures/no-preset-field', command: 'build' });
+      await run();
     } catch (error) {
       expect(error.code).toEqual(1);
-      expect(error.message).toMatch(/you must pass a preset/);
+      expect(error.message).toMatch('You must specify a command for Haste to run');
     }
   });
 
-  it('should throw if requested preset was not found', async () => {
+  it('should fail if no preset was passed', async () => {
     expect.assertions(2);
 
     try {
-      await run({ presetPath: './fixtures/preset-not-found', command: 'build' });
+      await run({
+        command: 'build',
+      });
     } catch (error) {
       expect(error.code).toEqual(1);
-      expect(error.message).toMatch(/Cannot find module 'haste-preset-some-preset'/);
+      expect(error.message).toMatch('You must pass a preset through cli option "--preset", .hasterc, or package.json configs');
     }
   });
 
-  it('should throw if requested preset is not supporting the command', async () => {
+  it('should fail if requested preset could not be found', async () => {
     expect.assertions(2);
 
     try {
-      await run({ presetPath: './fixtures/basic', command: 'start' });
+      await run({
+        command: 'build',
+        args: ['--preset', 'no-preset'],
+      });
     } catch (error) {
       expect(error.code).toEqual(1);
-      expect(error.message).toMatch(/haste-preset-basic doesn't support command start/);
+      expect(error.message).toMatch('Unable to find "no-preset", please make sure it is installed');
     }
   });
 
-  it('should run a successful preset command and resolve', async () => {
-    const result = await run({ presetPath: './fixtures/basic', command: 'build' });
-    expect(result.stdout).toMatch(/running build.../);
+  it('should fail if requested preset does not support passed command', async () => {
+    expect.assertions(2);
+
+    const command = 'no-action';
+
+    try {
+      await run({
+        command,
+        args: ['--preset', simplePresetPath],
+      });
+    } catch (error) {
+      expect(error.code).toEqual(1);
+      expect(error.message).toMatch(`Preset "${simplePresetPath}" doesn't support command "${command}"`);
+    }
   });
 
-  it('should run an unsuccessful preset command and reject', async () => {
+  it('should fail if preset action failed', async () => {
     expect.assertions(2);
 
     try {
-      await run({ presetPath: './fixtures/basic', command: 'test' });
+      await run({
+        command: 'failing',
+        args: ['--preset', simplePresetPath],
+      });
     } catch (error) {
       expect(error.code).toEqual(1);
-      expect(error.message).toMatch(/running test.../);
+      expect(error.message).toMatch('Error: failing action');
     }
+  });
+
+  it('should resolve if preset action was successful', async () => {
+    const result = await run({
+      command: 'passing',
+      args: ['--preset', simplePresetPath],
+    });
+
+    expect(result.stdout).toEqual('passing action');
+  });
+
+  it('should support passing relative preset name', async () => {
+    const result = await run({
+      command: 'passing',
+      args: ['--preset', 'basic'],
+      cwd: path.join(__dirname, './fixtures/basic'),
+    });
+
+    expect(result.stdout).toMatch('passing action');
+  });
+
+  it('should support passing preset name from package.json', async () => {
+    const result = await run({
+      command: 'passing',
+      cwd: path.join(__dirname, './fixtures/basic-package-json'),
+    });
+
+    expect(result.stdout).toMatch('passing action');
   });
 });
