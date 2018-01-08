@@ -58,7 +58,7 @@ describe.skip('haste-protractor', () => {
       expect(passedArgs).toEqual(expectedArgs);
     });
 
-    it('should call node with correct flags when debug falg is on', async () => {
+    it('should call protractor with correct options when options are passed', async () => {
       const protractorOptions = { framework: 'mocha', debug: true, specs: 'e2e.test.js' };
       await protractor({ protractorOptions, configPath: 'foo/protractor.conf' })();
 
