@@ -289,4 +289,26 @@ describe('haste', () => {
       expect(test.stdio.stdout).toMatch('successful');
     });
   });
+
+  describe('plugins', () => {
+    it('should pass runnerOptions as a second argument on a task run and get it from a plugin', async () => {
+      expect.assertions(1);
+
+      const title = 'tasky';
+
+      test = await setup();
+
+      test.runner.hooks.beforeExecution.tap('testing', (execution) => {
+        execution.hooks.createTask.tap('testing', (task) => {
+          task.hooks.before.tap('testing', (run) => {
+            expect(run.runnerOptions.title).toEqual(title);
+          });
+        });
+      });
+
+      await test.run(async ({ [successfulPath]: successful }) => {
+        await successful({}, { title });
+      });
+    });
+  });
 });

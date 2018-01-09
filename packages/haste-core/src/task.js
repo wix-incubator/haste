@@ -18,9 +18,10 @@ module.exports = class Task {
       this.pool.kill();
     });
 
-    this.api = async (options) => {
+    this.api = async (taskOptions, runnerOptions) => {
       const run = {
-        options,
+        taskOptions,
+        runnerOptions,
         hooks: {
           success: new AsyncSeriesWaterfallHook(['options']),
           failure: new AsyncSeriesWaterfallHook(['options']),
@@ -30,7 +31,7 @@ module.exports = class Task {
       await this.hooks.before.promise(run);
 
       try {
-        const result = await this.pool.send({ options });
+        const result = await this.pool.send({ taskOptions });
         const newResult = await run.hooks.success.promise(result);
 
         return newResult;
