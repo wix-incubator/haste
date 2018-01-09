@@ -29,5 +29,5 @@ module.exports.createSetup = createRunner => async (fsObject) => {
     },
   });
 
-  return { run, files, stdio, cwd, cleanup };
+  return { run, files, stdio, cwd, cleanup, runner };
 };
