@@ -35,14 +35,14 @@ module.exports = class Pool {
     });
   }
 
-  async send({ options }) {
+  async send({ taskOptions }) {
     if (this.ending) {
       throw new Error('Farm has ended, no more calls can be done to it');
     }
 
     return this.farm.request(async () => {
       const worker = this.resolveWorker() || this.forkWorker();
-      const result = await worker.send({ options });
+      const result = await worker.send({ options: taskOptions });
 
       const wrap = f => (...args) => this.farm.request(() => f(...args));
 
