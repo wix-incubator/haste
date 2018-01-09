@@ -1,6 +1,6 @@
 {
   "name": "haste-test-utils-core",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "main": "./src/index.js",
   "author": "Ran Yitzhaki",
   "engines": {

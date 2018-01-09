@@ -1,6 +1,6 @@
 {
   "name": "haste-worker-farm",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "main": "src/index.js",
   "author": "Ronen Amiel",
   "engines": {
