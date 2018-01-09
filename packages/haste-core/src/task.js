@@ -18,7 +18,7 @@ module.exports = class Task {
       this.pool.kill();
     });
 
-    this.api = async (taskOptions, runnerOptions) => {
+    this.api = async (taskOptions = {}, runnerOptions = {}) => {
       const run = {
         taskOptions,
         runnerOptions,
