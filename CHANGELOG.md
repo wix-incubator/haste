@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.3 (January 9, 2018)
+
+#### :nail_care: Enhancement
+* `haste-core`
+  * [#178](https://github.com/wix/haste/pull/178) Add `runnerOptions` to the `task.api` call as a second argument
+
 ## 0.2.2 (January 8, 2018)
 
 #### :nail_care: Enhancement
@@ -26,7 +32,7 @@
 * `CONTRIBUTING.md`
   * Add explanations for the website and docs management
 
-#### :house: Internal
+#### :nail_care: Enhancement
 * `haste-cli`
   * Refactor the cli module and remove the `haste-core` dependency
 * `haste-worker-farm`
@@ -37,6 +43,8 @@
   * Change the plugin system to use the `1.0.0` version of `tapable`
 * `haste-service-fs`
   * A service for file system management was created and will be injected to all tasks
+
+#### :house: Internal
 * `haste-test-utils`
   * Refactor `haste-test-utils` to work with the core itself and supply better testing experience
 * `haste-test-utils-core`
