@@ -4,14 +4,16 @@ const { AsyncSeriesHook } = require('tapable');
 const { Farm } = require('haste-worker-farm');
 const Execution = require('./execution');
 
-
 module.exports = class Runner {
   constructor() {
     this.farm = new Farm({ maxConcurrentCalls: os.cpus().length });
+    this.executions = [];
 
     this.hooks = {
       beforeExecution: new AsyncSeriesHook(['execution']),
     };
+
+    process.on('exit', () => this.kill());
   }
 
   command(action, { persistent = false } = {}) {
@@ -24,6 +26,8 @@ module.exports = class Runner {
         farm: this.farm,
       });
 
+      this.executions.push(execution);
+
       await this.hooks.beforeExecution.promise(execution);
 
       const result = await execution.execute();
@@ -33,6 +37,10 @@ module.exports = class Runner {
         persistent,
       };
     };
+  }
+
+  kill() {
+    this.executions.forEach(execution => execution.stop());
   }
 
   watch({ pattern, cwd = process.cwd(), ignoreInitial = true }, callback) {

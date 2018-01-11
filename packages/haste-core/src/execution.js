@@ -12,6 +12,7 @@ module.exports = class Execution {
     this.persistent = persistent;
     this.context = context;
     this.farm = farm;
+    this.tasks = [];
 
     this.hooks = {
       createTask: new SyncHook(['task']),
@@ -30,9 +31,15 @@ module.exports = class Execution {
       workerOptions: { ...defaultWorkerOptions, ...this.workerOptions },
     });
 
+    this.tasks.push(task);
+
     this.hooks.createTask.call(task);
 
     return task;
+  }
+
+  stop() {
+    this.tasks.forEach(task => task.kill());
   }
 
   async execute() {
