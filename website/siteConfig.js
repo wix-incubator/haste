@@ -22,10 +22,15 @@ const siteConfig = {
   baseUrl: '/haste/',
   projectName: 'Haste',
   organizationName: 'wix',
+  algolia: {
+    apiKey: '37a51befaf5367b0c3a7f7dd11336115',
+    indexName: 'haste',
+  },
   headerLinks: [
     { doc: 'core-concepts', label: 'Getting Started' },
     { doc: 'api-reference', label: 'API Reference' },
     { page: 'help', label: 'Help' },
+    { search: true },
   ],
   users,
   /* path to images for header/footer */
