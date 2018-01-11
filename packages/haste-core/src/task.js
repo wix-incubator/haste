@@ -14,10 +14,6 @@ module.exports = class Task {
       modulePath: this.modulePath,
     });
 
-    process.on('exit', () => {
-      this.pool.kill();
-    });
-
     this.api = async (taskOptions = {}, runnerOptions = {}) => {
       const run = {
         taskOptions,
@@ -47,5 +43,9 @@ module.exports = class Task {
     this.hooks = {
       before: new AsyncSeriesWaterfallHook(['options']),
     };
+  }
+
+  kill() {
+    this.pool.kill();
   }
 };
