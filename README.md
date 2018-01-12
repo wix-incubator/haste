@@ -2,7 +2,7 @@
 <h1 align="center">Haste</h1>
 <p align="center">An extendable, blazing fast build system that cares about user experience</p>
 
-<p align="center"><strong>Haste is still in an early development stage and it is lacking in features and documentation. Please try it out, give feedback, and help fix bugs.</strong></p>
+<p align="center"><strong>Haste is still in an early development stage and is lacking in features and documentation. Please try it out, give feedback, and help fix bugs.</strong></p>
 
 <p align="center">
   <a href="https://travis-ci.org/wix/haste"><img src="https://travis-ci.org/wix/haste.svg?branch=master" alt="Build Status"></a>
@@ -15,14 +15,14 @@
 
 ## Summary
 
-- :zap: **Blazing fast performance:** running tasks in parallel using multiple processes.
-- :electric_plug: **Highly modular plugin system:** making it possible to change almost anything.
+- :zap: **Blazingly-fast performance:** running tasks in parallel using multiple processes.
+- :electric_plug: **A Highly modular plugin system:** making it possible to change almost anything.
 - :video_game: **Intuitive user experience:** managing output to allow the creation of loaders and dashboards.
-- :rocket: **Simple, programmatic API:** leveraging ES2015's async await with a minimal API.
+- :rocket: **Simple, pragmatic API:** leveraging ES2015's async await with a minimal API.
 
 ## Introduction
 
-Haste is a tool for creating fast and elegant build processes: By running CPU heavy tasks on separate processes, Haste can fully utilize your machine's resources. This isolation also enables full control on how the output is managed and plugins can extend the core functionality to create visually rich user interfaces.
+Haste is a tool for creating fast and elegant build processes: By running CPU heavy tasks on separate processes, Haste can fully utilize your machine's resources. This isolation also enables full control of how the output is managed, while plugins can extend core functionality to create visually-rich user interfaces.
 
 ![Dashboard screenshot](images/dashboard.png)
 
