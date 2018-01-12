@@ -26,6 +26,7 @@ const siteConfig = {
     apiKey: '37a51befaf5367b0c3a7f7dd11336115',
     indexName: 'haste',
   },
+  gaTrackingId: 'UA-112380454-1',
   headerLinks: [
     { doc: 'core-concepts', label: 'Getting Started' },
     { doc: 'api-reference', label: 'API Reference' },
