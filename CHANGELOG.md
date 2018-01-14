@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.4 (January 14, 2018)
+
+#### :nail_care: Enhancement
+* `website`
+  * Integrate algolia search
+
+#### :bug: Bug
+* `haste-core`
+  * [#179](https://github.com/wix/haste/pull/179) Kill all workers from one place when the main process exits
+
 ## 0.2.3 (January 9, 2018)
 
 #### :nail_care: Enhancement
