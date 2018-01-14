@@ -1,6 +1,6 @@
 {
   "name": "haste-task-clean",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "main": "./src/index.js",
   "author": "Ran Yitzhaki",
   "engines": {
@@ -11,6 +11,6 @@
     "rimraf": "^2.6.2"
   },
   "devDependencies": {
-    "haste-test-utils": "^0.2.3"
+    "haste-test-utils": "^0.2.4"
   }
 }
