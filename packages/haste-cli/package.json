@@ -16,7 +16,7 @@
     "yargs": "^8.0.2"
   },
   "peerDependencies": {
-    "haste-core": "^0.1.13"
+    "haste-core": "^0.2.0"
   },
   "devDependencies": {
     "execa": "^0.8.0"
