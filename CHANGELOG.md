@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.5 (January 16, 2018)
+
+#### :bug: Bug
+* `haste-worker-farm`
+  * [#180](https://github.com/wix/haste/pull/180) uncaught exceptions in workers are now logged like any other worker error
+
 ## 0.2.4 (January 14, 2018)
 
 #### :nail_care: Enhancement
