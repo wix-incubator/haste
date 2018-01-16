@@ -1,6 +1,6 @@
 {
   "name": "haste-task-webpack",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "main": "./src/index.js",
   "author": "Ronen Amiel",
   "engines": {
@@ -11,7 +11,7 @@
     "webpack": "^3.1.0"
   },
   "devDependencies": {
-    "haste-test-utils": "^0.2.4",
+    "haste-test-utils": "^0.2.5",
     "retry-promise": "1.0.0",
     "webpack": "^3.8.1"
   }

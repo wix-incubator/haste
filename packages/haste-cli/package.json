@@ -1,6 +1,6 @@
 {
   "name": "haste-cli",
-  "version": "0.2.2",
+  "version": "0.2.5",
   "author": "Ronen Amiel",
   "engines": {
     "node": ">=8"
