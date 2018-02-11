@@ -10,7 +10,7 @@ module.exports = async (options = {}) => {
   const args = dargs(optionsWithDefaults, { useEquals: false, allowCamelCase: true });
 
   return new Promise((resolve, reject) => {
-    const tscWorker = spawn(tscBin, args);
+    const tscWorker = spawn('node', [tscBin, ...args]);
 
     process.on('exit', () => tscWorker.kill('SIGTERM'));
 
