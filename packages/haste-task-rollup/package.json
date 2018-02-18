@@ -1,0 +1,17 @@
+{
+  "name": "haste-task-rollup",
+  "version": "0.2.5",
+  "main": "src/index.js",
+  "author": "Bohdan Lyzanets",
+  "engines": {
+    "node": ">=8"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "rollup": "^0.55.5"
+  },
+  "devDependencies": {
+    "haste-test-utils": "^0.2.5",
+    "rollup": "^0.55.5"
+  }
+}
