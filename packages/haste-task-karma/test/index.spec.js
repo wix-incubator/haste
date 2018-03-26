@@ -1,3 +1,4 @@
+const stripAnsi = require('strip-ansi');
 const { setup } = require('haste-test-utils');
 
 const taskPath = require.resolve('../src');
@@ -22,7 +23,7 @@ describe('haste-karma', () => {
       });
     });
 
-    expect(test.stdio.stdout).toMatch('Executed 1 of 1 SUCCESS');
+    expect(stripAnsi(test.stdio.stdout)).toMatch('Executed 1 of 1 SUCCESS');
   });
 
   it('should run a failing test and reject', async () => {
@@ -37,7 +38,7 @@ describe('haste-karma', () => {
         });
       } catch (error) {
         expect(error.message).toMatch('Karma failed with code 1');
-        expect(test.stdio.stdout).toMatch('Executed 1 of 1 (1 FAILED)');
+        expect(stripAnsi(test.stdio.stdout)).toMatch('Executed 1 of 1 (1 FAILED)');
       }
     });
   });
@@ -51,6 +52,6 @@ describe('haste-karma', () => {
       });
     });
 
-    expect(test.stdio.stdout).toMatch('Executed 1 of 1 SUCCESS');
+    expect(stripAnsi(test.stdio.stdout)).toMatch('Executed 1 of 1 SUCCESS');
   });
 });
