@@ -1,10 +1,18 @@
 # Changelog
 
+## 0.2.6 (March 26, 2018)
+
+#### :nail_care: Enhancement
+* `haste-task-rollup`
+  * [#184](https://github.com/wix/haste/pull/184) Has been created and can be used
+* `haste-task-eslint`
+  * [#186](https://github.com/wix/haste/pull/186) Support formatter option
+
 ## 0.2.5 (January 16, 2018)
 
 #### :bug: Bug
 * `haste-worker-farm`
-  * [#180](https://github.com/wix/haste/pull/180) uncaught exceptions in workers are now logged like any other worker error
+  * [#180](https://github.com/wix/haste/pull/180) Uncaught exceptions in workers are now logged like any other worker error
 
 ## 0.2.4 (January 14, 2018)
 
