@@ -48,4 +48,21 @@ describe('haste-eslint', () => {
 
     expect(test.files['fixable.js'].content).toBe('/foo {2}bar/');
   });
+
+  it('should support formatter', async () => {
+    expect.assertions(1);
+
+    test = await setup();
+
+    await test.run(async ({ [taskPath]: eslint }) => {
+      try {
+        await eslint({
+          pattern: require.resolve('./fixtures/valid.js'),
+          options: { rules: { 'no-console': 'error' }, formatter: 'checkstyle' },
+        });
+      } catch (error) {
+        expect(error.message).toMatch('message="Unexpected console statement. (no-console)"');
+      }
+    });
+  });
 });

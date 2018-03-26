@@ -6,7 +6,7 @@ module.exports = ({ pattern, options = {} }, { fs }) => new Promise(async (resol
   const filePaths = files.map(({ filename }) => filename);
   const report = cli.executeOnFiles(filePaths);
 
-  const formatter = cli.getFormatter();
+  const formatter = cli.getFormatter(options.formatter);
   options.fix && CLIEngine.outputFixes(report);
 
   const errors = CLIEngine.getErrorResults(report.results);
