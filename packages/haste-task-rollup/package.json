@@ -1,6 +1,6 @@
 {
   "name": "haste-task-rollup",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "main": "src/index.js",
   "author": "Bohdan Lyzanets",
   "engines": {
