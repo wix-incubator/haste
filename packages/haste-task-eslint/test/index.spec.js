@@ -49,7 +49,7 @@ describe('haste-eslint', () => {
     expect(test.files['fixable.js'].content).toBe('/foo {2}bar/');
   });
 
-  it('should support formatter', async () => {
+  it('should support a formatter option', async () => {
     expect.assertions(1);
 
     test = await setup();
