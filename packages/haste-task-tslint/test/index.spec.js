@@ -4,7 +4,7 @@ const taskPath = require.resolve('../src');
 
 const pathToTslintFile = require.resolve('./fixtures/tslint.json');
 const pathToValidTsconfigFile = require.resolve('./fixtures/tsconfig.json');
-const pathToInvalidTsconfigFile = require.resolve('./fixtures/invalidTsconfig.json');
+const pathToInvalidTsconfigFile = require.resolve('./fixtures/tsconfig-invalid.json');
 
 describe('haste-tslint', () => {
   let test;
