@@ -1,23 +1,25 @@
 const { Linter, Configuration } = require('tslint');
 
-function runLinter(options, configurationFilePath, files) {
-  const linter = new Linter(options);
+function runLinter(options, tslintFilePath, tsconfigFilePath) {
+  const program = Linter.createProgram(tsconfigFilePath);
+  const linter = new Linter(options, program);
+  const files = Linter.getFileNames(program);
 
-  files.forEach(({ filename, content }) => {
-    const config = Configuration.findConfiguration(configurationFilePath, filename).results;
-    linter.lint(filename, content, config);
+  files.forEach(file => {
+    const fileContents = program.getSourceFile(file).getFullText();
+    const configuration = Configuration.findConfiguration(tslintFilePath, file).results;
+    linter.lint(file, fileContents, configuration);
   });
 
   return linter.getResult();
 }
 
 module.exports = async ({
-  pattern,
-  options = { formatter: 'prose' },
-  configurationFilePath = null,
-} = {}, { fs }) => {
-  const files = await fs.read({ pattern });
-  const { errorCount, output } = runLinter(options, configurationFilePath, files);
+  tsconfigFilePath = '',
+  tslintFilePath = '',
+  options = { formatter: 'prose' }
+} = {}) => {
+  const { errorCount, output } = runLinter(options, tslintFilePath, tsconfigFilePath);
 
   if (errorCount > 0) {
     throw output;
