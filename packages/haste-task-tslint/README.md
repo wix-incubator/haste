@@ -48,4 +48,4 @@ await tslint({
 });
 ```
 
-** Note that the task must receive at least one of `tsconfigFilePath` or `pattern` in order to know which files to run the linter on. in case both `tsconfigFilePath` and `pattern` are provided, the linter will ignore the `pattern` parameter.
+Note that the task must receive at least one of `tsconfigFilePath` or `pattern` in order to know which files to run the linter on. in case both `tsconfigFilePath` and `pattern` are provided, the linter will ignore the `pattern` parameter.
