@@ -5,12 +5,14 @@ const taskPath = require.resolve('../src');
 const pathToTslintFile = require.resolve('./fixtures/tslint.json');
 const pathToValidTsconfigFile = require.resolve('./fixtures/tsconfig.json');
 const pathToInvalidTsconfigFile = require.resolve('./fixtures/tsconfig-invalid.json');
+const pathToValidFile = require.resolve('./fixtures/valid.ts');
+const pathToInvalidFile = require.resolve('./fixtures/invalid.ts');
 
 describe('haste-tslint', () => {
   let test;
 
   describe('linter', () => {
-    it('should resolve for valid files', async () => {
+    it('should resolve for valid files when given tsconfigFilePath', async () => {
       test = await setup();
 
       await test.run(async ({ [taskPath]: tslint }) => {
@@ -21,7 +23,7 @@ describe('haste-tslint', () => {
       });
     });
 
-    it('should reject for invalid files', async () => {
+    it('should reject for invalid files when given tsconfigFilePath', async () => {
       expect.assertions(1);
 
       test = await setup();
@@ -35,6 +37,46 @@ describe('haste-tslint', () => {
         } catch (error) {
           expect(error.message).toMatch('Calls to \'console.error\' are not allowed');
         }
+      });
+    });
+
+    it('should resolve for valid files when pattern is given', async () => {
+      test = await setup();
+
+      await test.run(async ({ [taskPath]: tslint }) => {
+        await tslint({
+          pattern: pathToValidFile,
+          tslintFilePath: pathToTslintFile,
+        });
+      });
+    });
+
+    it('should reject for invalid files when pattern is given', async () => {
+      expect.assertions(1);
+
+      test = await setup();
+
+      await test.run(async ({ [taskPath]: tslint }) => {
+        try {
+          await tslint({
+            pattern: pathToInvalidFile,
+            tslintFilePath: pathToTslintFile,
+          });
+        } catch (error) {
+          expect(error.message).toMatch('Calls to \'console.error\' are not allowed');
+        }
+      });
+    });
+
+    it('should use the tsconfig file when both pattern and tsConfigFilePath are provided', async () => {
+      test = await setup();
+
+      await test.run(async ({ [taskPath]: tslint }) => {
+        await tslint({
+          tsconfigFilePath: pathToValidTsconfigFile,
+          pattern: pathToInvalidFile,
+          tslintFilePath: pathToTslintFile,
+        });
       });
     });
 
@@ -95,9 +137,9 @@ describe('haste-tslint', () => {
   });
 
   describe('tsConfigFilePath', () => {
-    const errorMessage = 'The specified path does not exist';
-
     it('should reject if a tsconfig.json could not be found', async () => {
+      const errorMessage = 'The specified path does not exist';
+
       expect.assertions(1);
 
       test = await setup();
@@ -114,7 +156,9 @@ describe('haste-tslint', () => {
       });
     });
 
-    it('should reject if a tsconfig.json was not provided', async () => {
+    it('should reject if both tsConfigFilePath and pattern were not provided', async () => {
+      const errorMessage = 'haste-task-tslint requires a pattern or a tsconfigFilePath';
+
       expect.assertions(1);
 
       test = await setup();
