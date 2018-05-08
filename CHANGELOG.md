@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.7 (April 29, 2018)
+#### :bug: Bug
+* `haste-task-typescript`
+  * [#182](https://github.com/wix/haste/pull/182) Make typescript task cross-platform
+
 ## 0.2.6 (March 26, 2018)
 
 #### :nail_care: Enhancement
