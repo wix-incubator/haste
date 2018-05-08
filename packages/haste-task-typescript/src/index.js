@@ -1,5 +1,5 @@
 const dargs = require('dargs');
-const { spawn } = require('child_process');
+const spawn = require('cross-spawn');
 const { hasErrorMessage, hasCompletionMessage, colorPrint } = require('./utils');
 
 const defaultOptions = { project: './' };
