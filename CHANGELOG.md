@@ -1,6 +1,13 @@
 # Changelog
 
+## 0.2.8 (May 31, 2018)
+
+#### :bug: Bug
+* `haste-worker-farm`
+  * [#190](https://github.com/wix/haste/pull/190) Catch async errors that have been thrown outside of the main function call.
+
 ## 0.2.7 (April 29, 2018)
+
 #### :bug: Bug
 * `haste-task-typescript`
   * [#182](https://github.com/wix/haste/pull/182) Make typescript task cross-platform
