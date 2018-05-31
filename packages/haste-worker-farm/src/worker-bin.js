@@ -6,6 +6,8 @@ let modulePath = null;
 
 process.on('uncaughtException', handleError);
 
+process.on('unhandledRejection', handleError);
+
 process.on('message', ({ type, options }) => {
   switch (type) {
     case 'CHILD_MESSAGE_INITIALIZE':
