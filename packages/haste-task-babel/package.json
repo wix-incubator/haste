@@ -1,6 +1,6 @@
 {
   "name": "haste-task-babel",
-  "version": "0.2.5",
+  "version": "0.2.8",
   "main": "./src/index.js",
   "author": "Ronen Amiel",
   "engines": {
@@ -12,6 +12,6 @@
   },
   "devDependencies": {
     "babel-plugin-transform-es2015-block-scoping": "^6.26.0",
-    "haste-test-utils": "^0.2.5"
+    "haste-test-utils": "^0.2.8"
   }
 }

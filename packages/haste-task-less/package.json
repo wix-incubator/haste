@@ -1,6 +1,6 @@
 {
   "name": "haste-task-less",
-  "version": "0.2.5",
+  "version": "0.2.8",
   "main": "./src/index.js",
   "author": "Ronen Amiel",
   "engines": {
@@ -11,6 +11,6 @@
     "less": "^2.7.2"
   },
   "devDependencies": {
-    "haste-test-utils": "^0.2.5"
+    "haste-test-utils": "^0.2.8"
   }
 }
