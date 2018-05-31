@@ -15,6 +15,7 @@ const requireErrorPath = resolveFromFixtures('require-error');
 const nonAsyncPath = resolveFromFixtures('non-async');
 const noErrorPath = resolveFromFixtures('no-error');
 const errorOutsidePath = resolveFromFixtures('error-outside');
+const errorOutsideAsyncPath = resolveFromFixtures('error-outside-async');
 const idlePath = resolveFromFixtures('idle');
 
 describe('haste', () => {
@@ -121,6 +122,20 @@ describe('haste', () => {
       try {
         await test.run(async ({ [errorOutsidePath]: errorOutside }) => {
           await errorOutside();
+        });
+      } catch (error) {
+        expect(error.message).toMatch('Error in worker');
+      }
+    });
+
+    it('should reject if a task threw an error outside if it\'s function invocation', async () => {
+      expect.assertions(1);
+
+      test = await setup();
+
+      try {
+        await test.run(async ({ [errorOutsideAsyncPath]: errorOutsideAsync }) => {
+          await errorOutsideAsync();
         });
       } catch (error) {
         expect(error.message).toMatch('Error in worker');
