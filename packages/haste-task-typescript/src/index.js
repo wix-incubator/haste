@@ -1,6 +1,6 @@
 const dargs = require('dargs');
 const { spawn } = require('child_process');
-const { hasErrorMessage, hasCompletionMessage, colorPrint } = require('./utils');
+const { hasCompletionMessage, colorPrint } = require('./utils');
 
 const defaultOptions = { project: './' };
 
@@ -19,10 +19,8 @@ module.exports = async (options = {}) => {
 
       lines.forEach(colorPrint);
 
-      if (options.watch) {
-        if (hasCompletionMessage(lines) || hasErrorMessage(lines)) {
-          resolve();
-        }
+      if (options.watch && hasCompletionMessage(lines)) {
+        resolve();
       }
     });
 
