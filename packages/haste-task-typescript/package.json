@@ -1,6 +1,6 @@
 {
   "name": "haste-task-typescript",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "main": "./src/index.js",
   "author": "Ran Yitzhaki",
   "engines": {
