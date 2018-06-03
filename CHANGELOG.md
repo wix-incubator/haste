@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.9 (May 31, 2018)
+* `haste-task-typescript`
+  * [#191](https://github.com/wix/haste/pull/191) Support `typescript@2.9` watch mode
+
 ## 0.2.8 (May 31, 2018)
 
 #### :bug: Bug
