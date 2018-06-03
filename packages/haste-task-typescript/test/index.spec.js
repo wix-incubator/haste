@@ -75,7 +75,7 @@ describe('haste-task-typescript', () => {
         await typescript({ project: test.cwd, watch: true });
       });
 
-      expect(test.stdio.stdout).toMatch('Compilation complete. Watching for file changes.');
+      expect(test.stdio.stdout).toMatch('Found 0 errors. Watching for file changes.');
       expect(test.stdio.stdout).toMatch(greenColor);
       expect(test.files['dist/valid.js'].content).toEqual(transpiledFixture);
     });
@@ -91,6 +91,7 @@ describe('haste-task-typescript', () => {
       });
 
       expect(test.stdio.stderr).toMatch('error TS2304: Cannot find name');
+      expect(test.stdio.stderr).toMatch('Found 1 error. Watching for file changes.');
       expect(test.stdio.stderr).toMatch(redColor);
     });
   });
