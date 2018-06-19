@@ -12,6 +12,7 @@
     "class-methods-use-this": "off",
     "global-require": "off",
     "import/no-dynamic-require": "off",
+    "import/no-extraneous-dependencies": "off",
     "no-confusing-arrow": "off",
     "no-console": "off",
     "no-multi-assign": "off",

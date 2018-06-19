@@ -1,11 +1,23 @@
 const path = require('path');
-const sass = require('node-sass');
-
-const render = options => new Promise((resolve, reject) => {
-  sass.render(options, (err, result) => err ? reject(err) : resolve(result));
-});
 
 module.exports = async ({ pattern, target, options }, { fs }) => {
+  let sass;
+
+  try {
+    sass = require('node-sass');
+  } catch (error) {
+    if (error.code === 'MODULE_NOT_FOUND') {
+      throw new Error(
+        '`haste-task-sass` requires `node-sass` >=4. Please install it and re-run.',
+      );
+    }
+    throw error;
+  }
+
+  const render = opts => new Promise((resolve, reject) => {
+    sass.render(opts, (err, result) => err ? reject(err) : resolve(result));
+  });
+
   const files = await fs.read({ pattern });
 
   return Promise.all(

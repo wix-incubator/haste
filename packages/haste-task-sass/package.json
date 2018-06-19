@@ -7,10 +7,8 @@
     "node": ">=8"
   },
   "license": "MIT",
-  "dependencies": {
-    "node-sass": "^4.5.3"
-  },
   "devDependencies": {
-    "haste-test-utils": "^0.2.8"
+    "haste-test-utils": "^0.2.8",
+    "node-sass": "^4.5.3"
   }
 }
