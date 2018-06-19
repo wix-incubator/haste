@@ -10,7 +10,7 @@ module.exports = async ({ pattern, target, options }, { fs }) => {
   } catch (error) {
     if (error.code === 'MODULE_NOT_FOUND') {
       throw new Error(
-        '`haste-task-sass` requires `node-sass` >=4. Please install it and re-run.',
+        'Running this requires `node-sass` >=4. Please install it and re-run.',
       );
     }
     throw error;
