@@ -7,14 +7,12 @@
   "engines": {
     "node": ">=8"
   },
-  "dependencies": {
-    "karma": "^1.7.1"
-  },
   "devDependencies": {
     "haste-test-utils": "^0.2.8",
     "jasmine-core": "^2.8.0",
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.4",
-    "strip-ansi": "4.0.0"
+    "strip-ansi": "4.0.0",
+    "karma":"^2.0.3"
   }
 }
