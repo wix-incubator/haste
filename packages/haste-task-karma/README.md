@@ -1,6 +1,8 @@
 # haste-task-karma
 Haste task to run [Karma](https://github.com/karma-runner/karma)
 
+**NOTE:** This task requires karma to be install
+
 ## Options
 
 ### Config
