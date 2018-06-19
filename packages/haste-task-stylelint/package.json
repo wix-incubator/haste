@@ -8,7 +8,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "stylelint": "^8.2.0"
+    "stylelint": "^9.0.0"
   },
   "devDependencies": {
     "haste-test-utils": "^0.2.8"

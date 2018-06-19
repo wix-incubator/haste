@@ -8,7 +8,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "globby": "^6.1.0",
+    "globby": "^8.0.0",
     "mkdirp": "^0.5.1",
     "tempy": "^0.2.1"
   }
