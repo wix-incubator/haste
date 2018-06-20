@@ -1,6 +1,6 @@
 {
   "name": "haste-task-spawn",
-  "version": "0.2.8",
+  "version": "0.3.0",
   "main": "./src/index.js",
   "author": "Ronen Amiel",
   "engines": {
@@ -8,7 +8,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "haste-test-utils": "^0.2.8",
+    "haste-test-utils": "^0.3.0",
     "retry-promise": "1.0.0"
   }
 }

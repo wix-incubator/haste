@@ -1,6 +1,6 @@
 {
   "name": "haste-worker-farm",
-  "version": "0.2.8",
+  "version": "0.3.0",
   "main": "src/index.js",
   "author": "Ronen Amiel",
   "engines": {
@@ -8,7 +8,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "haste-service-fs": "^0.2.2",
+    "haste-service-fs": "^0.3.0",
     "merge-stream": "^1.0.1",
     "serialize-error": "^2.1.0",
     "uuid": "^3.1.0"
