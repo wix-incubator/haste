@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.3.0 (Jun 20, 2018)
+
+#### :boom: Breaking Change
+* `haste-task-sass`
+  * [#192](https://github.com/wix/haste/pull/192) Remove `node-sass` from the dependencies
+
+* `haste-task-karma`
+  * [#193](https://github.com/wix/haste/pull/193) Remove `karma` from the dependencies
+
+#### :nail_care: Enhancement
+* [#194](https://github.com/wix/haste/pull/194) Bump dependencies in various packages:
+  * `haste-core`
+    * chokidar: `^1.7.0` => `^2.0.0`
+    * tapable: `1.0.0-beta.3` => `^1.0.0`
+  * `haste-service-fs`
+    * globby: `^6.1.0` => `^8.0.0`
+  * `haste-task-stylelint`
+    * stylelint: `^8.2.0` => `9.0.0`
+  * `haste-task-typescript`
+    * dargs: `^5.1.0` => `^6.0.0`
+
 ## 0.2.9 (May 31, 2018)
 * `haste-task-typescript`
   * [#191](https://github.com/wix/haste/pull/191) Support `typescript@2.9` watch mode
