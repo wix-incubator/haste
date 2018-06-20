@@ -9,7 +9,7 @@
   "license": "MIT",
   "dependencies": {
     "chalk": "^2.3.0",
-    "dargs": "^5.1.0"
+    "dargs": "^6.0.0"
   },
   "devDependencies": {
     "haste-test-utils": "^0.2.8",
