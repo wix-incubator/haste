@@ -8,15 +8,15 @@ module.exports = async ({ pattern, target, options }, { fs }) => {
   } catch (error) {
     if (error.code === 'MODULE_NOT_FOUND') {
       throw new Error(
-        'Running this requires `less` >=2.7.2. Please install it and re-run.',
+        'Running this requires `less` >=2. Please install it and re-run.',
       );
     }
     throw error;
   }
 
-  if (Number(lessVersion) < 4) {
+  if (Number(lessVersion) < 2) {
     throw new Error(
-      `The installed version of \`less\` is not compatible (expected: >= 2.7.2, actual: ${lessVersion}).`,
+      `The installed version of \`less\` is not compatible (expected: >= 2, actual: ${lessVersion}).`,
     );
   }
 
