@@ -7,7 +7,7 @@ module.exports = async ({ pattern, source, cwd = process.cwd(), options } = {}) 
     cwd = path.isAbsolute(source) ? source : path.join(cwd, source);
   }
 
-  const defaultOptions = { nodir: true };
+  const defaultOptions = { onlyFiles: true, ignore: ['**/node_modules'] };
 
   const files = await globby(pattern, {
     ...defaultOptions,
