@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1 (Sep 04, 2018)
+#### :bug: Bug
+* `haste-service-fs`
+  * [#197](https://github.com/wix/haste/pull/197) fix `read` method to ignore `node_modules`
+
 ## 0.3.0 (Jun 20, 2018)
 
 #### :boom: Breaking Change
