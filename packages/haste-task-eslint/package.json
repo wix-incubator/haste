@@ -1,6 +1,6 @@
 {
   "name": "haste-task-eslint",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "main": "./src/index.js",
   "author": "Ran Yitzhaki",
   "engines": {
@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "eslint": "^4.8.0",
-    "haste-test-utils": "^0.3.0",
+    "haste-test-utils": "^0.3.1",
     "tempy": "^0.2.1"
   }
 }
