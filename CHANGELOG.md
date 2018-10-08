@@ -1,6 +1,11 @@
 # Changelog
 
-## 0.3.1 (Sep 04, 2018)
+## 0.3.2 (Oct 8, 2018)
+#### :nail_care: Enhancement
+* `haste-task-webpack`
+  * [#198](https://github.com/wix/haste/pull/198) Add `statsFilename` option to generate stats file.
+
+## 0.3.1 (Sep 4, 2018)
 #### :bug: Bug
 * `haste-service-fs`
   * [#197](https://github.com/wix/haste/pull/197) fix `read` method to ignore `node_modules`
