@@ -84,3 +84,9 @@ Whether or not to run Webpack in watch mode, defaults to false.
 Type: `object`
 
 Watch options for webpack, see [webpack documentation](https://webpack.js.org/api/node/#watching) for the full list of available options.
+
+#### statsFilename
+
+Type: `string`
+
+If set, will generate a webpack stats file in the given location, by default no file is generated.
