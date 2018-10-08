@@ -1,8 +1,9 @@
 const webpack = require('webpack');
+const bfj = require('bfj');
 
 module.exports = (options) => {
   return new Promise((resolve, reject) => {
-    const handler = (err, stats) => {
+    const handler = async (err, stats) => {
       if (options.callbackPath) {
         require(options.callbackPath)(err, stats);
       }
@@ -11,15 +12,21 @@ module.exports = (options) => {
         return reject(err);
       }
 
+      const statsJson = stats.toJson();
+
       if (stats.hasErrors()) {
-        const errorMessage = stats.toJson().errors.reduce((message, error) => {
+        const errorMessage = statsJson.errors.reduce((message, error) => {
           return message + error.toString();
         }, '');
 
         return reject(errorMessage);
       }
 
-      return resolve(stats.toJson());
+      if (options.statsFilename) {
+        await bfj.write(options.statsFilename, statsJson);
+      }
+
+      return resolve(statsJson);
     };
 
     let config = require(options.configPath);

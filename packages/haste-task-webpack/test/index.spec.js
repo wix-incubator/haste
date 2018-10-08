@@ -130,4 +130,40 @@ describe('haste-task-webpack', () => {
       });
     });
   });
+
+  describe('when statsFilename option is given', () => {
+    it('should create a stats file', async () => {
+      test = await setup({
+        'entry.js': fromFixture('./fixtures/entry.js'),
+        'webpack.config.js': fromFixture('./fixtures/webpack.config.js'),
+      });
+
+      await test.run(async ({ [taskPath]: webpack }) => {
+        await webpack({
+          configPath: test.files['webpack.config.js'].path,
+          statsFilename: 'webpack-stats.json',
+        });
+      });
+
+      expect(JSON.parse(test.files['webpack-stats.json'].content)).toMatchObject({
+        errors: [],
+        warnings: [],
+        assets: [{
+          name: 'bundle.js',
+          chunks: [0],
+        }],
+        chunks: [{
+          id: 0,
+          modules: [{
+            id: 0,
+            name: './entry.js',
+          }],
+        }],
+        modules: [{
+          id: 0,
+          name: './entry.js',
+        }],
+      });
+    });
+  });
 });
