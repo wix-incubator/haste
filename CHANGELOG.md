@@ -1,9 +1,14 @@
 # Changelog
 
+## 0.3.3 (Oct 9, 2018)
+#### :bug: Bug
+* `haste-task-webpack`
+  * [#199](https://github.com/wix/haste/pull/199) Verify that the directory of the stats exists before writing the stats
+
 ## 0.3.2 (Oct 8, 2018)
 #### :nail_care: Enhancement
 * `haste-task-webpack`
-  * [#198](https://github.com/wix/haste/pull/198) Add `statsFilename` option to generate stats file.
+  * [#198](https://github.com/wix/haste/pull/198) Add `statsFilename` option to generate stats file
 
 ## 0.3.1 (Sep 4, 2018)
 #### :bug: Bug
