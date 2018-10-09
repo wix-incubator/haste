@@ -1,4 +1,6 @@
+const path = require('path');
 const webpack = require('webpack');
+const mkdirp = require('mkdirp');
 const bfj = require('bfj');
 
 module.exports = (options) => {
@@ -23,6 +25,7 @@ module.exports = (options) => {
       }
 
       if (options.statsFilename) {
+        mkdirp.sync(path.dirname(options.statsFilename));
         await bfj.write(options.statsFilename, statsJson);
       }
 

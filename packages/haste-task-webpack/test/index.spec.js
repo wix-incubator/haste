@@ -141,11 +141,11 @@ describe('haste-task-webpack', () => {
       await test.run(async ({ [taskPath]: webpack }) => {
         await webpack({
           configPath: test.files['webpack.config.js'].path,
-          statsFilename: 'webpack-stats.json',
+          statsFilename: path.join(test.cwd, 'target', 'webpack-stats.json'),
         });
       });
 
-      expect(JSON.parse(test.files['webpack-stats.json'].content)).toMatchObject({
+      expect(JSON.parse(test.files['target/webpack-stats.json'].content)).toMatchObject({
         errors: [],
         warnings: [],
         assets: [{
