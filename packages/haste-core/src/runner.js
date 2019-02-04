@@ -5,8 +5,8 @@ const { Farm } = require('haste-worker-farm');
 const Execution = require('./execution');
 
 module.exports = class Runner {
-  constructor() {
-    this.farm = new Farm({ maxConcurrentCalls: os.cpus().length });
+  constructor({ maxConcurrentCalls = os.cpus().length }) {
+    this.farm = new Farm({ maxConcurrentCalls });
     this.executions = [];
 
     this.hooks = {
