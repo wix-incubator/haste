@@ -1,6 +1,6 @@
 {
   "name": "haste-task-webpack-dev-server",
-  "version": "0.3.1",
+  "version": "0.3.4",
   "main": "./src/index.js",
   "author": "Ronen Amiel",
   "engines": {
@@ -13,6 +13,6 @@
     "webpack-dev-middleware": "^1.12.0"
   },
   "devDependencies": {
-    "haste-test-utils": "^0.3.1"
+    "haste-test-utils": "^0.3.4"
   }
 }
