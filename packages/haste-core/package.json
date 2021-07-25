@@ -12,7 +12,7 @@
     "retry-promise": "1.0.0"
   },
   "dependencies": {
-    "chokidar": "^2.0.0",
+    "chokidar": "^3.0.0",
     "haste-plugin-logger": "^0.2.2",
     "haste-worker-farm": "^0.3.1",
     "resolve-from": "^4.0.0",
