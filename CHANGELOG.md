@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.4 (Jul 25, 2021)
+#### Bump
+* `haste-task-webpack`
+  * [#204](https://github.com/wix/haste/pull/204) Bump chokidar to V3
+
 ## 0.3.3 (Oct 9, 2018)
 #### :bug: Bug
 * `haste-task-webpack`
