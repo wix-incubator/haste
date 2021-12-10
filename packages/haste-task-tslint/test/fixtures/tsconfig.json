@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "jsx": "react"
+  },
+  "include": [
+    "valid.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
