@@ -1,26 +1,36 @@
 const path = require('path');
 
-module.exports = async ({ pattern, target, options }, { fs }) => {
-  let sass;
-  let sassVersion;
+function loadSass() {
+  try {
+    return require('sass');
+  } catch (error) {
+    if (error.code !== 'MODULE_NOT_FOUND') {
+      throw error;
+    }
+  }
 
   try {
-    sass = require('node-sass');
-    sassVersion = /^(\d+)/.exec(require('node-sass/package.json').version).pop();
-  } catch (error) {
-    if (error.code === 'MODULE_NOT_FOUND') {
+    const sass = require('node-sass');
+    const version = /^(\d+)/.exec(require('node-sass/package.json').version).pop();
+    if (Number(version) < 4) {
       throw new Error(
-        'Running this requires `node-sass` >=4. Please install it and re-run.',
+        `The installed version of \`node-sass\` is not compatible (expected: >= 4, actual: ${version}).`,
       );
     }
-    throw error;
+    return sass;
+  } catch (error) {
+    if (error.code !== 'MODULE_NOT_FOUND') {
+      throw error;
+    }
   }
 
-  if (Number(sassVersion) < 4) {
-    throw new Error(
-      `The installed version of \`node-sass\` is not compatible (expected: >= 4, actual: ${sassVersion}).`,
-    );
-  }
+  throw new Error(
+    'Running this requires `sass` or `node-sass`. Please install one and re-run.',
+  );
+}
+
+module.exports = async ({ pattern, target, options }, { fs }) => {
+  const sass = loadSass();
 
   const render = opts => new Promise((resolve, reject) => {
     sass.render(opts, (err, result) => err ? reject(err) : resolve(result));
